@@ -1,1 +1,60 @@
+\documentclass[11pt, twoside]{book}
+\input{preamble.tex}
 
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries Title of the Thesis\par}
+  \vspace{1.5cm}
+  {\Large Your Name\par}
+  \vfill
+  A thesis submitted for the degree of\\
+  Doctor of Philosophy\\
+  Department / School Name\\
+  University Name\\
+  \vspace{1cm}
+  \today
+\end{titlepage}
+
+\frontmatter
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+% Put abstract here
+
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+% Put acknowledgements here
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+\chapter{Introduction}
+\input{chapters/01-introduction.tex}
+
+\chapter{Related Work}
+\input{chapters/02-related-work.tex}
+
+\chapter{Methods}
+\input{chapters/03-methods.tex}
+
+\chapter{Results}
+\input{chapters/04-results.tex}
+
+\chapter{Discussion}
+\input{chapters/05-discussion.tex}
+
+\chapter{Conclusion}
+\input{chapters/06-conclusion.tex}
+
+\appendix
+\chapter{Appendix A}
+% appendix material
+
+\backmatter
+\printbibliography
+
+\end{document}
