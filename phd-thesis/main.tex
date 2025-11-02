@@ -1,25 +1,98 @@
-\documentclass[11pt, twoside]{book}
+\documentclass[11pt, twoside, openany]{book}
 \input{preamble.tex}
+
+% -------------------------------
+% Page style: centered page numbers at bottom
+% -------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
 
 \begin{document}
 
+% -------------------------------
+% Title page (no page numbers)
+% -------------------------------
+\pagenumbering{gobble}  % no page numbers
 \input{titlepage.tex}
 
+% -------------------------------
+% Front matter (Roman numerals)
+% -------------------------------
 
-\frontmatter
+\pagenumbering{roman}
+\setcounter{page}{1}  % Dedication = i
+
+% Dedication / Epigraph
+\thispagestyle{plain}
+\vspace*{5cm}
+\begin{center}
+    \emph{To my family,\\
+    and friends.}
+\end{center}
+
+% Declaration page
+\clearpage
+\thispagestyle{plain}
+\vspace*{4cm}
+
+\noindent
+I hereby declare that this thesis and the work presented herein is my own work except where appropriately referenced or acknowledged.
+
+\vspace{0.5cm}
+
+\noindent
+\textbf{Billy Wu}
+
+\vspace{5cm}
+
+\noindent
+The copyright of this thesis rests with the author and is made available under a Creative Commons Attribution-Non Commercial-No Derivatives license. Researchers are free to copy, distribute or transmit the thesis on the condition that they attribute it, that they do not use it for commercial purposes and that they do not alter, transform or build upon it. For any reuse or distribution, researchers must make clear to others the license terms of this work.
+
+% Abstract
+\clearpage
 \chapter*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
-% Put abstract here
+% Write your abstract here
 
+% Acknowledgements
+\clearpage
 \chapter*{Acknowledgements}
-\addcontentsline{toc}{chapter}{Acknowledgements}
-% Put acknowledgements here
+% Write your acknowledgements here
 
+% Dissemination page
+\clearpage
+\chapter*{Dissemination}
+\begin{itemize}
+    \item Paper 1: Title, Journal/Conference, Year
+    \item Paper 2: Title, Journal/Conference, Year
+    \item Poster 1: Title, Conference, Year
+\end{itemize}
+
+% Nomenclature
+\clearpage
+\chapter*{Nomenclature}
+\begin{tabular}{ll}
+$t$ & Time (s) \\
+$V$ & Voltage (V) \\
+$I$ & Current (A) \\
+$P$ & Power (W) \\
+\end{tabular}
+
+% Table of Contents and Lists (still in Roman numbering)
+\clearpage
 \tableofcontents
 \listoffigures
 \listoftables
 
-\mainmatter
+% -------------------------------
+% Main matter (Arabic numbering)
+% -------------------------------
+\cleardoublepage
+\mainmatter  % Switch to Arabic page numbers
+
 \chapter{Introduction}
 \input{chapters/01-introduction.tex}
 
@@ -38,10 +111,16 @@
 \chapter{Conclusion}
 \input{chapters/06-conclusion.tex}
 
+% -------------------------------
+% Appendix
+% -------------------------------
 \appendix
 \chapter{Appendix A}
-% appendix material
+% Appendix content here
 
+% -------------------------------
+% Back matter
+% -------------------------------
 \backmatter
 \printbibliography
 
