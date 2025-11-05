@@ -21,6 +21,7 @@ For this thesis template, the following declaration is used:
 \documentclass[11pt, twoside]{book}   % 'book' provides chapters, front matter, and appendices.
                                        % '11pt' sets the base font size, improves readability for long texts. By modifying 11pt we can select a new letter size for the full document.
                                        % 'twoside' formats for double-sided printing (different inner/outer margins).
+%!!!! pages should have similar margins, caution with the twoside
 ```
 
 
