@@ -1,6 +1,6 @@
 ## Preamble Explanation
 
-The **preamble** in a LaTeX document is the section *before* `\begin{document}`. It defines all global settings that control the **formatting, structure, typography, citation style, margins, and overall layout** of the entire thesis.
+The **preamble** in a LaTeX document is a section defined *before* `\begin{document}`that controls the **formatting, structure, typography, citation style, margins, and overall layout** of the entire thesis.
 
 In this template, the preamble is configured to ensure:
 
