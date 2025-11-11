@@ -14,17 +14,12 @@
 \begin{document}
 
 % -------------------------------
-% Title page (no page numbers)
+% Title page (page number should appear)
 % -------------------------------
-\pagenumbering{gobble}  % no page numbers
+\pagenumbering{arabic}
+\setcounter{page}{1}
 \input{titlepage.tex}
 
-% -------------------------------
-% Front matter (Roman numerals)
-% -------------------------------
-
-\pagenumbering{roman}
-\setcounter{page}{1}  % Dedication = i
 
 % Dedication / Epigraph
 \thispagestyle{plain}
@@ -90,8 +85,7 @@ $P$ & Power (W) \\
 % -------------------------------
 % Main matter (Arabic numbering)
 % -------------------------------
-\cleardoublepage
-\mainmatter  % Switch to Arabic page numbers
+
 
 \chapter{Introduction}
 \input{chapters/01-introduction.tex}
