@@ -39,47 +39,6 @@ the title page **must include** the following information:
 ```latex
 \begin{titlepage}                  % Creates a dedicated title page environment (standard LaTeX feature).
 
-  \centering                       % Centers all content horizontally on the page.
-                                   % (Recommended for a balanced, symmetrical design.)
-
-  \vspace*{3cm}                    % Adds 3 cm of blank space at the top.
-                                   % The * means the space is kept even at the top of a new page.
-                                   % This is not required by Imperial but provides visual balance.
-                                   % Recommended: around 3 cm gives a comfortable top margin.
-
-  {\Huge\bfseries Title of the Thesis\par}    % Prints the thesis title in large, bold type.
-                                              % Mandatory: must show the approved thesis title.
-                                              % Recommended: use \Huge for hierarchy and legibility.
-
-  \vspace{1.5cm}                   % Inserts vertical space (1.5 cm) between title and author name.
-                                   % Optional spacing to improve readability and separation.
-
-  {\Large Your Name\par}           % Displays the candidate’s full registered name.
-                                   % Mandatory: must match official College registration details.
-                                   % Recommended: \Large font size gives visual balance to the title.
-
-  \vfill                           % Expands vertical space automatically so that the following lines
-                                   % sit near the bottom of the page. Creates a balanced composition.
-                                   % Recommended but not required by Imperial.
-
-  A thesis submitted for the degree of\\
-  Doctor of Philosophy\\           % Mandatory text: identifies the qualification sought.
-                                   % Wording should match Imperial College requirements exactly.
-
-  Department / School Name\\       % Mandatory: must include the name of the Department.
-                                   % Replace with your registered department or research group.
-
-  Imperial College London\\        % Mandatory: full name of the institution must appear.
-
-  \vspace{1cm}                     % Adds 1 cm of vertical space before the date.
-                                   % Recommended minor spacing for clarity.
-
-  \today                           % Prints the current compilation date.
-                                   % Optional: can be replaced by the official submission date.
-\end{titlepage}                    % Ends the title page environment.                             % (can be replaced with the official submission date if desired).
-\end{titlepage}                    % Ends the title page environment.
-```
-
 ### 📄 Abstract Section — Compliance with Imperial College Thesis Submission Checklist (§ 7.1)
 
 According to the *Imperial College London Thesis Submission Checklist* (section 7.1):
