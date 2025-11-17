@@ -4,7 +4,7 @@ name: Update Explanations
 on:
   push:
     paths:
-      - 'thesis/preamble.tex'
+      - 'phd-thesis/preamble.tex'
 
 jobs:
   update-md:
