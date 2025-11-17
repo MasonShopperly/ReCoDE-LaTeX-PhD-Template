@@ -1,23 +1,12 @@
-TESTING 
-
 ```latex
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{microtype}
-\usepackage{amsmath,amssymb}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{hyperref}
-\usepackage{bookmark}
-\usepackage{booktabs}
-\usepackage{geometry}
-\geometry{a4paper, inner=3cm, outer=2.5cm, top=3cm, bottom=3cm}
+\input{preamble.tex}
+%TEEEEEEESSSSSSTING
+% -------------------------------
+% Page style: centered page numbers at bottom
+% -------------------------------
+\usepackage{fancyhdr}       %Loads the fancyhdr package, which gives you full control over page headers and footers.
+                            %Define rich headers/footers with text, page numbers, section/chapter titles, etc.
+                            %Position content using L/C/R (Left, Center, Right) and O/E (Odd, Even) slots (e.g., LE, RO).
+                            %Add or remove header/footer rules (lines) and control their thickness.
 
-% Bibliography (biber + biblatex)
-\usepackage[backend=biber,style=authoryear,maxcitenames=2]{biblatex}
-\addbibresource{bibliography.bib}
-
-% nicer section headings
 ```
