@@ -1,5 +1,23 @@
 TESTING 
 
 ```latex
-% paste lines 2–10 here
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{a4paper, inner=3cm, outer=2.5cm, top=3cm, bottom=3cm}
+
+% Bibliography (biber + biblatex)
+\usepackage[backend=biber,style=authoryear,maxcitenames=2]{biblatex}
+\addbibresource{bibliography.bib}
+
+% nicer section headings
 ```
