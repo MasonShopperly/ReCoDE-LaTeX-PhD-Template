@@ -18,7 +18,7 @@ jobs:
           python-version: 3.x
 
       - name: Run extract script
-        run: python scripts/extract_lines.py
+        run: python Scripts/extract_lines.py
 
       - name: Commit changes
         run: |
