@@ -1,12 +1,21 @@
-A dedicated results chapter is a common component across most disciplines and thesis formats. Clear and effective graphical representation is crucial in this section, as figures often convey trends and comparisons more efficiently than text alone.
+% -------------------------------------------------------------
+% Example: Multi-panel Figures for the Results Chapter
+% -------------------------------------------------------------
+A dedicated results chapter is a standard component across most disciplines and thesis formats.  
+Clear and effective graphical representation is crucial in this section, as figures often communicate trends, comparisons, and patterns more efficiently than text.
 
-Figure~\ref{fig:four_panels} shows a 2×2 layout with four panels (a–d), which allows the reader to quickly compare results across different experimental settings or data processing steps. 
-Each panel can represent a separate condition, time point, or parameter value, while the overall figure provides a cohesive summary.
-
+% -------------------------------------------------------------
+% 2×2 Multi-panel Figure (Four Panels)
+% -------------------------------------------------------------
+Figure~\ref{fig:four_panels} presents a 2×2 layout with four panels (a–d), which is a common structure when comparing multiple experimental conditions, time points, or parameter variations.  
+Each panel can represent a different scenario, and together they provide a cohesive visual summary of the experiment. The figures were obtained at \cite{Gomes2022}.
 
 \begin{figure}[h!]
     \centering
+
+    % -------------------
     % Row 1
+    % -------------------
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
         \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 0.png}
@@ -20,8 +29,10 @@ Each panel can represent a separate condition, time point, or parameter value, w
         \caption{Image b}
         \label{fig:sub_b}
     \end{subfigure}
-    
+
+    % -------------------
     % Row 2
+    % -------------------
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
         \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 2.png}
@@ -35,36 +46,52 @@ Each panel can represent a separate condition, time point, or parameter value, w
         \caption{Image d}
         \label{fig:sub_d}
     \end{subfigure}
-    
-    % Overall caption
-    \caption[Four-panel figure]{Four-panel figure showing different aspects of the experiment. Subfigures a)–d) correspond to different conditions.}
+
+    % -------------------
+    % Overall caption 
+    % -------------------
+    \caption[Four-panel figure]{Four-panel figure showing different aspects of the experiment.  
+    Subfigures a–d correspond to distinct experimental conditions or processing steps.}
     \label{fig:four_panels}
 \end{figure}
 
-When comparing two related results or experimental conditions, it is often convenient to present them side by side in a two-panel figure. 
-Figure~\ref{fig:two_panels} shows panels a) and b), which allow the reader to easily observe differences or trends between the two conditions. 
-Each panel can represent a distinct variable, time point, or treatment, while the overall figure provides a cohesive comparison.
+% Notes for students:
+% - Adjust subfigure widths (0.4\textwidth) to control spacing.
+% - Replace images with your own file paths.
+% - Optional: Use \caption[] for a shorter List of Figures entry.
 
+% -------------------------------------------------------------
+% Two-panel Figure (Side-by-side)
+% -------------------------------------------------------------
+When comparing two related outcomes, measurements, or conditions, 
+a two-panel figure is often the most effective option.  
+Figure~\ref{fig:two_panels} presents panels a) and b) side by side, 
+allowing easy visual comparison between the two cases.
 
 \begin{figure}[h!]
     \centering
-    % Subfigure a
+
+    % Panel a (left)
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 5.png}
         \caption{Description of image a}
         \label{fig:sub_a1}
-    \end{subfigure}%
+    \end{subfigure}
     \hfill
-    % Subfigure b
+    % Panel b (right)
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 2.png}
         \caption{Description of image b}
         \label{fig:sub_b1}
     \end{subfigure}
-    
-    % Overall caption
-    \caption[Two-panel figure]{Two-panel figure showing the comparison between condition a) and condition b).}
+
+    \caption[Two-panel figure]{Two-panel figure comparing condition a) and condition b).}
     \label{fig:two_panels}
 \end{figure}
+
+% Notes for students:
+% - Use 0.48\textwidth for tight spacing across the full width.
+% - Adjust file names, captions, and labels as needed.
+% - You can reference subfigures using \ref{fig:sub_a1}, etc.
