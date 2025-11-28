@@ -1,63 +1,108 @@
 \begin{titlepage}
-\thispagestyle{fancy}
-  \centering
-  \vspace*{-3cm}
+\thispagestyle{fancy}               % Ensures the page number appears on the title page 
+                                    % (required by Imperial Thesis Regulation 4.3).
 
-  % Imperial College
-  {\Large
+  \centering                        % Centers the entire title page horizontally.
+
+  \vspace*{-3cm}                    % Moves the whole block upwards.
+                                    % To adjust vertical positioning of the page header,
+                                    % change the value (e.g., -2cm, -1cm, 0cm).
+
+  % -------------------------------
+  % Institution Name
+  % -------------------------------
+  {\Large                           % Controls the font size of the entire block below.
+                                    % Try \large, \LARGE, or \Huge if needed.
     {\fontsize{16pt}{18pt}\selectfont I}MPERIAL 
     {\fontsize{16pt}{18pt}\selectfont C}OLLEGE 
     {\fontsize{16pt}{18pt}\selectfont L}ONDON\par
   }
-  \vspace{0.5cm}
+                                    % To adjust the size of the first capital letter only,
+                                    % modify the 16pt (font size) and 18pt (baseline spacing).
 
+  \vspace{0.5cm}                    % Adjust spacing between “Imperial College London”
+                                    % and the School/Institute name.
 
-  % Dyson School
-  {\large
+  % -------------------------------
+  % Department / School Name
+  % -------------------------------
+  {\large                           % Base font size for the school name.
     {\fontsize{14pt}{16pt}\selectfont E}ARLY
     {\fontsize{14pt}{16pt}\selectfont C}AREER
     {\fontsize{14pt}{16pt}\selectfont R}ESEARCHER 
     {\fontsize{14pt}{16pt}\selectfont I}NSTITUTE\par
-    }
-  \vspace{6cm}
+  }
+                                    % To change to your own department, simply replace
+                                    % the text inside the braces.
 
-  % Title with black lines
-  \rule{\linewidth}{1pt}  
-  \vspace{0.3cm}          
-  {\huge\bfseries
-    PhD Thesis Template\\
-    An Example to Work On\par}
-  \vspace{0.3cm}          
-  \rule{\linewidth}{1pt}  
+  \vspace{6cm}                      % Vertical gap before the main title.
+                                    % Increase or decrease to reposition the title block.
+
+  % -------------------------------
+  % Thesis Title Block
+  % -------------------------------
+  \rule{\linewidth}{1pt}            % Horizontal line above the title.
+                                    % To change thickness, modify '1pt'.
+                                    % To shorten the line, use 0.8\linewidth, etc.
+
   \vspace{0.3cm}
 
-  % PhD Thesis line
+  {\huge\bfseries                   % Main thesis title block.
+                                    % Adjust with \Huge, \LARGE, or remove \bfseries for non-bold.
+    PhD Thesis Template\\
+    An Example to Work On\par
+  }
+
+  \vspace{0.3cm}
+
+  \rule{\linewidth}{1pt}            % Matching line beneath the title.
+                                    % Mirrors the line above for symmetry.
+
+  \vspace{0.3cm}
+
+  % -------------------------------
+  % Degree Name
+  % -------------------------------
   {\Large
     {\fontsize{16pt}{18pt}\selectfont P}H%
-    {\fontsize{16pt}{18pt}\selectfont D}%
-    {\ }%
+    {\fontsize{16pt}{18pt}\selectfont D}~
     {\fontsize{16pt}{18pt}\selectfont T}hesis\par
   }
-  \vspace{1cm}  
+                                    % You can adjust the way “PhD Thesis” appears by
+                                    % modifying the font size or removing spacing.
 
-  % Your name
-  {\Large João Graça Gomes\par}
-  \vspace{1cm}  
+  \vspace{1cm}
 
- % Supervisors section
+  % -------------------------------
+  % Candidate Name
+  % -------------------------------
+  {\Large João Graça Gomes\par}     % Replace with your full registered name.
+                                    % Keep the size consistent with Imperial style.
+
+  \vspace{1cm}
+
+  % -------------------------------
+  % Supervisor List
+  % -------------------------------
   \begin{flushleft}
-    \textit{Supervisors:}\\[0.3cm]
+    \textit{Supervisors:}\\[0.3cm]  % Edit the label or remove if not needed.
   \end{flushleft}
 
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l r @{}}
-        Dr Diego {\fontsize{14pt}{16pt}\selectfont A}{\textsc{LVAREZ}} & Early Career Researcher Institute\\
+    Dr Diego {\fontsize{14pt}{16pt}\selectfont A}{\textsc{LVAREZ}} & Early Career Researcher Institute\\
     Dr Chris {\fontsize{14pt}{16pt}\selectfont C}{\textsc{OOLING}} & Early Career Researcher Institute\\
   \end{tabular*}
+                                    % Left column: supervisor names.
+                                    % Right column: affiliations.
+                                    % Add more lines as needed by copying the pattern.
 
-  % Push date to bottom
-  \vfill
-  \today
+  % -------------------------------
+  % Submission Date
+  % -------------------------------
+  \vfill                             % Pushes the date to the bottom of the page automatically.
 
+  \today                             % Automatically inserts today’s date.
+                                     % Replace with your official submission date if preferred.
 
-  
 \end{titlepage}
+
