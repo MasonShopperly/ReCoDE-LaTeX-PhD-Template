@@ -1,69 +1,79 @@
-\documentclass[11pt, twoside, openany]{book}
-% START SNIPPET
+\documentclass[11pt, twoside, openany]{book} 
+% 'book' provides chapters, front matter, and appendices.
+% '11pt' sets the base font size, improves readability for long texts. By modifying 11pt, we can select a new letter size for the full document.
+% 'twoside' enables double-sided layout (left/right pages), used for printed theses.
+% 'openany' starts chapters on either page (no forced blanks). Use openright for traditional print (chapters on right-hand/odd pages).
+% More details about how margins are managed in the document will be explained in the Preamble
+
 \input{preamble.tex}
+
+% Symbols
 
 % -------------------------------
 % Page style: centered page numbers at bottom
 % -------------------------------
-\usepackage{fancyhdr}       %Loads the fancyhdr package, which gives you full control over page headers and footers.
-                            %Define rich headers/footers with text, page numbers, section/chapter titles, etc.
-                            %Position content using L/C/R (Left, Center, Right) and O/E (Odd, Even) slots (e.g., LE, RO).
-                            %Add or remove header/footer rules (lines) and control their thickness.
-\pagestyle{fancy}
-\fancyhf{}
+\usepackage{fancyhdr}  
+%Loads the fancyhdr package, which gives you full control over page headers and footers.
+%Define rich headers/footers with text, page numbers, section/chapter titles, etc.
+%Position content using L/C/R (Left, Centre, Right) and O/E (Odd, Even) slots (e.g., LE, RO).
+%Add or remove header/footer rules (lines) and control their thickness.
+\pagestyle{fancy} %Use the “fancy” style for all subsequent pages.
+\fancyhf{} %Clear all header/footer fields.
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
 \begin{document}
-
 % -------------------------------
 % Title page (page number should appear)
 % -------------------------------
 \pagenumbering{arabic}
 \setcounter{page}{1}
-\input{titlepage.tex}
-
-
+\input{titlepage.tex} %loads the titlepage.tex
 % Dedication / Epigraph
-\thispagestyle{plain}
-\vspace*{5cm}
+
+\thispagestyle{plain} %Page number centered at the bottom; no header
+\vspace*{5cm} 
+% Adds vertical space to position the dedication text. Regular \vspace{5cm} might not work at the top of a page, because LaTeX can ignore vertical space there. \vspace*{5cm} forces LaTeX to apply the space even at the top of a page, which is exactly what you want for a dedication page. Adjustable: You can change 5cm to any value (e.g., 3cm, 7cm) depending on how far down you want the dedication text to appear.
 \begin{center}
-    \emph{To my family,\\
+    \emph{To my family,\\  
     and friends.}
+    % \emph{...} = emphasized text (typically italics)
+    % Replace with your personal dedication text.
 \end{center}
-% END SNIPPET
 % Declaration page
 \clearpage
 \thispagestyle{plain}
 \vspace*{4cm}
-
-\noindent
+\noindent 
 I hereby declare that this thesis and the work presented herein is my own work except where appropriately referenced or acknowledged.
-
+% Required by the thesis submission guidelines: include a Statement of Originality at the beginning, confirming the thesis is your own work with all sources properly acknowledged. The text presented here is an example of an acceptable statement.
 \vspace{0.5cm}
 
 \noindent
-\textbf{Your Name}
-
+\textbf{Your Name} % It is good practice to include your name in the statement.
 \vspace{5cm}
 
 \noindent
+% Required by section 6 of the thesis submission checklist: include a copyright statement specifying the Creative Commons license applied to the thesis. The text below serves as an example.
 The copyright of this thesis rests with the author and is made available under a Creative Commons Attribution-Non Commercial-No Derivatives license. Researchers are free to copy, distribute or transmit the thesis on the condition that they attribute it, that they do not use it for commercial purposes and that they do not alter, transform or build upon it. For any reuse or distribution, researchers must make clear to others the license terms of this work.
 
 % Abstract
 \clearpage
 \chapter*{Abstract}
-% Write your abstract here
+% Required by section 7 of the submission checklist: include an abstract immediately after the title page, limited to a maximum of 300 words. Write your abstract below.
 
 % Acknowledgements
 \clearpage
-\chapter*{Acknowledgements}
+\chapter*{Acknowledgements}  % Creates an unnumbered "Acknowledgements" section.
 % Write your acknowledgements here
+% Insert personal or professional acknowledgements. Not mandatory but good practice.
+
 
 % Dissemination page
 \clearpage
 \chapter*{Dissemination}
+% Optional section: A Dissemination page may be added to outline publications, posters, or other outputs generated during the course of the research.
 \begin{itemize}
     \item Paper 1: Title, Journal/Conference, Year
     \item Paper 2: Title, Journal/Conference, Year
@@ -71,14 +81,16 @@ The copyright of this thesis rests with the author and is made available under a
 \end{itemize}
 
 % Nomenclature
+% Nomenclature and Abbreviations
+% Nomenclature page
 \clearpage
-\chapter*{Nomenclature}
-\begin{tabular}{ll}
-$t$ & Time (s) \\
-$V$ & Voltage (V) \\
-$I$ & Current (A) \\
-$P$ & Power (W) \\
-\end{tabular}
+%\chapter*{Nomenclature}  % Manual heading
+%\input{Nomenclature.tex} % Loads all \nomenclature definitions
+\printnomenclature
+% Abbreviations page
+\clearpage
+\chapter*{Acronyms}
+\input{phd-thesis/Acronym}
 
 % Table of Contents and Lists (still in Roman numbering)
 \clearpage
@@ -115,6 +127,30 @@ $P$ & Power (W) \\
 \appendix
 \chapter{Appendix A}
 % Appendix content here
+
+Ensuring the reproducibility of your results is a cornerstone of good scientific practice. There are many ways to present experimental details and computational settings; here, we focus on demonstrating how to include code within your thesis. 
+
+In LaTeX, we can include Python code using the \texttt{minted} package,
+which provides nice syntax highlighting. Below is a simple example 
+to calculate the hypotenuse of a right triangle using Pythagoras' theorem.
+
+%%%In the following code \begin{minted}   Wraps the  code you want to display. {python} tells minted which language to highlight. Everything inside is shown in the PDF with proper colours and formatting, but it is not executed.
+% Code formatting in the PDF Indentation, keywords, comments, and strings are automatically highlighted by minted. This makes the code readable and professional-looking, ideal for tutorials, homework, or papers.
+
+\begin{minted}{python}   
+
+import math
+
+def pythagoras(a, b):
+    return math.sqrt(a**2 + b**2)
+
+# Example usage
+side1 = 3
+side2 = 4
+hypotenuse = pythagoras(side1, side2)
+print("Hypotenuse:", hypotenuse)
+\end{minted}
+
 
 % -------------------------------
 % Back matter
