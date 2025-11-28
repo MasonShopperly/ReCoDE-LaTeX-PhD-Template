@@ -1,108 +1,140 @@
 \documentclass[11pt, twoside, openany]{book} 
-% 'book' provides chapters, front matter, and appendices.
-% '11pt' sets the base font size, improves readability for long texts. By modifying 11pt, we can select a new letter size for the full document.
-% 'twoside' enables double-sided layout (left/right pages), used for printed theses.
-% 'openany' starts chapters on either page (no forced blanks). Use openright for traditional print (chapters on right-hand/odd pages).
-% More details about how margins are managed in the document will be explained in the Preamble
+% 'book' provides chapters, front matter, appendices, and a well-structured layout suitable for theses.
+% 
+% '11pt' sets the base font size. You may select 10pt or 12pt if desired, but 11pt offers excellent readability.
+%
+% 'twoside' produces a double-sided layout (odd/even pages). 
+% IMPORTANT: Imperial Thesis Regulation 4.3 requires *centred* text with symmetrical margins—handled in the preamble.
+%
+% 'openany' allows chapters to begin on either left or right pages.
+% For a more traditional thesis layout, use 'openright' (chapters always begin on odd-numbered pages).
+%
+% Full details about margins, fonts, and styling are explained in the PREAMBLE.
 
-\input{preamble.tex}
-
-% Symbols
+\input{preamble.tex}  % Loads all global formatting, packages, and margin settings.
 
 % -------------------------------
-% Page style: centered page numbers at bottom
+% Header and Footer Style
 % -------------------------------
 \usepackage{fancyhdr}  
-%Loads the fancyhdr package, which gives you full control over page headers and footers.
-%Define rich headers/footers with text, page numbers, section/chapter titles, etc.
-%Position content using L/C/R (Left, Centre, Right) and O/E (Odd, Even) slots (e.g., LE, RO).
-%Add or remove header/footer rules (lines) and control their thickness.
-\pagestyle{fancy} %Use the “fancy” style for all subsequent pages.
-\fancyhf{} %Clear all header/footer fields.
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
+% The 'fancyhdr' package gives full control over headers and footers.
+% Students can customise:
+%   - page numbers (left/centre/right)
+%   - add chapter titles in the header
+%   - add rules/lines or remove them
+%   - different layouts for odd/even pages when using 'twoside'
 
+\pagestyle{fancy}   % Apply the fancy header/footer style.
+\fancyhf{}          % Clear all header and footer fields.
+\fancyfoot[C]{\thepage}   % Page number centred at the bottom (Regulation 4.4).
+
+\renewcommand{\headrulewidth}{0pt}  % Remove top horizontal line.
+\renewcommand{\footrulewidth}{0pt}  % Remove bottom horizontal line.
+
+% -------------------------------
+% START OF DOCUMENT
+% -------------------------------
 \begin{document}
-% -------------------------------
-% Title page (page number should appear)
-% -------------------------------
-\pagenumbering{arabic}
-\setcounter{page}{1}
-\input{titlepage.tex} %loads the titlepage.tex
-% Dedication / Epigraph
 
-\thispagestyle{plain} %Page number centered at the bottom; no header
-\vspace*{5cm} 
-% Adds vertical space to position the dedication text. Regular \vspace{5cm} might not work at the top of a page, because LaTeX can ignore vertical space there. \vspace*{5cm} forces LaTeX to apply the space even at the top of a page, which is exactly what you want for a dedication page. Adjustable: You can change 5cm to any value (e.g., 3cm, 7cm) depending on how far down you want the dedication text to appear.
+% -------------------------------
+% Title Page
+% -------------------------------
+\pagenumbering{arabic}  % Imperial requires Arabic page numbers starting on the title page.
+\setcounter{page}{1}    % Title page = Page 1
+\input{titlepage.tex}   % Loads your custom title page.
+
+% -------------------------------
+% Dedication Page
+% -------------------------------
+\thispagestyle{plain}   % Plain page style = page number only, centred at bottom.
+\vspace*{5cm}           % Move dedication text downwards. Modify value to adjust placement.
+
 \begin{center}
     \emph{To my family,\\  
     and friends.}
-    % \emph{...} = emphasized text (typically italics)
     % Replace with your personal dedication text.
+    % Using \emph makes the text italicised.
 \end{center}
-% Declaration page
+
+% -------------------------------
+% Declaration of Originality
+% -------------------------------
 \clearpage
 \thispagestyle{plain}
 \vspace*{4cm}
+
 \noindent 
 I hereby declare that this thesis and the work presented herein is my own work except where appropriately referenced or acknowledged.
-% Required by the thesis submission guidelines: include a Statement of Originality at the beginning, confirming the thesis is your own work with all sources properly acknowledged. The text presented here is an example of an acceptable statement.
+% Mandatory statement confirming originality of the thesis.
+
 \vspace{0.5cm}
 
 \noindent
-\textbf{Your Name} % It is good practice to include your name in the statement.
+\textbf{Your Name}   % Replace with your full name.
+                      % Good practice: sign physically after printing.
+
 \vspace{5cm}
 
 \noindent
-% Required by section 6 of the thesis submission checklist: include a copyright statement specifying the Creative Commons license applied to the thesis. The text below serves as an example.
-The copyright of this thesis rests with the author and is made available under a Creative Commons Attribution-Non Commercial-No Derivatives license. Researchers are free to copy, distribute or transmit the thesis on the condition that they attribute it, that they do not use it for commercial purposes and that they do not alter, transform or build upon it. For any reuse or distribution, researchers must make clear to others the license terms of this work.
+% Required copyright statement (Imperial thesis checklist, Section 6)
+The copyright of this thesis rests with the author and is made available under a Creative Commons Attribution-Non Commercial-No Derivatives license…
 
-% Abstract
+% -------------------------------
+% Abstract (MANDATORY)
+% -------------------------------
 \clearpage
 \chapter*{Abstract}
-% Required by section 7 of the submission checklist: include an abstract immediately after the title page, limited to a maximum of 300 words. Write your abstract below.
+% Imperial requires an abstract of no more than 300 words.
+% The abstract provides a concise summary of the thesis.
 
-% Acknowledgements
+% -------------------------------
+% Acknowledgements (Optional)
+% -------------------------------
 \clearpage
-\chapter*{Acknowledgements}  % Creates an unnumbered "Acknowledgements" section.
-% Write your acknowledgements here
-% Insert personal or professional acknowledgements. Not mandatory but good practice.
+\chapter*{Acknowledgements}
+% Not mandatory, but standard in most theses.
+% Thank supervisors, collaborators, family, funding agencies.
 
-
-% Dissemination page
+% -------------------------------
+% Dissemination (Optional)
+% -------------------------------
 \clearpage
 \chapter*{Dissemination}
-% Optional section: A Dissemination page may be added to outline publications, posters, or other outputs generated during the course of the research.
+% Optional section listing publications, posters, conference papers, preprints, etc.
 \begin{itemize}
     \item Paper 1: Title, Journal/Conference, Year
     \item Paper 2: Title, Journal/Conference, Year
     \item Poster 1: Title, Conference, Year
 \end{itemize}
 
-% Nomenclature
-% Nomenclature and Abbreviations
-% Nomenclature page
+% -------------------------------
+% Nomenclature (Optional)
+% -------------------------------
 \clearpage
-%\chapter*{Nomenclature}  % Manual heading
-%\input{Nomenclature.tex} % Loads all \nomenclature definitions
 \printnomenclature
-% Abbreviations page
+% If the page appears empty: ensure you ran `makeindex` for the nomenclature file.
+
+% -------------------------------
+% Acronyms (Optional)
+% -------------------------------
 \clearpage
 \chapter*{Acronyms}
 \input{phd-thesis/Acronym}
+% Add or modify acronyms in the Acronym.tex file.
 
-% Table of Contents and Lists (still in Roman numbering)
+% -------------------------------
+% Contents, List of Figures/Tables
+% -------------------------------
 \clearpage
 \tableofcontents
 \listoffigures
 \listoftables
+% LaTeX generates these automatically.
+% If items do not appear, compile *twice*.
 
 % -------------------------------
-% Main matter (Arabic numbering)
+% MAIN CHAPTERS
 % -------------------------------
-
-
 \chapter{Introduction}
 \input{chapters/01-introduction.tex}
 
@@ -122,40 +154,34 @@ The copyright of this thesis rests with the author and is made available under a
 \input{chapters/06-conclusion.tex}
 
 % -------------------------------
-% Appendix
+% APPENDIX
 % -------------------------------
 \appendix
 \chapter{Appendix A}
-% Appendix content here
+% Add additional appendices as needed: \chapter{Appendix B}, etc.
 
-Ensuring the reproducibility of your results is a cornerstone of good scientific practice. There are many ways to present experimental details and computational settings; here, we focus on demonstrating how to include code within your thesis. 
-
-In LaTeX, we can include Python code using the \texttt{minted} package,
-which provides nice syntax highlighting. Below is a simple example 
-to calculate the hypotenuse of a right triangle using Pythagoras' theorem.
-
-%%%In the following code \begin{minted}   Wraps the  code you want to display. {python} tells minted which language to highlight. Everything inside is shown in the PDF with proper colours and formatting, but it is not executed.
-% Code formatting in the PDF Indentation, keywords, comments, and strings are automatically highlighted by minted. This makes the code readable and professional-looking, ideal for tutorials, homework, or papers.
-
-\begin{minted}{python}   
-
+% -------------------------------
+% Code Example (minted)
+% -------------------------------
+% Example of including syntax-highlighted code.
+% Make sure shell-escape is enabled in your LaTeX compiler.
+% Overleaf → Menu → Settings → Compiler → Enable "Shell escape".
+\begin{minted}{python}
 import math
 
 def pythagoras(a, b):
     return math.sqrt(a**2 + b**2)
 
-# Example usage
 side1 = 3
 side2 = 4
 hypotenuse = pythagoras(side1, side2)
 print("Hypotenuse:", hypotenuse)
 \end{minted}
 
-
 % -------------------------------
-% Back matter
+% Bibliography
 % -------------------------------
 \backmatter
-\printbibliography
+\printbibliography   % Automatically formats the bibliography using BibLaTeX.
 
 \end{document}
