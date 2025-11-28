@@ -1,13 +1,23 @@
-% Example 3x3 Table
-The related work chapter is a crucial part of many theses. A practical way to organise your document—and to simplify writing, editing, and version control- is to create a separate LaTeX `.tex` file for each chapter. In this section, we demonstrate how to include and format tables within your thesis.
+% -------------------------------------------------------------
+% Example Tables for the Related Work Chapter
+% -------------------------------------------------------------
+The Related Work chapter is a crucial component of most theses.  
+A practical way to organise your project—and to simplify writing, editing, and version control—is to create a separate \LaTeX{} \texttt{.tex} file for each chapter.  
+In this section, we demonstrate how to include and format tables within your thesis, using common academic layouts.
 
-As shown in Table~\ref{tab:example_3x3}, the table presents a 3×3 dataset with placeholder parameters. It can be used to show relationships between variables X, Y, and Z.
+% -------------------------------------------------------------
+% 3×3 Example Table
+% -------------------------------------------------------------
+As shown in Table~\ref{tab:example_3x3}, the following 3×3 table presents placeholder data for parameters X, Y, and Z.  
+This structure is useful for showing compact relationships or comparing small sets of variables.
 
 \begin{table}[h!]
     \centering
-    \caption[3x3 Example Table]{A 3×3 table template with parameters X, Y, and Z.}
+    % The optional caption [short title] defines what appears in the List of Tables.
+    \caption[3×3 Example Table]{A 3×3 table template with parameters X, Y, and Z.}
     \label{tab:example_3x3}
-    \begin{tabular}{l c r}
+    \begin{tabular}{l c r} 
+        % l = left aligned, c = centred, r = right aligned
         \toprule
         Parameter & Value & Units \\
         \midrule
@@ -18,14 +28,21 @@ As shown in Table~\ref{tab:example_3x3}, the table presents a 3×3 dataset with 
     \end{tabular}
 \end{table}
 
-% Example 5-column Table
-Table~\ref{tab:example_5col} shows a 5-column table template. This can be used for experimental results or design specifications with parameters A, B, C, D, and E.
+% -------------------------------------------------------------
+% 5-column Example Table
+% -------------------------------------------------------------
+Table~\ref{tab:example_5col} shows a 5-column table, suitable for experimental outputs, benchmarking studies, or design specifications.  
+You can easily extend the number of columns or replace placeholder values with your own data.
 
 \begin{table}[h!]
     \centering
     \caption[5-column Example Table]{A 5-column table template suitable for experimental results or design specifications with parameters A–E.}
     \label{tab:example_5col}
     \begin{tabular}{l c c c c r}
+        % lccccr layout:
+        % l = sample name left aligned
+        % c = four columns centred
+        % r = final column right-aligned (useful for numerical data)
         \toprule
         Sample & A & B & C & D & E \\
         \midrule
