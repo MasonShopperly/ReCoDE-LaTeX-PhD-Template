@@ -46,7 +46,7 @@ with open(output_file, "r", encoding="utf-8") as f:
 
 # Replace the placeholder with the extracted snippet
 updated_md = re.sub(
-    r"```latex\s*<!-- SNIPPET WILL BE AUTO-INSERTED HERE -->\s*```",
+    r"```latex\s*\s*```",
     latex_block,
     md_content,
     count=1
