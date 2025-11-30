@@ -18,7 +18,7 @@ Every LaTeX document begins by declaring its **class** , this determines the ove
 For this thesis template, the following declaration is used:
 
 ```latex
-<!-- SNIPPET WILL BE AUTO-INSERTED HERE -->
+<!-- SNIPPET: documentclass -->
 ```
 
 
