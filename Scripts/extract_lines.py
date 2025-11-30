@@ -1,56 +1,50 @@
-# extract_snippet.py
-import re
+name: Update Explanations
 
-# -------------------------------
-# CONFIGURATION
-# -------------------------------
-tex_file = "phd-thesis/main.tex"
-md_file  = "docs/Explanations/1_Explanation_Main.md"
+on:
+  push:
+    paths:
+      - 'phd-thesis/main.tex'   # Trigger only if main.tex changes
+  workflow_dispatch:           # Allow manual run
 
-start_marker = "% START SNIPPET: documentclass"
-end_marker   = "% END SNIPPET: documentclass"
+jobs:
+  update-md:
+    runs-on: ubuntu-latest
 
-# -------------------------------
-# READ LaTeX FILE
-# -------------------------------
-with open(tex_file, "r", encoding="utf-8") as f:
-    lines = f.readlines()
+    steps:
+      # 1️⃣ Checkout repository with push permissions
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true   # Important for git push
 
-inside_block = False
-snippet_lines = []
+      # 2️⃣ Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
 
-for line in lines:
-    if start_marker in line:
-        inside_block = True
-        continue
-    if end_marker in line:
-        inside_block = False
-        break
-    if inside_block:
-        snippet_lines.append(line)
+      # 3️⃣ Upgrade pip (optional)
+      - name: Upgrade pip
+        run: pip install --upgrade pip
 
-# -------------------------------
-# READ MARKDOWN FILE
-# -------------------------------
-with open(md_file, "r", encoding="utf-8") as f:
-    md_text = f.read()
+      # 4️⃣ Install only required dependencies
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-# -------------------------------
-# REPLACE PLACEHOLDER
-# -------------------------------
-latex_block = "```latex\n" + "".join(snippet_lines) + "```\n"
+      # 5️⃣ Run snippet extraction script
+      - name: Run extract_snippet.py
+        run: python Scripts/extract_snippet.py
 
-# Replace only the placeholder comment
-md_text = re.sub(
-    r"```latex\s*<!-- SNIPPET WILL BE AUTO-INSERTED HERE -->\s*```",
-    latex_block,
-    md_text
-)
+      # 6️⃣ Show updated Markdown for debugging (optional)
+      - name: Show updated Markdown
+        run: cat docs/Explanations/1_Explanation_Main.md
 
-# -------------------------------
-# WRITE UPDATED MARKDOWN
-# -------------------------------
-with open(md_file, "w", encoding="utf-8") as f:
-    f.write(md_text)
-
-print("Updated documentclass snippet in Markdown")
+      # 7️⃣ Commit & push updated Markdown
+      - name: Commit updated explanations
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/Explanations/1_Explanation_Main.md
+          git diff --cached --quiet || git commit -m "Auto-update 1_Explanation_Main.md"
+          git push
