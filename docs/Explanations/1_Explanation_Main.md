@@ -17,8 +17,8 @@ By combining regulatory guidance with technical explanations, this document help
 Every LaTeX document begins by declaring its **class** , this determines the overall structure, formatting, and layout rules used by the compiler.  
 For this thesis template, the following declaration is used:
 
-```latex
-<!-- SNIPPET: documentclass -->
+```markdown
+  <!-- SNIPPET: documentclass -->
 ```
 
 
