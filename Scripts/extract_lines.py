@@ -1,13 +1,11 @@
-# File: Scripts/extract_snippet.py
-# Purpose: Extract code between START/END markers in main.tex and update Markdown explanations.
 
-import re
+# Purpose: Extract code between START/END markers in main.tex and update Markdown explanations.
 
 # -------------------------------
 # CONFIGURATION
 # -------------------------------
 input_file = "phd-thesis/main.tex"                          # LaTeX source
-output_file = "docs/Explanations/1_Explanation_Main.md"    # Destination Markdown
+output_file = "docs/Explanations/Testing.md"    # Destination Markdown
 snippet_name = "documentclass"                              # Identifier in main.tex
 
 # -------------------------------
