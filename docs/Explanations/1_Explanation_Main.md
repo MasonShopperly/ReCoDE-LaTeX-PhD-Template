@@ -14,76 +14,79 @@ By combining regulatory guidance with technical explanations, this document help
 
 ## ⚙️ Document Settings
 
-Every LaTeX document begins by declaring its **class** , this determines the overall structure, formatting, and layout rules used by the compiler.  
+Every LaTeX document begins by declaring its **class**; this determines the overall structure, formatting, and layout rules used by the compiler.  
 For this thesis template, the following declaration is used:
 
-```latex
-\documentclass[11pt, twoside, openany]{book} 
-% 'book' provides chapters, front matter, appendices and a well-structured layout suitable for theses.
-% 
-% '11pt' sets the base font size. You may select 10pt or 12pt if desired, but 11pt offers excellent readability.
-%
-% 'twoside' produces a double-sided layout (odd/even pages). 
-% IMPORTANT: Imperial Thesis Regulation 4.3 requires *centred* text with symmetrical margins—handled in the preamble.
-%
-% 'openany' allows chapters to begin on either left or right pages.
-% For a more traditional thesis layout, use 'openright' (chapters always begin on odd-numbered pages).
-%
-% Full details about margins, fonts, and styling are explained in the PREAMBLE.
-```
-
+<!-- SNIPPET: documentclass -->
 
 ### 🏛️ Preamble and Title Page
 
-Because of their length and complexity, the preamble and title page have been given dedicated pages for detailed explanation. The code snippets below upload both the preamble and the title page.
+Because of their length and complexity, the preamble and title page have been given dedicated pages for detailed explanation. The code snippet below loads the preamble, configures headers/footers and page numbering, and inserts the title page:
 
-### 📄 Abstract Section — Compliance with Imperial College Thesis Submission Checklist (§ 7.1)
+<!-- SNIPPET: preamble_title -->
 
-According to the *Imperial College London Thesis Submission Checklist* (section 7.1):
+### 📄 Dedication
 
-> “The title page should be followed by an abstract consisting of no more than 300 words.”
+The *Imperial College London Thesis Submission Checklist* does **not require** a Dedication page. Including one is **entirely optional**. By convention, Dedications usually appear near the beginning of a thesis, but their exact placement is flexible.
 
-This template fully complies with that requirement.
+Below is the LaTeX structure used for the dedication page in this template:
 
-The **Abstract** is defined in the file as:
+<!-- SNIPPET: dedication -->
 
-```latex
-\chapter*{Abstract} %For unnumbered chapters use the "*" after chapter e.g. (\chapter*{...}).
-\addcontentsline{toc}{chapter}{Abstract} %{toc} adds this entry to the Table of Contents.
-% Write your abstract here (maximum 300 words)
-```
+### 📜 Declaration of Originality
 
-# Dedication
-The *Imperial College London Thesis Submission Checklist* does **not require** a Dedication page. Including one is **entirely optional**. By convention, **Dedications usually appear at the very beginning of a thesis**, before the Abstract. However, there is no strict rule, so you can position it differently if desired.  
+Imperial requires a **Statement of Originality** near the beginning of the thesis. The following snippet implements this requirement and includes a copyright statement:
 
----
+<!-- SNIPPET: Declaration of Originality -->
 
-```latex
-\cleardoublepage       %Ends the current page and starts a new one, ensuring that the next content begins on a right-hand (odd-numbered)
-\thispagestyle{empty}  % Removes page numbers and headers/footers.
-\vspace*{5cm}          % Adds vertical space to position the dedication text. Regular \vspace{5cm} might not work at the top of a page, because LaTeX can ignore vertical space there. \vspace*{5cm} forces LaTeX to apply the space even at the top of a page, which is exactly what you want for a dedication page. Adjustable: You can change 5cm to any value (e.g., 3cm, 7cm) depending on how far down you want the dedication text to appear.
-\begin{center}
-    \emph{To my family,\\
-    and friends.}       % Replace with your personal dedication text.
-\end{center}
-\cleardoublepage       % Starts the next content on a right-hand page.
-```
+### 📑 Abstract — Compliance with §7.1
 
-### Acknowledgements
+According to the checklist, the **title page must be followed by an abstract of no more than 300 words**. The template defines the abstract section as follows:
 
-The *Imperial College London Thesis Submission Checklist* does **not set rules** for the Acknowledgements section.  Despite being **fully optional**, including it is **common academic practice** and expected in most PhD theses.  This section allows the author to express gratitude to supervisors, collaborators, funding bodies, friends, and family.
+<!-- SNIPPET: Abstract -->
 
-By convention, **Acknowledgements are placed after the Abstract and before the Table of Contents**, although Imperial does not mandate a fixed position. If you prefer the Acknowledgements to appear in a different place, for example, after the Conclusion,
-you can simply cut and paste the Acknowledgements block to that position in the document.
+### 🙏 Acknowledgements
 
----
+Acknowledgements are **optional** but common. They allow you to thank supervisors, collaborators, family, friends, and funders. Imperial does not mandate their exact location.
 
-#### 🧩 LaTeX Structure
+The LaTeX structure used in this template is:
 
-```latex
-\chapter*{Acknowledgements} % Creates an unnumbered "Acknowledgements" section. 
-\addcontentsline{toc}{chapter}{Acknowledgements} % Adds "Acknowledgements" to the Table of Contents manually. 
-% Write your acknowledgements text here.          % Insert personal or professional acknowledgements.
-```
+<!-- SNIPPET: Acknowledgements -->
+
+### 📣 Dissemination
+
+This optional section lists publications, posters and other research outputs related to the thesis:
+
+<!-- SNIPPET: Dissemination -->
+
+### 📚 Nomenclature & Acronyms
+
+This template provides optional sections for **nomenclature** and **acronyms**:
+
+<!-- SNIPPET: Nomenclature_Acronyms -->
+
+### 📋 Contents and Lists
+
+Imperial requires a **table of contents** and lists of figures/tables after the abstract and front matter. This template uses:
+
+<!-- SNIPPET: Contents, List of Figures/Tables -->
+
+### 📘 Main Chapters
+
+The main body of the thesis is organised into numbered chapters:
+
+<!-- SNIPPET: CHAPTERS -->
+
+### 📎 Appendices
+
+Appendices follow the bibliography and may include additional material and permissions:
+
+<!-- SNIPPET: APPENDIX -->
+
+### 📖 Bibliography
+
+The bibliography is generated automatically from your `.bib` file:
+
+<!-- SNIPPET: Bibliography -->
 
 
