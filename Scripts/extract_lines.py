@@ -1,47 +1,77 @@
 import re
 from pathlib import Path
 
-input_file = "phd-thesis/main.tex"                # LaTeX source
+input_file = "phd-thesis/main.tex"                 # LaTeX source
 output_file = "docs/Explanations/1_Explanation_Main.md"  # Destination Markdown
-snippet_name = "documentclass"                    # Identifier in main.tex
 
-start_marker = f"% START SNIPPET: {snippet_name}"
-end_marker   = f"% END SNIPPET: {snippet_name}"
+# List all snippet identifiers as used in main.tex and in the MD placeholders
+SNIPPET_NAMES = [
+    "documentclass",
+    "preamble_title",
+    "dedication",
+    "Declaration of Originality",
+    "Abstract",
+    "Acknowledgements",
+    "Dissemination",
+    "Nomenclature_Acronyms",
+    "Contents, List of Figures/Tables",
+    "CHAPTERS",
+    "APPENDIX",
+    "Bibliography",
+]
 
-# -------------------------------
-# READ LATEX FILE
-# -------------------------------
-tex_lines = Path(input_file).read_text(encoding="utf-8").splitlines()
-snippet_lines = []
-inside_block = False
+def extract_snippet(tex_lines, name):
+    start_marker = f"% START SNIPPET: {name}"
+    end_marker   = f"% END SNIPPET: {name}"
 
-for line in tex_lines:
-    if start_marker in line:
-        inside_block = True
-        continue
-    if end_marker in line:
-        inside_block = False
-        break  # stops after first matching snippet
-    if inside_block:
-        snippet_lines.append(line)
+    inside_block = False
+    lines = []
 
-snippet = "\n".join(snippet_lines)
-print("Snippet length:", len(snippet))  # simple debug
+    for line in tex_lines:
+        if start_marker in line:
+            inside_block = True
+            continue
+        if end_marker in line:
+            inside_block = False
+            break
+        if inside_block:
+            lines.append(line)
 
-# -------------------------------
-# READ MARKDOWN AND UPDATE
-# -------------------------------
-md_path = Path(output_file)
-md_content = md_path.read_text(encoding="utf-8")
+    snippet = "\n".join(lines)
+    return snippet
 
-# Replace placeholder safely with literal LaTeX wrapped in ```latex
-updated_md = re.sub(
-    r"<!-- SNIPPET: documentclass -->",
-    lambda m: "```latex\n" + snippet + "\n```",
-    md_content
-)
+def main():
+    tex_lines = Path(input_file).read_text(encoding="utf-8").splitlines()
+    md_path = Path(output_file)
+    md_content = md_path.read_text(encoding="utf-8")
 
-md_path.parent.mkdir(parents=True, exist_ok=True)
-md_path.write_text(updated_md, encoding="utf-8")
+    for name in SNIPPET_NAMES:
+        snippet = extract_snippet(tex_lines, name)
+        if not snippet.strip():
+            print(f"[WARN] No snippet found for '{name}'")
+            continue
 
-print(f"Snippet '{snippet_name}' inserted into {output_file}")
+        print(f"[INFO] Snippet '{name}' length: {len(snippet)}")
+
+        # Build placeholder and replacement
+        placeholder = f"<!-- SNIPPET: {name} -->"
+
+        # Use re.escape to handle special characters in the name (spaces, commas)
+        pattern = re.escape(placeholder)
+
+        replacement = "```latex\n" + snippet + "\n```"
+
+        new_md_content, count = re.subn(pattern, replacement, md_content)
+        if count == 0:
+            print(f"[WARN] Placeholder not found for '{name}'")
+        else:
+            print(f"[INFO] Replaced {count} occurrence(s) for '{name}'")
+
+        md_content = new_md_content  # update content for next replacements
+
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text(md_content, encoding="utf-8")
+    print(f"[DONE] All snippets processed into {output_file}")
+
+if __name__ == "__main__":
+    main()
