@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write      # <-- ADD THIS
+  contents: write
 
 jobs:
   update-md:
@@ -42,6 +42,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add docs/Explanations/Testing.md
-          git diff --cached --quiet || git commit -m "Auto-update Testing.md"
-          git push
+          git add docs/Explanations/1_Explanation_Main.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-update 1_Explanation_Main.md"
+            git push
+          else
+            echo "No changes to commit"
+          fi
