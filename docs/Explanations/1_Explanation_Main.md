@@ -1,7 +1,7 @@
 ## 🎓 Introduction
 
 The *Imperial College London Thesis Submission Checklist* outlines the essential requirements for PhD thesis formatting and structure, but it does **not provide strict or exhaustive layout specifications**.  
-This leaves flexibility for candidates to decide how to design and typeset their thesis, as long as the document contains all required elements in the correct order.
+This leaves flexibility for candidates to decide how to design and typeset their thesis, as long as the document contains all required elements in the correct order. TEST!
 
 This document serves four main purposes:
 
