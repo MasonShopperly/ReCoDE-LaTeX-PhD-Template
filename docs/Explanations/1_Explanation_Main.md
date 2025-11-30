@@ -18,12 +18,7 @@ Every LaTeX document begins by declaring its **class** , this determines the ove
 For this thesis template, the following declaration is used:
 
 ```latex
-\documentclass[11pt, twoside, openany]{book}   % 'book' provides chapters, front matter, and appendices.
-                                       % '11pt' sets the base font size, improves readability for long texts. By modifying 11pt we can select a new letter size for the full document.
-                                       % 'twoside' enables double-sided layout (left/right pages), used for printed theses.
-                                      % 'openany' starts chapters on either page (no forced blanks). Use openright for traditional print (chapters on right-hand/odd pages).
-                                      % more details about how margins are managed in the document will be explained in the Preamble
-```
+<!-- SNIPPET WILL BE AUTO-INSERTED HERE -->
 
 
 ### 🏛️ Title Page — Compliance with Imperial College Thesis Submission Checklist (§ 4.5)
