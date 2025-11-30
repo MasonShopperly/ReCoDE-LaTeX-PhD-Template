@@ -13,6 +13,7 @@
 % Full details about margins, fonts, and styling are explained in the PREAMBLE.
 % END SNIPPET: documentclass
 
+% START SNIPPET: preamble_title
 \input{preamble.tex}  % Loads all global formatting, packages, and margin settings.
 
 % -------------------------------
@@ -44,7 +45,9 @@
 \pagenumbering{arabic}  % Imperial requires Arabic page numbers starting on the title page.
 \setcounter{page}{1}    % Title page = Page 1
 \input{titlepage.tex}   % Loads your custom title page.
+% END SNIPPET: preamble_title
 
+% START SNIPPET: dedication
 % -------------------------------
 % Dedication Page
 % -------------------------------
@@ -57,7 +60,9 @@
     % Replace with your personal dedication text.
     % Using \emph makes the text italicised.
 \end{center}
+% END SNIPPET: dedication
 
+% START SNIPPET: Declaration of Originality
 % -------------------------------
 % Declaration of Originality
 % -------------------------------
@@ -80,7 +85,9 @@ I hereby declare that this thesis and the work presented herein is my own work e
 \noindent
 % Required copyright statement (Imperial thesis checklist, Section 6)
 The copyright of this thesis rests with the author and is made available under a Creative Commons Attribution-Non Commercial-No Derivatives license…
+% END SNIPPET: Declaration of Originality
 
+% START SNIPPET: Abstract
 % -------------------------------
 % Abstract (MANDATORY)
 % -------------------------------
@@ -88,7 +95,9 @@ The copyright of this thesis rests with the author and is made available under a
 \chapter*{Abstract}
 % Imperial requires an abstract of no more than 300 words.
 % The abstract provides a concise summary of the thesis.
+% END SNIPPET: Abstract
 
+% START SNIPPET: Acknowledgements
 % -------------------------------
 % Acknowledgements (Optional)
 % -------------------------------
@@ -96,7 +105,9 @@ The copyright of this thesis rests with the author and is made available under a
 \chapter*{Acknowledgements}
 % Not mandatory, but standard in most theses.
 % Thank supervisors, collaborators, family, funding agencies.
+% END SNIPPET: Acknowledgements
 
+% START SNIPPET: Dissemination
 % -------------------------------
 % Dissemination (Optional)
 % -------------------------------
@@ -108,7 +119,9 @@ The copyright of this thesis rests with the author and is made available under a
     \item Paper 2: Title, Journal/Conference, Year
     \item Poster 1: Title, Conference, Year
 \end{itemize}
+% START END: Dissemination
 
+% START SNIPPET: Nomenclature_Acronyms
 % -------------------------------
 % Nomenclature (Optional)
 % -------------------------------
@@ -123,7 +136,9 @@ The copyright of this thesis rests with the author and is made available under a
 \chapter*{Acronyms}
 \input{phd-thesis/Acronym}
 % Add or modify acronyms in the Acronym.tex file.
+% END SNIPPET: Nomenclature_Acronyms
 
+% START SNIPPET: Contents, List of Figures/Tables
 % -------------------------------
 % Contents, List of Figures/Tables
 % -------------------------------
@@ -133,7 +148,9 @@ The copyright of this thesis rests with the author and is made available under a
 \listoftables
 % LaTeX generates these automatically.
 % If items do not appear, compile *twice*.
+% END SNIPPET: Contents, List of Figures/Tables
 
+% START SNIPPET: CHAPTERS
 % -------------------------------
 % MAIN CHAPTERS
 % -------------------------------
@@ -154,7 +171,9 @@ The copyright of this thesis rests with the author and is made available under a
 
 \chapter{Conclusion}
 \input{chapters/06-conclusion.tex}
+% END SNIPPET: CHAPTERS
 
+% START SNIPPET: APPENDIX
 % -------------------------------
 % APPENDIX
 % -------------------------------
@@ -179,11 +198,14 @@ side2 = 4
 hypotenuse = pythagoras(side1, side2)
 print("Hypotenuse:", hypotenuse)
 \end{minted}
+% END SNIPPET: APPENDIX
 
+% START SNIPPET: Bibliography
 % -------------------------------
 % Bibliography
 % -------------------------------
 \backmatter
 \printbibliography   % Automatically formats the bibliography using BibLaTeX.
+% END SNIPPET: Bibliography
 
 \end{document}
