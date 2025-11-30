@@ -1,14 +1,8 @@
-# Purpose: Extract code between START/END markers in main.tex and update Markdown explanations.
-
 import re
 from pathlib import Path
 
-# -------------------------------
-# CONFIGURATION
-# -------------------------------
-
 input_file = "phd-thesis/main.tex"                # LaTeX source
-output_file = "docs/Explanations/1_Explanation_Main.md"     # Destination Markdown
+output_file = "docs/Explanations/1_Explanation_Main.md"  # Destination Markdown
 snippet_name = "documentclass"                    # Identifier in main.tex
 
 start_marker = f"% START SNIPPET: {snippet_name}"
@@ -32,6 +26,7 @@ for line in tex_lines:
         snippet_lines.append(line)
 
 snippet = "\n".join(snippet_lines)
+print("Snippet length:", len(snippet))  # simple debug
 
 # -------------------------------
 # READ MARKDOWN AND UPDATE
@@ -39,16 +34,14 @@ snippet = "\n".join(snippet_lines)
 md_path = Path(output_file)
 md_content = md_path.read_text(encoding="utf-8")
 
-# Replace placeholder safely with literal LaTeX
+# Replace placeholder safely with literal LaTeX wrapped in ```latex
 updated_md = re.sub(
     r"<!-- SNIPPET: documentclass -->",
     lambda m: "```latex\n" + snippet + "\n```",
     md_content
 )
 
-# Write updated Markdown
 md_path.parent.mkdir(parents=True, exist_ok=True)
 md_path.write_text(updated_md, encoding="utf-8")
 
 print(f"Snippet '{snippet_name}' inserted into {output_file}")
-
