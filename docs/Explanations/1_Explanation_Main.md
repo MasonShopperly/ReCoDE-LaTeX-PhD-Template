@@ -33,18 +33,9 @@ For this thesis template, the following declaration is used:
 ```
 
 
-### 🏛️ Title Page — Compliance with Imperial College Thesis Submission Checklist (§ 4.5)
+### 🏛️ Preamble and Title Page
 
-According to the *Imperial College London Thesis Submission Checklist* (Section 4.5),  
-the title page **must include** the following information:
-
-> - The approved title of the thesis (as confirmed at the point of examination entry)  
-> - The candidate’s full name, as registered at the College  
-> - *Imperial College London* and the name of the Department  
-> - The degree for which the thesis is submitted (e.g. PhD)
-
-```latex
-\begin{titlepage}                  % Creates a dedicated title page environment (standard LaTeX feature).
+Because of their length and complexity, the preamble and title page have been given dedicated pages for detailed explanation. The code snippets below upload both the preamble and the title page.
 
 ### 📄 Abstract Section — Compliance with Imperial College Thesis Submission Checklist (§ 7.1)
 
