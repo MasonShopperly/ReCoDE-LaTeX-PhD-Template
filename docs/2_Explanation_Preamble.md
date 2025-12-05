@@ -9,7 +9,7 @@ In this template, the preamble is configured to ensure:
 ✅ Continuous Arabic numbering from the title page as required by **Regulation 4.4**  
 ✅ Professional typesetting of text, figures, tables, and mathematics  
 ✅ Clear, accessible PDF structure for electronic submission  
-✅ A clean and modern academic style appropriate for engineering and design research  
+✅ A clean and modern academic style appropriate for different scientific fields.
 
 Students normally do not need to modify the preamble, but understanding it helps ensure your thesis remains compliant and professionally formatted.
 
