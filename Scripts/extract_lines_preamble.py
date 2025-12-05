@@ -26,48 +26,60 @@ def extract_snippet(tex_lines, name):
     return "\n".join(lines)
 
 def main():
-    tex_lines = Path(input_file).read_text(encoding="utf-8").splitlines()
+    tex_path = Path(input_file)
+    md_path = Path(output_file)
+
+    if not tex_path.is_file():
+        raise FileNotFoundError(f"Tex file not found: {tex_path}")
+    if not md_path.is_file():
+        raise FileNotFoundError(f"Markdown file not found: {md_path}")
+
+    tex_lines = tex_path.read_text(encoding="utf-8").splitlines()
     snippet = extract_snippet(tex_lines, SNIPPET_NAME)
 
     if not snippet.strip():
         print(f"[WARN] No snippet found for '{SNIPPET_NAME}'")
         return
 
-    print(f"[INFO] Snippet '{SNIPPET_NAME}' length: {len(snippet)}")
+    print(f"[INFO] Snippet '{SNIPPET_NAME}' length: {len(snippet)} characters")
 
-    md_path = Path(output_file)
     md_content = md_path.read_text(encoding="utf-8")
 
-    placeholder = "<!-- SNIPPET: preamble -->"
-
-    # 1. Remove any previously generated code block for this snippet
-    #    Pattern: <!-- SNIPPET: preamble --> followed by ```latex... ```
-    pattern_old_block = re.compile(
-        r"<!-- SNIPPET: preamble -->\s*```latex.*?```",
-        re.DOTALL
+    # Pattern: from <!-- SNIPPET: preamble --> to the closing ``` of the latex block
+    pattern_block = re.compile(
+        r"(<!-- SNIPPET: preamble -->\s*)```latex.*?```",
+        re.DOTALL,
     )
-    md_content, removed_count = re.subn(pattern_old_block, placeholder, md_content)
-    if removed_count > 0:
-        print(f"[INFO] Removed {removed_count} old generated block(s).")
 
-    # 2. Ensure the placeholder exists somewhere (in case it was removed manually)
-    if placeholder not in md_content:
-        print("[INFO] Placeholder not found; appending it at the end of the file.")
-        if not md_content.endswith("\n"):
-            md_content += "\n"
-        md_content += "\n" + placeholder + "\n"
+    replacement_block = r"\1```latex\n" + snippet + "\n```"
 
-    # 3. Replace the placeholder with the new code block (once)
-    def repl(_match, snippet_text=snippet):
-        return "```latex\n" + snippet_text + "\n```"
+    new_md_content, replaced_count = re.subn(pattern_block, replacement_block, md_content)
 
-    pattern_placeholder = re.escape(placeholder)
-    new_md_content, count = re.subn(pattern_placeholder, repl, md_content, count=1)
+    if replaced_count == 0:
+        print("[WARN] No existing snippet block found – inserting a new one after the marker.")
 
-    if count == 0:
-        print("[WARN] Placeholder replacement failed.")
+        # If no full block is found, ensure the marker exists
+        marker = "<!-- SNIPPET: preamble -->"
+        if marker not in md_content:
+            print("[INFO] Marker not found; appending marker + block at end of file.")
+            if not md_content.endswith("\n"):
+                md_content += "\n"
+            new_md_content = (
+                md_content
+                + "\n\n"
+                + marker
+                + "\n```latex\n"
+                + snippet
+                + "\n```"
+            )
+        else:
+            # Insert a fresh block right after the marker
+            new_md_content = md_content.replace(
+                marker,
+                marker + "\n```latex\n" + snippet + "\n```",
+            )
     else:
-        print("[INFO] Placeholder replaced with new snippet.")
+        print(f"[INFO] Replaced {replaced_count} existing block(s).")
 
     md_path.write_text(new_md_content, encoding="utf-8")
     print(f"[DONE] Updated {output_file}")
