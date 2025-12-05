@@ -6,18 +6,7 @@ output_file = "docs/2_Explanation_Preamble.md"  # Destination Markdown
 
 # List all snippet identifiers as used in main.tex and in the MD placeholders
 SNIPPET_NAMES = [
-    "documentclass",
-    "preamble_title",
-    "dedication",
-    "Declaration of Originality",
-    "Abstract",
-    "Acknowledgements",
-    "Dissemination",
-    "Nomenclature_Acronyms",
-    "Contents, List of Figures/Tables",
-    "CHAPTERS",
-    "APPENDIX",
-    "Bibliography",
+    "preamble",
 ]
 
 def extract_snippet(tex_lines, name):
