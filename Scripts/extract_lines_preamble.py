@@ -1,13 +1,10 @@
 import re
 from pathlib import Path
 
-input_file = "phd-thesis/preamble.tex"                 # LaTeX source
-output_file = "docs/2_Explanation_Preamble.md"  # Destination Markdown
+input_file = "phd-thesis/preamble.tex"
+output_file = "docs/2_Explanation_Preamble.md"
 
-# List all snippet identifiers as used in main.tex and in the MD placeholders
-SNIPPET_NAMES = [
-    "preamble",
-]
+SNIPPET_NAME = "preamble"
 
 def extract_snippet(tex_lines, name):
     start_marker = f"% START SNIPPET: {name}"
@@ -26,43 +23,51 @@ def extract_snippet(tex_lines, name):
         if inside_block:
             lines.append(line)
 
-    snippet = "\n".join(lines)
-    return snippet
+    return "\n".join(lines)
 
 def main():
     tex_lines = Path(input_file).read_text(encoding="utf-8").splitlines()
+    snippet = extract_snippet(tex_lines, SNIPPET_NAME)
+
+    if not snippet.strip():
+        print(f"[WARN] No snippet found for '{SNIPPET_NAME}'")
+        return
+
+    print(f"[INFO] Snippet '{SNIPPET_NAME}' length: {len(snippet)}")
+
     md_path = Path(output_file)
     md_content = md_path.read_text(encoding="utf-8")
 
-    for name in SNIPPET_NAMES:
-        snippet = extract_snippet(tex_lines, name)
-        if not snippet.strip():
-            print(f"[WARN] No snippet found for '{name}'")
-            continue
+    # 1. Ensure there is a placeholder in the file
+    placeholder = "<!-- SNIPPET: preamble -->"
 
-        print(f"[INFO] Snippet '{name}' length: {len(snippet)}")
+    if placeholder not in md_content:
+        # Strategy: strip any existing generated code block and reinsert placeholder
+        # Remove old ```latex... ``` block that follows the placeholder (if present)
+        pattern = re.compile(
+            r"<!-- SNIPPET: preamble -->.*?```latex.*?```",
+            re.DOTALL
+        )
+        md_content = re.sub(pattern, placeholder, md_content)
 
-        # Exact placeholder in the Markdown
-        placeholder = f"<!-- SNIPPET: {name} -->"
+        # If still not present, append placeholder at end
+        if placeholder not in md_content:
+            md_content = md_content.rstrip() + "\n\n" + placeholder + "\n"
 
-        # Escape placeholder for regex search (handles spaces, commas, etc.)
-        pattern = re.escape(placeholder)
+    # 2. Now replace the placeholder with the new code block
+    def repl(_match, snippet_text=snippet):
+        return "```latex\n" + snippet_text + "\n```"
 
-        # Use a function as replacement so backslashes in LaTeX are NOT parsed
-        def repl(_match, snippet_text=snippet):
-            return "```latex\n" + snippet_text + "\n```"
+    pattern_placeholder = re.escape(placeholder)
+    new_md_content, count = re.subn(pattern_placeholder, repl, md_content, count=1)
 
-        new_md_content, count = re.subn(pattern, repl, md_content)
-        if count == 0:
-            print(f"[WARN] Placeholder not found for '{name}'")
-        else:
-            print(f"[INFO] Replaced {count} occurrence(s) for '{name}'")
+    if count == 0:
+        print("[WARN] Placeholder replacement failed.")
+    else:
+        print("[INFO] Placeholder replaced with new snippet.")
 
-        md_content = new_md_content  # update for next snippet
-
-    md_path.parent.mkdir(parents=True, exist_ok=True)
-    md_path.write_text(md_content, encoding="utf-8")
-    print(f"[DONE] All snippets processed into {output_file}")
+    md_path.write_text(new_md_content, encoding="utf-8")
+    print(f"[DONE] Updated {output_file}")
 
 if __name__ == "__main__":
     main()
