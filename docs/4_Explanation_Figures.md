@@ -2,6 +2,7 @@
 
 This page explains how to structure and use **multi‑panel figures**, as an example, in the results chapter of your thesis. The goal is not to dictate your scientific content, but to give you reusable patterns for presenting it clearly and consistently.
 From an Imperial College compliance perspective, figures must be **clearly legible, consistently formatted, and properly referenced** in the text. The checklist also expects that all figures are numbered in a single logical sequence (Figure 1.1, 1.2, …) and that each one has a **descriptive caption** and is actually **discussed in the main text**, rather than left unexplained.
+
 ### Why multi‑panel figures?
 
 A dedicated results chapter is standard in most thesis formats. In this chapter, figures often do the heavy lifting: they communicate **trends, comparisons, and patterns** more efficiently than paragraphs of text. Multi‑panel figures:
@@ -24,57 +25,7 @@ Key ideas illustrated by this template:
 - The overall **figure caption** explains what the four panels show collectively.
 - You can cite the source of the data or images in the caption (e.g. `\cite{Gomes2022}`).
 
-<!-- SNIPPET: figures -->
-```latex
-\begin{figure}[h!]
-    \centering
-
-    % -------------------
-    % Row 1
-    % -------------------
-    \begin{subfigure}[b]{0.4\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 0.png}
-        \caption{Image a}
-        \label{fig:sub_a}
-    \end{subfigure}%
-    \hfill
-    \begin{subfigure}[b]{0.4\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 1.png}
-        \caption{Image b}
-        \label{fig:sub_b}
-    \end{subfigure}
-    
-
-    % -------------------
-    % Row 2
-    % -------------------
-    \begin{subfigure}[b]{0.4\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 2.png}
-        \caption{Image c}
-        \label{fig:sub_c}
-    \end{subfigure}%
-    \hfill
-    \begin{subfigure}[b]{0.4\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 5.png}
-        \caption{Image d}
-        \label{fig:sub_d}
-    \end{subfigure}
-
-    % -------------------
-    % Overall caption 
-    % -------------------
-    \caption[Four-panel figure]{Four-panel figure showing different aspects of the experiment.  
-    Subfigures a–d correspond to distinct experimental conditions or processing steps.}
-    \label{fig:four_panels}
-\end{figure}
-```
-```latex
-(placeholder – will be replaced by the script)
-
+<!-- SNIPPET: figures_four -->
 
 ### Two‑panel figure (side‑by‑side)
 
@@ -84,13 +35,7 @@ The second example (Figure `two_panels`) shows a **side‑by‑side two‑panel*
 - The reader needs to see **differences or improvements** at a glance.
 - You want a cleaner layout than stacking two separate full‑width figures.
 
-
-
-
-
-
-
-
+<!-- SNIPPET: figures_two -->
 
 Key ideas illustrated:
 
