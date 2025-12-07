@@ -20,12 +20,30 @@ In many experimental analyses, you need to quantify how variable your measuremen
 For a sample of $$n$$ observations $$x_1, x_2, \dots, x_n$$, the **sample standard deviation** $$s$$ measures how spread out the data are from the mean.
 
 <!-- SNIPPET: equations_std -->
+```latex
+\begin{equation}
+    s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2 }
+    \label{eq:std_sample}
+\end{equation}
+
+% Explanation:
+% - The equation environment automatically numbers the equation.
+% - \sum creates the summation symbol.
+% - \bar{x} denotes the sample mean.
+% - Use \label to refer to the equation later in the text.
+```
 
 ### Sample mean
 
 The sample mean $$\bar{x}$$ is the average of the observations and is used inside the expression for the standard deviation.
 
 <!-- SNIPPET: equations_mean -->
+```latex
+\begin{equation}
+    \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+    \label{eq:mean_sample}
+\end{equation}
+```
 
 ### Connecting back to the text and checklist
 
