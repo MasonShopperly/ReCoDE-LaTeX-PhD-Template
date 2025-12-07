@@ -1,0 +1,51 @@
+name: Update Tables Explanation
+
+on:
+  push:
+    paths:
+      - 'phd-thesis/chapters/02-related-work.tex'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-tables-md:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Upgrade pip
+        run: pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Update 6_Explanation_Tables.md from 02-related-work.tex
+        run: python Scripts/update_explanation_tables.py
+
+      - name: Show updated Markdown
+        run: cat docs/6_Explanation_Tables.md
+
+      - name: Commit & push updated tables explanation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docs/6_Explanation_Tables.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-update 6_Explanation_Tables.md"
+            git push
+          else
+            echo "No changes to commit"
+          fi
