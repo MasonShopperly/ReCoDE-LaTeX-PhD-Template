@@ -53,4 +53,4 @@ In a thesis that follows the Imperial guidelines, each equation should:
 - Be **introduced and explained** in complete sentences (what does each symbol mean? what is the purpose of this equation?).
 - Be **used** in your discussion of methods or results, not left floating without context.
 
-In this example, Equation $$\eqref{eq:std_sample}$$ shows that the standard deviation increases as the data points deviate further from the sample mean. This form is widely used when analysing repeated measurements, sensor data, or experimental uncertainty.
+In this example, Equation std_sample shows that the standard deviation increases as the data points deviate further from the sample mean. This form is widely used when analysing repeated measurements, sensor data, or experimental uncertainty.
