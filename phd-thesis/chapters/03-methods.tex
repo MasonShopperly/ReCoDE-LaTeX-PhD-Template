@@ -6,7 +6,7 @@ In this section, we demonstrate how to typeset equations in \LaTeX{}, using the 
 
 The standard deviation provides a measure of how spread out the data are from the mean.  
 For a sample of $n$ observations, $x_1, x_2, \dots, x_n$, the sample standard deviation $s$ is defined as:
-
+% START SNIPPET: equations_std
 \begin{equation}
     s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} \left(x_i - \bar{x}\right)^2 }
     \label{eq:std_sample}
@@ -17,14 +17,15 @@ For a sample of $n$ observations, $x_1, x_2, \dots, x_n$, the sample standard de
 % - \sum creates the summation symbol.
 % - \bar{x} denotes the sample mean.
 % - Use \label to refer to the equation later in the text.
+% END SNIPPET: equations_std
 
 where $\bar{x}$ is the sample mean, given by:
-
+% START SNIPPET: equations_mean
 \begin{equation}
     \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
     \label{eq:mean_sample}
 \end{equation}
-
+% END SNIPPET: equations_mean
 % Tip:
 % If you want the equation unnumbered, use \[
 %   ... equation ...
