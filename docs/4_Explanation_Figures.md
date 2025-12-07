@@ -24,9 +24,6 @@ Key ideas illustrated by this template:
 - The overall **figure caption** explains what the four panels show collectively.
 - You can cite the source of the data or images in the caption (e.g. `\cite{Gomes2022}`).
 
-
-
-
 <!-- SNIPPET: figures -->
 ```latex
 \begin{figure}[h!]
@@ -77,3 +74,41 @@ Key ideas illustrated by this template:
 ```
 ```latex
 (placeholder – will be replaced by the script)
+
+
+### Two‑panel figure (side‑by‑side)
+
+The second example (Figure `two_panels`) shows a **side‑by‑side two‑panel** layout. This is suitable when:
+
+- You want to compare **two conditions** directly (e.g. baseline vs. proposed method).
+- The reader needs to see **differences or improvements** at a glance.
+- You want a cleaner layout than stacking two separate full‑width figures.
+
+
+
+
+
+
+
+
+
+Key ideas illustrated:
+
+- Both panels share the same **y‑axis or visual scale**, making comparisons fair and readable.
+- Using widths like $$0.48\textwidth$$ places both panels across the page with minimal wasted space.
+- Subfigure labels (e.g. `\ref{fig:sub_a1}`) let you refer to specific panels in the text.
+
+### How to adapt these templates
+
+When you use these examples in your own thesis:
+
+- **Replace the image files** with your own plots or diagrams.
+- **Update captions** to describe your actual experiment and results.
+- **Keep labels meaningful** (e.g. `fig:results_accuracy_a`) so cross‑references are easy to manage.
+- Ensure each figure **adds information** and is referenced in the main text—avoid decorative or unexplained figures.
+
+---
+
+
+
+
