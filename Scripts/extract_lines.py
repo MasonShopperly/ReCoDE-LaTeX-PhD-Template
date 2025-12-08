@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 
 input_file = "phd-thesis/main.tex"                 # LaTeX source
-output_file = "docs/1_Explanation_Main.md"  # Destination Markdown
+output_file = "docs/1_Overview.md"  # Destination Markdown
 
 # List all snippet identifiers as used in main.tex and in the MD placeholders
 SNIPPET_NAMES = [
