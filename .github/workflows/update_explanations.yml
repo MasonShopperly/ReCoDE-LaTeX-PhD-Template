@@ -35,16 +35,16 @@ jobs:
         run: python Scripts/extract_lines.py
 
       - name: Show updated Markdown
-        run: cat docs/1_Explanation_Main.md
+        run: cat docs/1_Overview.md
 
       - name: Commit & push updated explanations
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add docs/Explanations/1_Explanation_Main.md
+          git add docs/1_Overview.md
           if ! git diff --cached --quiet; then
-            git commit -m "Auto-update 1_Explanation_Main.md"
+            git commit -m "Auto-update 1_Overview.md"
             git push
           else
             echo "No changes to commit"
