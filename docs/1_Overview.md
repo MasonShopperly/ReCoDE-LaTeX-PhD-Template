@@ -463,6 +463,14 @@ Section **9 – Appendices** states:
   • Any data that the examiners may wish to refer to, but that they will not examine.  
   • Students must include copies of all permission documents showing that they have permission to republish all the third party copyrighted works in their thesis.”*
 
+Think of appendices as a place for **evidence, examples, and supplementary detail**, not as an extension of the main argument. Good candidates for appendices include:
+
+- Extended results, raw data samples, or additional figures.
+- Long derivations, proofs, or technical specifications.
+- Code listings and configuration files that illustrate how your methods were implemented.
+
+Appendices should be **labelled and structured clearly** (e.g. Appendix A, B, C), and cross‑referenced from the main text where relevant. 
+
 This template implements **§9.1** as follows:
 
 ```latex
