@@ -2,7 +2,7 @@
 
 This page explains how to typeset mathematical equations in LaTeX using a simple but common example: the **sample mean** and **sample standard deviation**. The goal is to show you how to write clear, well‑formatted equations that can be referenced in your thesis text.
 
-From an Imperial College checklist perspective, equations must be:
+The [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) states that equations must be:
 - **Legible and consistently formatted** (same fonts, sizes, and spacing).
 - **Numbered systematically** when referred to in the text.
 - **Explained in words**: you should never drop an equation into the thesis without telling the reader what it means and how it is used.
