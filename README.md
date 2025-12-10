@@ -67,13 +67,15 @@ This LaTeX template is designed primarily for **postgraduate researchers** prepa
 You can work either locally or directly in Overleaf — choose the workflow that suits you best.
 
 - Option A — Overleaf (no local installation required):
+
   - Use **Overleaf** to compile and manage your thesis online.
-  - Import the project via “New Project → Import from GitHub” or “New Project → Upload Project” (ZIP).
+  - Import the project via "New Project → Import from GitHub" or "New Project → Upload Project" (ZIP).
   - In Project Settings, set **Compiler** to **XeLaTeX** or **LuaLaTeX**.
   - If using **BibLaTeX**, set **Bibliography tool** to **Biber**.
   - Note: Overleaf project size and quota limits depend on your plan.
 
 - Option B — Local setup:
+
   - Install a **LaTeX distribution**: [TeX Live](https://www.tug.org/texlive/), [MiKTeX](https://miktex.org/), or [MacTeX](https://www.tug.org/mactex/).
   - Recommended compiler: **XeLaTeX** or **LuaLaTeX** (for Unicode and modern font support).
   - Ensure **Biber** is installed if you use **BibLaTeX**.
@@ -86,26 +88,28 @@ You can work either locally or directly in Overleaf — choose the workflow that
 
 Follow these steps to begin using the Imperial College London PhD Thesis Template:
 
-1. Choose your workflow:
-   - Overleaf:
-     - Open Overleaf → New Project → Import from GitHub (or Upload Project ZIP).
-     - In Project Settings, set Compiler to **XeLaTeX** or **LuaLaTeX**.
-     - If using **BibLaTeX**, set Bibliography tool to **Biber**.
-     - Click **Recompile** and start editing files (e.g., `preamble.tex`, `settings.tex`, `chapters/`).
-   - Local:
-     - Clone the repository:
-       ```bash
-       git clone https://github.com/your-username/imperial-thesis-template.git
-       ```
-     - Open the project in your IDE and compile (example):
-       ```bash
-       latexmk -pdf -xelatex main.tex
-       ```
-       or
-       ```bash
-       latexmk -pdf -lualatex main.tex
-       ```
-     - Ensure **Biber** runs for references (BibLaTeX workflow).
+- Overleaf:
+
+  - Open Overleaf → New Project → Import from GitHub (or Upload Project ZIP).
+  - In Project Settings, set Compiler to **XeLaTeX** or **LuaLaTeX**.
+  - If using **BibLaTeX**, set Bibliography tool to **Biber**.
+  - Click **Recompile** and start editing files (e.g., `preamble.tex`, `settings.tex`, `chapters/`).
+
+- Local:
+
+  - Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/imperial-thesis-template.git
+    ```
+  - Open the project in your IDE and compile (example):
+    ```bash
+    latexmk -pdf -xelatex main.tex
+    ```
+    or
+    ```bash
+    latexmk -pdf -lualatex main.tex
+    ```
+  - Ensure **Biber** runs for references (BibLaTeX workflow).
 
 <!-- Any references, or other resources. -->
 ## Additional Resources 🔗

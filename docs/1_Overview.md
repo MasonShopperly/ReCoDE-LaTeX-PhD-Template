@@ -63,11 +63,13 @@ Section **4 – Presentation** states that:
 - **§4.3**: *“Page content should be centred, so that margins are equal distant from the edge of page. Double or one‑and‑a‑half spacing should be used, except for indented quotations or footnotes where single spacing may be used.”*  
 - **§4.4**: *“All pages must be numbered in one continuous sequence, i.e. from the title page to the last page of type, in Arabic numerals from 1 onwards… including maps, diagrams, blank pages, etc.”*  
 - **§4.5**: The **title page must bear**:
+
   - The approved thesis **title**.  
-  - The candidate’s **full name** (as registered).  
+  - The candidate's **full name** (as registered).  
   - **Imperial College London** and the **Department** name.  
   - The **degree** (e.g. PhD).  
-- **§4.6**: Any formatting not explicitly outlined is left to the **student’s judgement**, and *reasonable solutions will be accepted*.
+
+- **§4.6**: Any formatting not explicitly outlined is left to the **student's judgement**, and *reasonable solutions will be accepted*.
 
 This template implements those rules via the preamble and title page block:
 
@@ -233,6 +235,7 @@ In this template:
 To fully satisfy **§6.1–6.3**:
 
 - Make sure the final text explicitly:
+
   - names the licence (e.g. *Creative Commons Attribution‑Non Commercial 4.0 International Licence (CC BY‑NC)*), and  
   - explains that reuse is allowed only under the licence conditions.
 
@@ -262,6 +265,7 @@ To comply with **§7.1**:
 - The abstract is placed **immediately after** the title page and declarations.  
 - You must keep the abstract **within 300 words**.  
 - It should concisely summarise:
+
   - the research problem or question;  
   - the methods used;  
   - the main results;  
@@ -478,6 +482,7 @@ To comply with §9.1:
 
 - Place all appendices **after the bibliography** in the final thesis.  
 - Use them to store:
+
   - Supporting data that examiners may wish to consult but are not required to examine.  
   - Copies of all **permission documents** for third‑party material (figures, tables, images, maps, etc.).
 

@@ -87,8 +87,9 @@ When using appendices for code, illustrative material, and documentation:
 - Keep the **main thesis self‑contained**: the core argument and results should be understandable without reading every line of the appendix.
 - Use appendices for **supporting detail**: extended methods, extra figures, long tables, code snippets, sample data, and permission letters.
 - Make sure everything in the appendices is:
+
   - **Clearly labelled** (appendix titles, section headings, captions),
-  - **Referenced from the main text** where relevant (e.g. “see Appendix A for code listing”), and
+  - **Referenced from the main text** where relevant (e.g. "see Appendix A for code listing"), and
   - **Ethically and legally compliant** with the Imperial checklist (Sections 9–11).
 
 For any specific questions about what your appendices should or should not contain, always:
