@@ -18,7 +18,7 @@ The LaTeX files of the template are found in the [phd-thesis](https://github.com
 
 ## Snippets
 
-When examining the LaTeX files of this template, you will notice that certain important sections are marked as **snippets** using comments such as `% START/END SNIPPET`. You can ignore these comments when reading the LaTeX code; they are only there to help with the generation of these documentation pages. You can ignore/remove them without consequences.
+When examining the LaTeX files of this template, you will notice that certain important sections are marked as **snippets** using comments such as `% START/END SNIPPET`. You can ignore these comments when reading the LaTeX code; they are only there to help with the generation of these documentation pages. You can/should remove them to declutter your document.
 
 ---
 
