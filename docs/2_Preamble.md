@@ -129,5 +129,3 @@ Students normally do not need to modify the preamble, but understanding it helps
                                     % Convenience macro for correctly typesetting "Ph.D."
                                     % You can define similar commands for common terms.
 ```
-```latex
-(placeholder – will be replaced)
