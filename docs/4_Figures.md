@@ -5,7 +5,7 @@ From an Imperial College compliance perspective, figures must be **clearly legib
 
 ### Why multi‑panel figures?
 
-A dedicated results chapter is standard in most thesis formats. In this chapter, figures often do the heavy lifting: they communicate **trends, comparisons, and patterns** more efficiently than paragraphs of text. Multi‑panel figures:
+Figures will likely be found throughout your document, for instance when presenting results. Figures often do the heavy lifting of communicating results: they communicate **trends, comparisons, and patterns** more efficiently than paragraphs of text. Multi‑panel figures:
 
 - Allow you to **compare multiple conditions** or time points in one place.
 - Help the reader see **relationships and progressions** at a glance.
