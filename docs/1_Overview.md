@@ -1,6 +1,6 @@
 ## 🎓 Introduction
 
-The *Theses for Imperial College Research Degrees: Guidance and notes* document describes the submission, format and requirements for theses submitted for the degrees of MPhil, PhD, MD(Res) and EngD.
+The [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) document describes the submission, format and requirements for theses submitted for the degrees of MPhil, PhD, MD(Res) and EngD.
 
 It specifies:
 

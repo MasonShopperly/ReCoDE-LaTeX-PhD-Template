@@ -4,7 +4,7 @@ The **preamble** in a LaTeX document is a section defined *before* `\begin{docum
 
 In this template, the preamble is defined in [`phd_thesis/preamble.tex`](https://github.com/ImperialCollegeLondon/ReCoDE-LaTeX-PhD-Template/blob/main/phd-thesis/preamble.tex) and is configured to ensure:
 
-✅ Compliance with **Imperial College Thesis Requirements** (Sections 4.1–4.6)  
+✅ Compliance with [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) (Sections 4.1–4.6)  
 ✅ Correct margins and page layout as required by **Regulation 4.3**  
 ✅ Continuous Arabic numbering from the title page as required by **Regulation 4.4**  
 ✅ Professional typesetting of text, figures, tables, and mathematics  

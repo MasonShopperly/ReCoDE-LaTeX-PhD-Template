@@ -2,7 +2,7 @@
 
 This page explains how to structure and format tables in your thesis, using examples from a typical **Related Work** or **Results** chapter. The aim is to provide reusable, compliant layouts rather than to dictate your scientific content.
 
-From an Imperial College checklist perspective, tables must be:
+The [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) states that tables must be:
 
 - **Clearly readable**: appropriate font size, no overcrowded cells, and good use of spacing.
 - **Numbered and captioned** consistently (Table 2.1, 2.2, …).

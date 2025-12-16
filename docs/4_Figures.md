@@ -1,7 +1,7 @@
 ## Figures Explanation 📊
 
 This page explains how to structure and use **multi‑panel figures**, as an example, in the results chapter of your thesis. The goal is not to dictate your scientific content, but to give you reusable patterns for presenting it clearly and consistently.
-From an Imperial College compliance perspective, figures must be **clearly legible, consistently formatted, and properly referenced** in the text. The checklist also expects that all figures are numbered in a single logical sequence (Figure 1.1, 1.2, …) and that each one has a **descriptive caption** and is actually **discussed in the main text**, rather than left unexplained.
+From an Imperial College compliance perspective, figures must be **clearly legible, consistently formatted, and properly referenced** in the text. The [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) also expects that all figures are numbered in a single logical sequence (Figure 1.1, 1.2, …) and that each one has a **descriptive caption** and is actually **discussed in the main text**, rather than left unexplained.
 
 ### Why multi‑panel figures?
 
