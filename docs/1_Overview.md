@@ -1,6 +1,6 @@
 ## 🎓 Introduction
 
-The *Theses for Imperial College Research Degrees: Guidance and notes* document describes the submission, format and requirements for theses submitted for the degrees of MPhil, PhD, MD(Res) and EngD.
+The [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) document describes the submission, format and requirements for theses submitted for the degrees of MPhil, PhD, MD(Res) and EngD.
 
 It specifies:
 
@@ -10,13 +10,18 @@ It specifies:
 - **Back‑matter requirements** (Appendices, illustrative material) – Sections 9–10  
 - **Legal and ethical checks** (copyright, plagiarism, IP) – Section 11  
 
-This explanation document shows how the provided LaTeX template:
+The LaTeX files of the template are found in the [phd-thesis](https://github.com/ImperialCollegeLondon/ReCoDE-LaTeX-PhD-Template/tree/main/phd-thesis) directory. This explanation document shows how the provided LaTeX template:
+- implements these requirements.tex` 
+- leaves reasonable freedom where the checklist explicitly allows it (Section 4.6).
 
-1. Implements these requirements in `phd-thesis/main.tex`.
-2. Links each rule to a **snippet** (marked by `% START/END SNIPPET` in the LaTeX and `<!-- SNIPPET:... -->` here).
-3. Leaves reasonable freedom where the checklist explicitly allows it (Section 4.6).
+- Implements these requirements in `phd-thesis/main.tex`.
+- Links each rule to a **snippet** (marked by `% START/END SNIPPET` in the LaTeX and `<!-- SNIPPET:... -->` here).
+- Leaves reasonable freedom where the checklist explicitly allows it (Section 4.6).
+---
 
-All code snippets in this document are **automatically imported** from `main.tex`, so this explanation stays in sync with the actual template.
+## Snippets
+
+When examining the LaTeX files of this template, you will notice that certain important sections are marked as **snippets** using comments such as `% START/END SNIPPET`. You can ignore these comments when reading the LaTeX code; they are only there to help with the generation of these documentation pages. You can/should remove them to declutter your document.
 
 ---
 
@@ -463,6 +468,14 @@ Section **9 – Appendices** states:
   • Any data that the examiners may wish to refer to, but that they will not examine.  
   • Students must include copies of all permission documents showing that they have permission to republish all the third party copyrighted works in their thesis.”*
 
+Think of appendices as a place for **evidence, examples, and supplementary detail**, not as an extension of the main argument. Good candidates for appendices include:
+
+- Extended results, raw data samples, or additional figures.
+- Long derivations, proofs, or technical specifications.
+- Code listings and configuration files that illustrate how your methods were implemented.
+
+Appendices should be **labelled and structured clearly** (e.g. Appendix A, B, C), and cross‑referenced from the main text where relevant. 
+
 This template implements **Section 9.1** as follows:
 
 ```latex
@@ -505,10 +518,7 @@ This template generates the bibliography with BibLaTeX:
 \printbibliography   % Automatically formats the bibliography using BibLaTeX.
 ```
 
-How this fits Sections 8.1 and 9.1:
-
-- It collects all cited works into a **complete bibliography**.  
-- By placing this snippet **before** the Appendices snippet in `main.tex`, the bibliography naturally appears before the appendices, as Section 9.1 requires.
+This collects all cited works into a **complete bibliography** placed between the main chapters and the appendices, as required.
 
 To use it:
 

@@ -4,7 +4,7 @@ This page explains the structure and purpose of the custom title page used in th
 
 ### Page numbering (Checklist Section 4.4)
 
-Section 4.4 of the official checklist emphasizes that **all pages must be numbered in one continuous sequence**, from the title page to the last page of text, in **Arabic numerals starting at 1**. This sequence must include *everything* in the document: maps, diagrams, blank pages, etc.
+Section 4.4 of the [Theses for Imperial College Research Degrees](https://www.imperial.ac.uk/media/imperial-college/administration-and-support-services/registry/academic-governance/public/academic-policy/research-degree-examinations/Thesis-Submission-Checklist.pdf) emphasizes that **all pages must be numbered in one continuous sequence**, from the title page to the last page of text, in **Arabic numerals starting at 1**. This sequence must include *everything* in the document: maps, diagrams, blank pages, etc.
 
 A lot of students forget to number the very first page, treating it as a separate “cover”. Regardless of your aesthetic preferences, the checklist is quite clear on this point: **the title page is page 1** (yes, even if it ruins your minimalist designer soul).
 
@@ -131,5 +131,3 @@ The checklist does not explicitly require that you list your supervisors, but it
 
 \end{titlepage}
 ```
-```latex
-(placeholder – will be replaced by the script)
