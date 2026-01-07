@@ -70,7 +70,7 @@ Section **4 – Presentation** states that:
     - The approved thesis **title**.  
     - The candidate's **full name** (as registered).  
     - **Imperial College London** and the **Department** name.  
-    - The **degree** (e.g. PhD)
+    - The **degree** (e.g. PhD).
 
 - **Section 4.6**: Any formatting not explicitly outlined is left to the **student’s judgement**, and *reasonable solutions will be accepted*.
 
@@ -120,11 +120,9 @@ How this snippet maps to Section 4:
 
 - **Continuous Arabic page numbering (Section 4.4)**  
   The snippet in `main.tex`:
-  
       - switches to **Arabic numerals**;  
       - sets the **title page as page 1**;
-  
-  ensuring that all pages – from the title page through to the final page – form **one continuous Arabic sequence**, including pages with only diagrams or even intentionally blank ones, as required by Section 4.4.
+    ensuring that all pages – from the title page through to the final page – form **one continuous Arabic sequence**, including pages with only diagrams or even intentionally blank ones, as required by Section 4.4.
 
 - **Title page content (Section 4.5)**  
   The title page is defined in `titlepage.tex`, which is loaded here. It is constructed so that the title page contains exactly the items listed in Section 4.5:
