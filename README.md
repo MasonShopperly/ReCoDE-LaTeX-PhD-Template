@@ -92,7 +92,7 @@ Option A — Overleaf:
   - If using **BibLaTeX**, set **Bibliography tool** to **Biber**.
   - Click **Recompile** and start editing files (e.g., `preamble.tex`, `chapters/`).
 
-Option B — Local setup (After installing a LaTeX distribution):
+Option B — Local setup (after installing a LaTeX distribution):
 
   - Clone the repository:
          ```bash
