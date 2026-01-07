@@ -1,4 +1,4 @@
-## Tables Explanation 📋
+## 📋 Tables Explanation 
 
 This page explains how to structure and format tables in your thesis, using examples from a typical **Related Work** or **Results** chapter. The aim is to provide reusable, compliant layouts rather than to dictate your scientific content.
 
