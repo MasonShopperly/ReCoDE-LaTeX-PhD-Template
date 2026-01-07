@@ -1,4 +1,4 @@
-## Preamble Explanation
+## ⚙️ Preamble Explanation
 
 The **preamble** in a LaTeX document is a section defined *before* `\begin{document}`that controls the **formatting, structure, typography, citation style, margins, and overall layout** of the entire thesis.
 
