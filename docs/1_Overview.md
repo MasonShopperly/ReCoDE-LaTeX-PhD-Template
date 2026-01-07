@@ -11,10 +11,8 @@ It specifies:
 - **Legal and ethical checks** (copyright, plagiarism, IP) – Section 11  
 
 The LaTeX files of the template are found in the [phd-thesis](https://github.com/ImperialCollegeLondon/ReCoDE-LaTeX-PhD-Template/tree/main/phd-thesis) directory. This explanation document shows how the provided LaTeX template:
-- implements these requirements.tex` 
-- leaves reasonable freedom where the checklist explicitly allows it (Section 4.6).
 
-- Implements these requirements in `phd-thesis/main.tex`.
+- Implements the college theses requirements in `phd-thesis/main.tex`.
 - Links each rule to a **snippet** (marked by `% START/END SNIPPET` in the LaTeX and `<!-- SNIPPET:... -->` here).
 - Leaves reasonable freedom where the checklist explicitly allows it (Section 4.6).
 ---
