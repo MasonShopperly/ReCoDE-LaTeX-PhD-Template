@@ -1,4 +1,4 @@
-## Code 📎
+## 📎 Code 
 
 The template includes an example of a **Python code snippet** in Appendix A, typeset using the `minted` environment for syntax highlighting. This demonstrates how to present small, readable code fragments that support your methods. Remember adding code to your thesis or appendix is entirely **optional**.
 
