@@ -6,8 +6,8 @@ It specifies:
 
 - **Administrative rules** (submission route, declaration form, embargoes) – Sections 1–3, 12  
 - **Presentation rules** (layout, spacing, numbering, title page) – Section 4  
-- **Front‑matter requirements** (Statement of Originality, Copyright, Abstract, Table of Contents) – Sections 5–8  
-- **Back‑matter requirements** (Appendices, illustrative material) – Sections 9–10  
+- **Front‑matter requirements** (statement of originality, copyright, abstract, table of contents) – Sections 5–8  
+- **Back‑matter requirements** (appendices, illustrative material) – Sections 9–10  
 - **Legal and ethical checks** (copyright, plagiarism, IP) – Section 11  
 
 The LaTeX files of the template are found in the [phd-thesis](https://github.com/ImperialCollegeLondon/ReCoDE-LaTeX-PhD-Template/tree/main/phd-thesis) directory. This explanation document shows how the provided LaTeX template:
