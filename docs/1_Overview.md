@@ -120,16 +120,19 @@ How this snippet maps to Section 4:
 
 - **Continuous Arabic page numbering (Section 4.4)**  
   The snippet in `main.tex`:
-  - switches to **Arabic numerals**;  
-  - sets the **title page as page 1**;  
+  
+      - switches to **Arabic numerals**;  
+      - sets the **title page as page 1**;
+  
   ensuring that all pages – from the title page through to the final page – form **one continuous Arabic sequence**, including pages with only diagrams or even intentionally blank ones, as required by Section 4.4.
 
 - **Title page content (Section 4.5)**  
   The title page is defined in `titlepage.tex`, which is loaded here. It is constructed so that the title page contains exactly the items listed in Section 4.5:
-  - the **approved title** of the thesis (matching examination entry);  
-  - your **full name**, as registered at Imperial;  
-  - **Imperial College London** and the **Department** name;  
-  - the **degree** for which the thesis is submitted.
+  
+      - the **approved title** of the thesis (matching examination entry);  
+      - your **full name**, as registered at Imperial;  
+      - **Imperial College London** and the **Department** name;  
+      - the **degree** for which the thesis is submitted.
 
 - **Reasonable formatting choices (Section 4.6)**  
   Fonts, chapter styles, and other typographic details are chosen to be professional and readable. Under Section 4.6, you may modify these choices (e.g. fonts, header style) as long as your changes remain **reasonable** and do not violate any explicit rules in Section 4.
