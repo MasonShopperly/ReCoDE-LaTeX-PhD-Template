@@ -95,7 +95,7 @@ In order to stay in line with the Imperial thesis checklist, you should ensure t
 
 - Each table has a **clear, descriptive caption** that explains what is being shown.
 - Tables are **numbered consistently** within each chapter (and, if needed, across the thesis).
-- Every table is **referenced from the main text** (e.g. “see Table 3.2”) and is **interpreted**—you should tell the reader what they should notice in the table.
+- Every table is **referenced from the main text** (e.g. “see Table 3.2”) and is **interpreted**; you should tell the reader what they should notice in the table.
 - Units and symbols are **defined** somewhere (in the table headings, footnotes, or surrounding text), so the reader is not left guessing.
 
 Used well, tables make it much easier for examiners to understand your results and for your writing to meet both the **clarity** and **presentation** expectations in the Imperial guidelines.
