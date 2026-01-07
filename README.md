@@ -21,13 +21,13 @@ This exemplar was developed at **Imperial College London** by:
 
 ## 🎓 Learning Outcomes
 
-The main objective of this project is to develop a **standardized, user-friendly LaTeX template** that:
+The main objective of this project is to develop a **standardised, user-friendly LaTeX template** that:
 
 1. **Conforms strictly** to Imperial College London's thesis presentation regulations and formatting requirements.  
 2. **Facilitates consistency** in typography, structure, and referencing across departments and research groups.  
 3. **Simplifies the writing process** for postgraduate researchers by providing pre-defined environments for chapters, sections, figures, tables, and appendices.  
 4. **Integrates best practices** in academic writing, including compatibility with BibLaTeX for references and packages for mathematical typesetting, graphics, and indexing.  
-5. **Ensures long-term maintainability**, with modular configuration files (e.g., `preamble.tex`, `settings.tex`) for easy customization.  
+5. **Ensures long-term maintainability**, with modular configuration files (e.g., `preamble.tex`) for easy customisation.  
 
 ---
 
@@ -66,7 +66,7 @@ This LaTeX template is designed primarily for **postgraduate researchers** prepa
 
 You can work either locally or directly in Overleaf — choose the workflow that suits you best.
 
-- Option A — Overleaf (no local installation required):
+Option A — Overleaf (no local installation required):
 
   - Use **Overleaf** to compile and manage your thesis online.
   - Import the project via "New Project → Import from GitHub" or "New Project → Upload Project" (ZIP).
@@ -74,7 +74,7 @@ You can work either locally or directly in Overleaf — choose the workflow that
   - If using **BibLaTeX**, set **Bibliography tool** to **Biber**.
   - Note: Overleaf project size and quota limits depend on your plan.
 
-- Option B — Local setup:
+Option B — Local setup:
 
   - Install a **LaTeX distribution**: [TeX Live](https://www.tug.org/texlive/), [MiKTeX](https://miktex.org/), or [MacTeX](https://www.tug.org/mactex/).
   - Recommended compiler: **XeLaTeX** or **LuaLaTeX** (for Unicode and modern font support).
