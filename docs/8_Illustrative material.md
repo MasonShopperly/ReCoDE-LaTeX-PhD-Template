@@ -1,4 +1,4 @@
-## Illustrative material and additional files (Checklist §10)
+## 🎨 Illustrative material and additional files (Checklist §10)
 
 Sometimes, it will not practical to include relevant data in your thesis due to its size or format (e.g. videos, large datasets, software, or other digital artefacts). Section 10 of the checklist covers such **illustrative material** that you may want to provide alongside the thesis. Key points:
 
