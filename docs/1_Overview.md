@@ -497,8 +497,8 @@ To comply with Section 9.1:
 - Place all appendices **after the bibliography** in the final thesis.  
 - Use them to store:
 
-  - Supporting data that examiners may wish to consult but are not required to examine.  
-  - Copies of all **permission documents** for third‑party material (figures, tables, images, maps, etc.).
+      - Supporting data that examiners may wish to consult but are not required to examine.  
+      - Copies of all **permission documents** for third‑party material (figures, tables, images, maps, etc.).
 
 You can create multiple appendix chapters (Appendix A, B, C, …) as needed.
 
@@ -507,7 +507,7 @@ You can create multiple appendix chapters (Appendix A, B, C, …) as needed.
 ## 📖 Bibliography  
 *(Required; position implied by Section 8.1 and Section 9.1)*
 
-The checklist expects a **full bibliography of works cited** in the thesis, although in your excerpt it is not given a separate numbered heading. Its position is implied by the structure:
+The checklist expects a **full bibliography of works cited** in the thesis, although in your excerpt, it is not given a separate numbered heading. Its position is implied by the structure:
 
 - **Section 8.1** describes the abstract, table of contents, and lists.  
 - **Section 9.1** explicitly states that appendices come **after your bibliography**.  
