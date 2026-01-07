@@ -118,10 +118,12 @@ Key ideas illustrated:
 
 When you use these examples in your own thesis:
 
-- **Replace the image files** with your own plots or diagrams.
+- **Replace the image files** with your own plots or diagrams. Remember, if using Overleaf, you will have to upload images to your projects from your computer or from a URL.
 - **Update captions** to describe your actual experiment and results.
-- **Keep labels meaningful** (e.g. `fig:results_accuracy_a`) so cross‑references are easy to manage.
-- Ensure each figure **adds information** and is referenced in the main text—avoid decorative or unexplained figures.
+- **Keep labels meaningful** (e.g. `fig:results_accuracy_a`), so cross‑references are easy to manage.
+- Ensure each figure **adds information** and is referenced in the main text; avoid decorative or unexplained figures.
+
+**If you have questions on how to manage figures, please check the official LaTeX documentation****, such as [LaTeX Project website](https://www.latex-project.org)
 
 ---
 
