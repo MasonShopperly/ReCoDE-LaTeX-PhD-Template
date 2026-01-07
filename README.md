@@ -78,6 +78,8 @@ Option B — Local setup:
   - Ensure **Biber** is installed if you use **BibLaTeX**.
   - Compatible with **TeXstudio**, **VS Code (LaTeX Workshop)**, or any LaTeX IDE.
   - Requirements: Minimum **5 GB free disk space** for LaTeX and auxiliary files.
+
+---
     
 ## 🚀 Getting Started
 
@@ -106,7 +108,8 @@ Option B — Local setup:
        - Ensure **Biber** runs for references (BibLaTeX workflow).
       -Note: If you do not have access to the repository, contact the [Early Career Researcher Institute](https://www.imperial.ac.uk/early-career-researcher-institute/).
   
--->
+---
+
 ## Licence 📄
 
 This project is licensed under the [BSD-3-Clause license](LICENSE.md).
