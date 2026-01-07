@@ -1,4 +1,4 @@
-## Equations Explanation 🧮
+## 🧮 Equations Explanation 
 
 This page explains how to typeset mathematical equations in LaTeX using a simple but common example: the **sample mean** and **sample standard deviation**. The goal is to show you how to write clear, well‑formatted equations that can be referenced in your thesis text.
 
