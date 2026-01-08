@@ -35,14 +35,14 @@ Key ideas illustrated by this template:
     % -------------------
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 0.png}
+        \includegraphics[width=\textwidth]figures/Picture 0.png}
         \caption{Image a}
         \label{fig:sub_a}
     \end{subfigure}%
     \hfill
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 1.png}
+        \includegraphics[width=\textwidth]{figures/Picture 1.png}
         \caption{Image b}
         \label{fig:sub_b}
     \end{subfigure}
@@ -53,14 +53,14 @@ Key ideas illustrated by this template:
     % -------------------
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 2.png}
+        \includegraphics[width=\textwidth]{figures/Picture 2.png}
         \caption{Image c}
         \label{fig:sub_c}
     \end{subfigure}%
     \hfill
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 5.png}
+        \includegraphics[width=\textwidth]{figures/Picture 5.png}
         \caption{Image d}
         \label{fig:sub_d}
     \end{subfigure}
@@ -90,7 +90,7 @@ The second example (Figure `two_panels`) shows a **side‑by‑side two‑panel*
     % Panel a (left)
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 5.png}
+        \includegraphics[width=\textwidth]{figures/Picture 5.png}
         \caption{Description of image a}
         \label{fig:sub_a1}
     \end{subfigure}
@@ -98,7 +98,7 @@ The second example (Figure `two_panels`) shows a **side‑by‑side two‑panel*
     % Panel b (right)
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{phd-thesis/figures/Picture 2.png}
+        \includegraphics[width=\textwidth]{figures/Picture 2.png}
         \caption{Description of image b}
         \label{fig:sub_b1}
     \end{subfigure}
