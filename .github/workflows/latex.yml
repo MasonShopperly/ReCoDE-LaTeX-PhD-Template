@@ -11,18 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Compile LaTeX
+      
+      - name: Compile LaTeX thesis
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: main.tex
-          working_directory: phd-thesis
-          compiler: latexmk
-          latexmk_use_xelatex: true
-          continue_on_error: false
+          root_file: main.tex          
+          working_directory: phd-thesis 
+          compiler: latexmk            
+          latexmk_use_xelatex: true    
+          texlive_version: 2023        
+          continue_on_error: false     
 
+      
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
