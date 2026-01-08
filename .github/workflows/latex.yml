@@ -9,17 +9,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: blang/latex:ubuntu  # TeX Live 2023-like image
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra biber
+
       - name: Compile LaTeX
         run: |
           cd phd-thesis
           xelatex -interaction=nonstopmode -shell-escape main.tex
+          biber main || true
+          xelatex -interaction=nonstopmode -shell-escape main.tex
+          xelatex -interaction=nonstopmode -shell-escape main.tex
           mkdir -p ../docs/assets
           mv main.pdf ../docs/assets/
+
 
 
