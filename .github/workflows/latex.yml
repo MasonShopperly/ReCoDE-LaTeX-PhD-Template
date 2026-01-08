@@ -1,4 +1,4 @@
-name: Build LaTeX PDF
+name: Build LaTeX PDF with TeX Live 2023
 
 on:
   push:
@@ -11,22 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      
-      - name: Compile LaTeX thesis
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: main.tex          
-          working_directory: phd-thesis 
-          compiler: latexmk            
-          latexmk_use_xelatex: true    
-          texlive_version: 2023        
-          continue_on_error: false     
+      - name: Build PDF using TeX Live 2023 Docker
+        run: |
+          docker run --rm -v $PWD:/data blang/latex:ctanfull-2023 xelatex -interaction=nonstopmode -halt-on-error phd-thesis/main.tex
 
-      
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
