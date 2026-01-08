@@ -1,4 +1,4 @@
-name: Build LaTeX PDF with TeX Live 2023
+name: Build LaTeX Thesis PDF
 
 on:
   push:
@@ -14,9 +14,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build PDF using TeX Live 2023 Docker
+      - name: Compile PDF using TeX Live 2023
         run: |
-          docker run --rm -v $PWD:/data blang/latex:ctanfull-2023 xelatex -interaction=nonstopmode -halt-on-error phd-thesis/main.tex
+          docker run \
+            --rm \
+            -v "${{ github.workspace }}":/workdir \
+            -w /workdir \
+            maxkratz/texlive:2023 \
+            xelatex -interaction=nonstopmode -halt-on-error phd-thesis/main.tex
 
       - name: Upload PDF
         uses: actions/upload-artifact@v4
