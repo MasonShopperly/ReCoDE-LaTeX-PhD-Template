@@ -1,0 +1,33 @@
+name: Build PhD Thesis PDF
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: phd-thesis/main.tex
+          working_directory: phd-thesis
+
+      - name: Prepare output directory
+        run: |
+          mkdir -p dist
+          cp phd-thesis/main.pdf dist/phd-thesis.pdf
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v3
+        with:
+          name: phd-thesis-pdf
+          path: docs/assets/phd-thesis.pdf
+
+
