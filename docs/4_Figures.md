@@ -35,7 +35,7 @@ Key ideas illustrated by this template:
     % -------------------
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
-        \includegraphics[width=\textwidth]figures/Picture 0.png}
+        \includegraphics[width=\textwidth]{figures/Picture 0.png}
         \caption{Image a}
         \label{fig:sub_a}
     \end{subfigure}%
