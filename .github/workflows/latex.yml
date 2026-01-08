@@ -19,7 +19,7 @@ jobs:
         with:
           markdown: true
 
-      - name: Set up LaTeX environment
+      - name: Compile LaTeX thesis
         uses: xu-cheng/latex-action@v2
         with:
           root_file: main.tex
@@ -28,5 +28,10 @@ jobs:
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
           args: -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Move PDF to docs/assets
+        run: |
+          mkdir -p docs/assets
+          mv phd-thesis/main.pdf docs/assets/main.pdf
 
 
