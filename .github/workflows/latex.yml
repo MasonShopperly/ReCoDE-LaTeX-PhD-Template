@@ -4,28 +4,29 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Build PDF
+      - name: Build thesis PDF (XeLaTeX + minted)
         run: |
           docker run --rm \
             -v "${{ github.workspace }}":/workdir \
             -w /workdir/phd-thesis \
             maxkratz/texlive:2023 \
-            xelatex -shell-escape -interaction=nonstopmode -halt-on-error main.tex
+            bash -c "
+              apt-get update &&
+              apt-get install -y python3-pygments &&
+              xelatex -shell-escape -interaction=nonstopmode -halt-on-error main.tex
+            "
 
-      - name: Upload PDF
+      - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
           name: phd-thesis-pdf
           path: phd-thesis/main.pdf
-
-
-
