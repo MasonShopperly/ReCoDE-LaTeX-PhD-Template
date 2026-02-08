@@ -1,0 +1,35 @@
+\section*{Introduction, problem formulation, and positioning}
+
+Adaptive spectral/\(hp\) CFD concentrates resolution where physics demands it, which is why it is attractive for high-fidelity simulations on practical meshes.
+However, adaptivity also changes the \emph{shape} of the workload: localized regions can carry significantly higher polynomial order \(P\) (and/or smaller \(h\)), and those regions can dominate the timestep cost if they accumulate on the same rank or device.
+
+On modern clusters, this interacts sharply with two realities.
+First, many phases of the timestep include synchronization or globally coupled solves, so end-to-end wall time is throttled by the slowest partition.
+Second, heterogeneity (mixed CPU generations, SMT, GPUs) means that “equal work” must be defined relative to device throughput and phase-specific bottlenecks.
+As a result, balancing by element count is not meaningful for adaptive spectral/\(hp\): equal counts do not imply equal time when per-element cost varies strongly with \(P\).
+
+\vspace{0.35em}
+\noindent\textbf{What problem this proposal solves.}
+We target the following decision problem: given an adaptive simulation that evolves its distribution of \(P\) (and possibly \(h\)) over time, \emph{when} should a repartition/migration be performed, and \emph{how much} data should be moved, in order to reduce wall time without creating churn?
+A periodic policy (rebalance every \(k\)) is simple but can pay overhead even when the mapping changes little, including no-op events.
+A triggered policy is only useful if it can predict net gain reliably enough to act as a gate.
+
+\vspace{0.35em}
+\noindent\textbf{How we measure “success”.}
+We will evaluate policies using phase-aware wall-time metrics and explicit overhead accounting.
+Key quantities include wall-time per step \(t_{\text{step}}\), imbalance ratio \(\rho=\max/\text{mean}\), effective efficiency \(\eta\approx \text{mean}/\max\), number of rebalance events (and no-ops), and migration intensity (elements moved and migration time).
+A policy is “better” only if it reduces end-to-end wall time while keeping overhead bounded and preserving solution acceptability (QoI tolerance).
+
+\vspace{0.35em}
+\noindent\textbf{Positioning in the literature.}
+The algorithmic foundation is spectral element and spectral/\(hp\) CFD (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}), with Nektar++ as the target platform (\cite{Cantwell2015NektarPP,Cantwell2020NektarPP}).
+The gap we focus on is not “load balancing exists”, but rather the combination of (i) superlinear cost growth with \(P\), (ii) explicit modeling of rebalance overhead, and (iii) heterogeneity-aware decision rules that avoid wasted rebalances and migration churn.
+
+\vspace{0.35em}
+\noindent\textbf{What we already know (measured signals).}
+Our preliminary results show: (1) per-step runtime grows strongly superlinearly with \(P\) (approximately \(P^{2.68}\) in a representative sweep), (2) clustered refinement creates large max/mean imbalance ratios, (3) solver phases can dominate the timestep at higher core counts, and (4) triggered policies can match periodic performance while reducing rebalance events.
+These signals motivate a model-driven trigger rule and bounded migration as the main research lever.
+
+\vspace{0.35em}
+\noindent\textbf{Roadmap of the remainder.}
+The rest of this proposal specifies a decision model for predicted benefit versus cost, defines the trigger and migration bounds, and lays out an evaluation plan designed to produce publishable, phase-aware performance evidence.
