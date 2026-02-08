@@ -1,16 +1,29 @@
 \section*{Related work and positioning (what exists, and what is missing)}
-\noindent\textbf{Spectral/\(hp\) foundations.}
-Spectral element and spectral/\(hp\) methods provide high-order accuracy with element locality, but performance is sensitive to polynomial order and operator structure; this proposal builds on established spectral element foundations and the spectral/\(hp\) CFD literature (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}).
+
+\noindent\textbf{High-order foundations (why \(P\) matters).}
+Spectral element and spectral/\(hp\) methods achieve high accuracy with strong element locality, but their runtime is sensitive to polynomial order and operator structure.
+This work builds on classical spectral element foundations and the spectral/\(hp\) CFD literature (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}).
 
 \vspace{0.35em}
-\noindent\textbf{Nektar++ as the target platform.}
-Nektar++ is an open-source spectral/\(hp\) element framework with a mature operator stack and solver infrastructure, making it a credible vehicle for publishable algorithm work that is still “real code” (e.g., \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}).
+\noindent\textbf{Target platform: Nektar++.}
+Nektar++ provides a mature open-source spectral/\(hp\) framework with scalable operators and solvers, making it a credible vehicle for publishable algorithm work in “real code”
+(e.g., \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}; see also \cite{NektarWebsite}).
+
+\vspace{0.35em}
+\noindent\textbf{Partitioning and dynamic load balancing.}
+Graph-based partitioning and dynamic load balancing are well-established in HPC practice, with widely used baselines such as METIS-style multilevel partitioning \cite{KarypisKumar1998METIS} and software frameworks targeting dynamic applications (e.g., Zoltan \cite{Devine2002Zoltan}).
+In the AMR ecosystem, scalable parallel adaptivity and repartitioning are also treated as first-class problems (e.g., p4est \cite{Burstedde2011p4est}).
 
 \vspace{0.35em}
 \noindent\textbf{Where the gap is (what we contribute).}
-Classic repartitioning addresses imbalance, but adaptive spectral/\(hp\) adds two hard constraints that are often under-modeled in practice: (i) \emph{superlinear} per-element cost growth with \(P\), and (ii) rebalancing overhead (repartition + migration + coordination) that can dominate when triggered too often or when changes are no-ops.
-This proposal explicitly models both benefit and cost, then uses those models to decide \emph{when} to rebalance and \emph{how much} to migrate (bounded movement), with the entire story grounded by a tracked evidence pack (scripts and raw logs are tracked for reproducibility (available on request)).
+The gap is not “repartitioning exists,” but the combination of constraints that appear in adaptive high-order CFD on heterogeneous clusters:
+(i) per-element cost grows strongly with local approximation order (so count-based balance is unreliable),
+(ii) rebalancing has nontrivial overhead (repartition + migration + coordination) that can dominate when triggered too often or when mappings change weakly, and
+(iii) heterogeneity means “equal work” depends on device throughput and which timestep phases dominate.
+This proposal explicitly models both \emph{benefit} and \emph{cost}, then uses those models to decide \emph{when} to rebalance and \emph{how much} to migrate (bounded movement).
 
 \vspace{0.35em}
-\noindent\textbf{Literature expansion plan (short-term).}
-The next iteration of this section will add citations for: (a) graph/hypergraph partitioning and parallel repartitioning, (b) dynamic load balancing frameworks, and (c) heterogeneity-aware scheduling models. Each new citation will be added alongside a concrete “why it matters here” sentence and mapped to a measurable quantity in the Definitions/Notation sections.
+\noindent\textbf{Short-term literature expansion plan (next research-mode push).}
+We will next add citations specific to: (a) heterogeneous scheduling models (CPU/GPU), (b) repartition+migration overhead modeling, and (c) high-order adaptivity case studies.
+Each new citation will be accompanied by a single sentence stating \emph{what it contributes here} and mapped to a measurable quantity in the Definitions/Notation sections.
+We will also anchor the narrative directly to the studentship framing \cite{ImperialAE0075Studentship} and the supervisors’ group context (e.g., \cite{SherwinLabWebsite}).
