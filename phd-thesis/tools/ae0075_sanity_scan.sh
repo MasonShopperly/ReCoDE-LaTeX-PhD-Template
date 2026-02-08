@@ -3,7 +3,6 @@ set -euo pipefail
 
 ROOT="${1:-.}"
 
-# Strings that should basically never appear in LaTeX source.
 BAD_FIXED=(
   "mshop@"
   "latexmk "
@@ -22,11 +21,10 @@ BAD_FIXED=(
   "donebreak"
 )
 
-echo "Scanning .tex snippets/chapters for accidental shell/log text..."
+echo "Scanning LaTeX sources for accidental shell/log text..."
 FOUND=0
 
 while IFS= read -r -d '' f; do
-  # fixed patterns
   for pat in "${BAD_FIXED[@]}"; do
     if grep -nF "$pat" "$f" >/dev/null 2>&1; then
       echo "WARN: '$pat' found in $f"
@@ -35,7 +33,6 @@ while IFS= read -r -d '' f; do
     fi
   done
 
-  # suspicious heredoc terminators accidentally pasted into file
   if grep -nE '^[[:space:]]*EOF[[:alnum:]_]*[[:space:]]*$' "$f" >/dev/null 2>&1; then
     echo "WARN: suspicious 'EOF...' line found in $f"
     grep -nE '^[[:space:]]*EOF[[:alnum:]_]*[[:space:]]*$' "$f" | head -n 5
