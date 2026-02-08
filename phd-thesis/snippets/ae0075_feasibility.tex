@@ -1,0 +1,26 @@
+\section*{Measured feasibility (what we already know, and what it implies)}
+\noindent This section summarizes the current evidence pack (\code{myNektarpp/docs/ae0075/}) and the \emph{actionable implications} for the research plan.
+
+\vspace{0.4em}
+\subsection*{1) Element cost growth with \(P\) is strongly superlinear}
+The measured \(P\)-sweep shows per-step cost grows approximately as \(P^\alpha\) with \(\alpha>2\) (e.g., \code{p\_sweep\_re100.csv}).
+\textbf{Implication:} “balanced element counts” is not a meaningful balance objective in adaptive spectral/\(hp\): balance must be time/cost-weighted.
+
+\vspace{0.4em}
+\subsection*{2) Hotspots create large imbalance even with the same mesh cardinality}
+Clustered refinement produces naive max/mean ratios \(\gg 1\) (\code{imbalance\_demo\_clustered.csv}).
+\textbf{Implication:} we need an imbalance metric aligned with wall time (rank-local timers or calibrated per-element weights), not purely structural measures.
+
+\vspace{0.4em}
+\subsection*{3) Global solver phases dominate (limits ceiling of achievable speedups)}
+Timer composition indicates pressure/viscous phases can dominate Execute (\code{cylinder2d\_timer\_profile\_p3p6\_fin20\_v2.csv}).
+\textbf{Implication:} rebalancing wins must be evaluated at the \emph{phase level} (what fraction of time is imbalance-sensitive vs globally coupled).
+
+\vspace{0.4em}
+\subsection*{4) Triggered policies can reduce wasted/no-op rebalances}
+Triggered vs periodic comparisons show the promise of cutting events while preserving outcomes (\code{periodic\_vs\_trigger\_static\_rb85\_mig90\_re100.csv}; \code{key\_results.md}).
+\textbf{Implication:} the core research lever is a model that predicts \(\Delta T_{\text{benefit}}\) and \(\Delta T_{\text{cost}}\) tightly enough to act as a gate.
+
+\vspace{0.4em}
+\noindent\textbf{What we can now justify.}
+These measurements justify a research plan centered on: (i) calibrated cost models, (ii) heterogeneity-aware weighting, and (iii) a trigger rule with bounded migration that explicitly trades benefit against overhead.
