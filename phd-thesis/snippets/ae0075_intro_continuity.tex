@@ -1,24 +1,25 @@
 \section*{Introduction, problem formulation, and positioning}
 
-Adaptive spectral/\(hp\) CFD concentrates resolution where physics demands it, which is why it is attractive for high-fidelity simulations on practical meshes.
-The same mechanism that makes it powerful also makes it difficult to run efficiently at scale: adaptation changes the \emph{shape} of the workload over time.
-Regions of the domain may carry significantly higher polynomial order \(P\) (and/or smaller element size \(h\)), and those localized regions can dominate timestep cost if they accumulate on the same rank or device.
+Adaptive high-order CFD (spectral/\(hp\) element methods) is compelling because it can deliver accuracy efficiently by concentrating numerical effort where the physics demands it.
+In practice, that concentration changes over time: near-wall layers, wakes, and shear regions evolve, and the simulation must continually re-distribute where it spends computational effort.
 
-At scale, end-to-end wall time is frequently set by the slowest partition.
-This is not merely an implementation detail: globally coupled phases (in particular solver phases) introduce synchronization that forces ranks/devices to wait for one another.
-Heterogeneous clusters amplify the effect further—mixed CPUs, SMT, and GPUs mean that “equal work” depends on device throughput and on which phases dominate the timestep.
-Consequently, balancing by element count is not meaningful in adaptive high-order settings: equal counts do not imply equal time when per-element cost varies strongly with \(P\).
+In high-order element methods, “resolution” is controlled not only by element size \(h\), but also by polynomial degree \(P\).
+When adaptivity changes the spatial distribution of \(P\) (and sometimes \(h\)), the compute cost becomes strongly nonuniform.
+At scale, this matters because many timestep phases include synchronization or globally coupled solves, so end-to-end wall time is throttled by the slowest rank/device.
 
-The decision problem addressed here is therefore operational and model-based:
-given an adaptive simulation whose \(P\)-distribution evolves, \emph{when} should a repartition/migration be performed, and \emph{how much} data should be moved, to reduce wall time without creating churn?
-A periodic policy (“rebalance every \(k\)”) is simple but can pay overhead even when the mapping changes weakly, including no-op or near-no-op events.
-A triggered policy can be better, but only if it can predict net gain reliably enough to act as a gate and if it controls migration so that rebalancing does not become the dominant cost.
+This proposal targets the following decision problem on heterogeneous CPU/GPU clusters:
+given an adaptive simulation whose cost distribution changes over time, \emph{when} should repartitioning/migration be performed, and \emph{how much} state should be moved, in order to reduce wall time without creating churn?
+Periodic policies (rebalance every \(k\)) are simple but can pay overhead in regimes where the mapping changes weakly, including no-op or near-no-op events.
+Triggered policies are only useful if they can reliably predict whether a rebalance will be net-positive.
 
-We evaluate policies using phase-aware wall-time metrics and explicit overhead accounting: wall-time per step \(t_{\text{step}}\), imbalance ratio \(\rho=\max/\text{mean}\), effective efficiency \(\eta\approx \text{mean}/\max\), event counts (including no-ops), and migration intensity (elements moved and migration time).
+We therefore evaluate policies using phase-aware wall-time metrics and explicit overhead accounting.
+Key quantities include timestep wall time \(t_{\text{step}}\), imbalance ratio \(\rho=\max/\text{mean}\), effective efficiency \(\eta\approx \text{mean}/\max\), the number of rebalance events (and no-ops), and migration intensity (elements moved and migration time).
 A policy is “better” only if it reduces end-to-end wall time while keeping overhead bounded and preserving solution acceptability (QoI tolerance).
 
-This proposal is grounded in the spectral element and spectral/\(hp\) CFD foundations \cite{Patera1984SpectralElement,KarniadakisSherwin2005}, and it is anchored in Nektar++ as a credible target platform for publishable algorithm work \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}.
-On the load-balancing side, partitioning and dynamic rebalancing baselines are well-established in HPC (e.g., multilevel graph partitioning \cite{KarypisKumar1998METIS} and dynamic services/frameworks \cite{Devine2002Zoltan}), and scalable adaptive-mesh infrastructures motivate what “practical overhead” looks like in real systems \cite{Burstedde2011p4est}.
-The gap we focus on is the intersection of (i) superlinear cost growth with \(P\), (ii) explicit modeling of rebalance overhead, and (iii) heterogeneity-aware decision rules that avoid wasted events and migration churn.
+The algorithmic foundation is spectral element and spectral/\(hp\) CFD (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}), with Nektar++ as the target platform (e.g., \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}).
+The gap we focus on is not whether load balancing exists, but rather the combination of (i) superlinear cost growth with \(P\), (ii) explicit modeling of rebalance overhead, and (iii) heterogeneity-aware decision rules that avoid wasted rebalances and migration churn.
 
-The remainder of this proposal makes that gap precise: it specifies a model for predicted benefit versus cost, defines a trigger rule with bounded migration, and lays out an evaluation plan designed to produce phase-aware, publishable performance evidence.
+Our preliminary results already show signals consistent with this gap: strong superlinear cost growth with order, hotspot-driven imbalance, solver-phase dominance at scale, and the promise of triggered policies to reduce unnecessary events.
+These observations motivate a model-driven trigger rule and bounded migration as the central research lever.
+
+The remainder of this proposal formalizes the benefit–cost decision model, defines the trigger and migration bounds, and lays out an evaluation plan designed to produce publishable, phase-aware performance evidence.

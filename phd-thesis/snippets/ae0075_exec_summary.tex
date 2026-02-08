@@ -1,33 +1,15 @@
 \section*{Executive Summary}
 
+This proposal addresses Imperial College London’s AE0075 PhD studentship on \emph{novel algorithms for load rebalancing of adaptive simulations on heterogeneous clusters}, using Nektar++ as the implementation and evaluation platform.
+
 High-fidelity CFD is increasingly limited not by whether a method is accurate, but by whether it runs \emph{predictably} and \emph{efficiently} at scale.
-Adaptive high-order methods are attractive because they concentrate numerical effort where the physics demands it; however, that same adaptivity creates strongly uneven work distributions that can throttle parallel throughput.
-This proposal directly addresses the AE0075 studentship topic on novel algorithms for load rebalancing of adaptive simulations on heterogeneous clusters \cite{ImperialAE0075Studentship}.
+Adaptive high-order methods are attractive because they concentrate numerical effort where the physics demands it; however, that same adaptivity can create strongly uneven work distributions that throttle parallel throughput.
 
-On modern clusters, two effects collide.
-First, the wall time of a timestep is often governed by the \emph{slowest} partition because synchronized phases and globally coupled solves force ranks/devices to wait for one another.
-Second, heterogeneous hardware means that “equal work” depends on device throughput and on which phases dominate the timestep.
-As a result, simple heuristics (e.g., equal element counts, or rebalancing periodically every \(k\) steps) can waste compute time: they can leave expensive regions co-located on the same partition, or trigger rebalances whose overhead exceeds their benefit.
+Two practical effects drive the problem.
+First, many timestep phases include synchronization or globally coupled solves, so end-to-end wall time is governed by the \emph{slowest} rank or device.
+Second, heterogeneous hardware (mixed CPU/GPU nodes, differing throughput) makes “equal work” depend on both device capability and which phases dominate the timestep.
+As a result, simple heuristics—such as equal element counts, or periodic “rebalance every \(k\)” policies—can waste compute time: expensive regions can be co-located on one partition, and rebalancing can be triggered even when its overhead exceeds its benefit.
 
-\vspace{0.35em}
-\noindent\textbf{Thesis.}
-Achieve predictable throughput for adaptive high-order CFD on heterogeneous systems by making rebalancing a measurable decision:
-(i) calibrate models for \emph{benefit} (how much time is saved by improving the mapping) and \emph{cost} (repartition+migration+coordination overhead),
-(ii) compute heterogeneity-aware weights/mappings, and
-(iii) rebalance only when predicted net gain is positive, under bounded migration to prevent churn.
-
-\vspace{0.35em}
-\noindent\textbf{Preliminary signals (measured, motivating the approach).}
-\begin{itemize}
-  \item Per-element cost rises sharply with local approximation order (polynomial order \(P\), defined in Notation): measured timestep cost scales approximately as \(P^{2.68}\) in a representative sweep (\(r^2 \approx 0.9985\)). So: balance must be cost-weighted, not count-based.
-  \item Localized refinement produces time hotspots: clustered refinement yields max/mean load ratios \(\approx 2.7\text{--}4.0\). So: adaptive meshes can throttle wall time if hotspots co-locate on one rank/device.
-  \item Not all timestep time is “balance-sensitive”: pressure+viscous phases can consume \(\sim 0.8\text{--}0.85\) of the timestep at higher core counts. So: gains must be evaluated phase-by-phase; some time is intrinsically global-coupled.
-  \item Decision policies matter: triggered rebalancing can match periodic performance while reducing rebalance events. So: the primary lever is a reliable gate based on predicted net gain.
-\end{itemize}
-
-\noindent\textbf{Contributions.}
-\begin{itemize}
-  \item A Nektar++-anchored hook-point map for the adapt \(\leftrightarrow\) partition lifecycle.
-  \item A calibrated performance/overhead model supporting heterogeneity-aware weighting and phase-aware evaluation.
-  \item A triggered, bounded-migration rebalancing policy evaluated against periodic baselines with explicit overhead accounting.
-\end{itemize}
+In this proposal, \emph{adaptivity} means the simulation changes where resolution is concentrated over time.
+For high-order element methods, that resolution is controlled not only by mesh size \(h\) but also by polynomial degree \(P\); when \(P\) varies spatially, equal element counts do not imply equal compute time.
+Against this backdrop, the core premise is that rebalancing should be treated as a \emph{measurable decision} with explicit benefit–cost accounting, rather than a fixed periodic schedule.
