@@ -1,0 +1,16 @@
+\section*{Related work and positioning (what exists, and what is missing)}
+\noindent\textbf{Spectral/\(hp\) foundations.}
+Spectral element and spectral/\(hp\) methods provide high-order accuracy with element locality, but performance is sensitive to polynomial order and operator structure; this proposal builds on established spectral element foundations and the spectral/\(hp\) CFD literature (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}).
+
+\vspace{0.35em}
+\noindent\textbf{Nektar++ as the target platform.}
+Nektar++ is an open-source spectral/\(hp\) element framework with a mature operator stack and solver infrastructure, making it a credible vehicle for publishable algorithm work that is still “real code” (e.g., \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}).
+
+\vspace{0.35em}
+\noindent\textbf{Where the gap is (what we contribute).}
+Classic repartitioning addresses imbalance, but adaptive spectral/\(hp\) adds two hard constraints that are often under-modeled in practice: (i) \emph{superlinear} per-element cost growth with \(P\), and (ii) rebalancing overhead (repartition + migration + coordination) that can dominate when triggered too often or when changes are no-ops.
+This proposal explicitly models both benefit and cost, then uses those models to decide \emph{when} to rebalance and \emph{how much} to migrate (bounded movement), with the entire story grounded by a tracked evidence pack (\code{myNektarpp/docs/ae0075/}).
+
+\vspace{0.35em}
+\noindent\textbf{Literature expansion plan (short-term).}
+The next iteration of this section will add citations for: (a) graph/hypergraph partitioning and parallel repartitioning, (b) dynamic load balancing frameworks, and (c) heterogeneity-aware scheduling models. Each new citation will be added alongside a concrete “why it matters here” sentence and mapped to a measurable quantity in the Definitions/Notation sections.
