@@ -20,3 +20,50 @@
 Thumbs.db
 *.swp
 .vscode/
+# AE0075_IGNORE_BEGIN
+_logs/
+_bak/
+_rescue_*/
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.toc
+*.out
+*.lof
+*.lot
+*.nav
+*.snm
+*.bcf
+*.bbl
+*.blg
+*.run.xml
+*.synctex.gz
+*.ilg
+*.nls
+*SAVE-ERROR
+*.pdf
+includeonly.tex
+.ae0075_latexmk.pid
+# AE0075_IGNORE_END
+
+# AE0075 / build artifacts
+_logs/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.bcf-SAVE-ERROR
+*.bbl-SAVE-ERROR
+ae0075_only.pdf
+ae0075_only__tmp.*
+
+# local backups
+*.bak.*

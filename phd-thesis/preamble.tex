@@ -119,3 +119,15 @@
                                     % You can define similar commands for common terms.
 % END SNIPPET: preamble
 
+
+% AE0075: make \code robust for underscores in filenames
+\providecommand{\code}[1]{\texttt{#1}}
+\renewcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+% AE0075: tabularx support (needed for \begin{tabularx})
+\usepackage{array}
+\usepackage{tabularx}
+
+% AE0075: guardrails for paths/URLs (prevents drift)
+\providecommand{\codepath}[1]{\texttt{\detokenize{#1}}}
+\usepackage{xurl}

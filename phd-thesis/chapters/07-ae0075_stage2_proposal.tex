@@ -1,0 +1,406 @@
+\providecommand{\code}[1]{\texttt{#1}}
+\makeatletter
+\@ifundefined{path}{\providecommand{\codepath}[1]{\texttt{#1}}}{\providecommand{\codepath}[1]{\path{#1}}}
+\makeatother
+\markboth{}{}
+
+% detokenize removed
+\providecommand{\AEQCoverMode}{0}
+% AE0075      Stage-2 Proposal (Draft v2)
+% Contract: No invented achievements. No invented quotes. Use labels EXACTLY:
+% VERIFIED / UNKNOWN / UNVERIFIED / ASSUMED
+
+% AE0075_ONLY: suppressed mini-cover heading
+
+% 
+% AE0075_ONLY: suppressed mini-title
+%\section*{AE0075 Stage-2 Research Proposal (Draft)}
+
+% (counter suppressed)% (counter suppressed)% (toc entry suppressed)
+% ===================== SUBMISSION-POLISH PATCH BEGIN =====================
+% Identity / metadata
+\ifnum\AEQCoverMode=0\relax
+\begin{center}
+{\Large \textbf{AE0075 Stage-2 Research Proposal}}\\[0.4em]
+{\normalsize \textit{Studentship title: TBD (paste verbatim from Imperial listing)}}\\[0.8em]
+{\large \textbf{Mason Shopperly}}\\
+{\normalsize \today}
+\end{center}
+\fi
+
+\vspace{0.5em}
+
+\section*{Executive Summary}
+% \addcontentsline{toc}{section}{Executive Summary}
+
+\noindent\textbf{Problem.} Adaptive spectral/\(hp\) CFD generates spatially varying polynomial order \(P\), so per-element work is highly nonuniform. On heterogeneous CPU/GPU clusters, the slowest partition throttles each timestep; naive mappings waste throughput, and periodic ``rebalance every \(k\)'' policies can pay coordination/migration overhead even when they do not change the mapping.
+
+\vspace{0.4em}
+\noindent\textbf{Evidence (reproducible in \texttt{myNektarpp/docs/ae0075/}).}
+\begin{itemize}
+  \item \emph{Superlinear \(P\)-cost:} Re=100 fit gives \(\text{ms/step}\approx 0.223522\,P^{2.682}\) with \(r^2=0.9985\). \textbf{Evidence:} \code{p_sweep_re100.csv}.
+  \item \emph{Hotspot-induced imbalance:} clustered \(hp\) hotspots yield naive max/mean \(\approx 2.71\text{--}4.04\). \textbf{Evidence:} \code{imbalance_demo_clustered.csv}.
+  \item \emph{Solve dominance:} pressure+viscous consumes \(\sim 0.8\text{--}0.85\) of Execute at higher core counts. \textbf{Evidence:} \code{cylinder2d_timer_profile_p3p6_fin20_v2.csv}.
+  \item \emph{Policy signal:} triggered rebalance matches periodic while cutting events. \textbf{Evidence:} \code{periodic_vs_trigger_static_rb85_mig90_re100.csv} and \code{key_results.md}.
+\end{itemize}
+
+\noindent\textbf{Thesis (one sentence).} Achieve predictable throughput for adaptive spectral/\(hp\) CFD on heterogeneous systems by making load (and rebalancing) measurable and controllable: calibrate cost/overhead models, compute heterogeneity-aware weights, and rebalance only when predicted benefit exceeds migration+coordination cost under bounded movement.
+
+\noindent\textbf{Contributions.}
+\begin{itemize}
+  \item \textbf{WP1:} Nektar++ hook-point map for adapt \(\leftrightarrow\) partition lifecycle.
+  \item \textbf{WP2:} calibrated cost model \(\rightarrow\) heterogeneity-aware weighting/mapping.
+  \item \textbf{WP3:} triggered + bounded-migration rebalancing policy evaluated against periodic baselines.
+\end{itemize}
+% ====================== SUBMISSION-POLISH PATCH END ======================
+
+\label{ch:ae0075}
+% (toc entry suppressed)
+
+% --- labels (EXACT strings) ---
+\newcommand{\VERIFIED}{\textbf{VERIFIED}}
+\newcommand{\UNKNOWN}{\textbf{UNKNOWN}}
+\newcommand{\UNVERIFIED}{\textbf{UNVERIFIED}}
+\newcommand{\ASSUMED}{\textbf{ASSUMED}}
+
+% --- claim/evidence hooks ---
+\newcommand{\Claim}[1]{\textbf{[Claim #1]}}
+\newcommand{\Evidence}[1]{\textit{Evidence: #1}}
+\newcommand{\Reproduce}[1]{\texttt{Reproduce: #1}}
+
+% Breakable monospace paths (prevents overfull hbox spam)
+% DUPLICATE codepath removed
+% Keep ugly draft readable while we iterate
+\begingroup
+\sloppy
+
+\section*{0. Verified sources (anchor points)}
+\begin{itemize}
+  \item \VERIFIED{} AE0075      listing: \url{https://www.imperial.ac.uk/aeronautics/study/phd/phd-opportunities-and-funding/new-phd-studentships-admissions-round/novel-algorithms-for-load-rebalancing-of-adaptive-mesh-simulations-on-heterogeneous-clusters-ae0075/}
+  \item \VERIFIED{} Sherwin group: \url{https://sherwinlab.ae.ic.ac.uk/}
+  \item \VERIFIED{} Nektar++: \url{https://www.nektar.info/}
+\end{itemize}
+
+\section*{1. Scope and constraints (read-first)}
+\begin{itemize}
+  \item \textbf{Objective:} Stage-2-ready research plan for load rebalancing + solver data-structure updates for adaptive spectral/\textit{hp} simulations on heterogeneous CPU/GPU clusters (Nektar++).
+  \item \textbf{Quotes:} any verbatim phrases from the listing are \UNVERIFIED{} until pasted verbatim into this doc.
+  \item \textbf{Portal constraints (page/word/file/deadline):} \UNKNOWN{} until copied from the portal/email.
+  \item \textbf{Evidence discipline:} every non-trivial performance claim must map to an artifact (or be marked \ASSUMED{} plan).
+\end{itemize}
+
+\section*{3. Evidence snapshot (what exists vs what is planned)}
+
+This proposal is supported by a reproducible evidence pack in \codepath{myNektarpp/docs/ae0075/}.
+We distinguish (i) \textbf{measured} Nektar++ results and (ii) \textbf{modeled-but-grounded} trade studies calibrated by those measurements.
+
+\subsection*{Measured: MPI scaling baseline (core-bound)}
+\Claim{C1} Cylinder2D strong-scaling saturates on 8 physical cores; report mean/std wall time, binding, and exact run config.
+\begin{itemize}
+  \item \Evidence{artifact: \code{cylinder2d_mpi_scaling_p3p6_fin5_corebound_r3.csv} and repeats \code{cylinder2d_mpi_scaling_p3p6_fin5_corebound_r3.csv}}
+  \item \Reproduce{tables regenerated by \codepath{myNektarpp/runs/cylinder2d/ae0075_build_docs.py} (raw run scripts documented in \code{README.md})}
+\end{itemize}
+
+\subsection*{Measured: timer composition (bottleneck identification)}
+\Claim{C2} Global solves dominate timestep cost (Pressure+Viscous fractions near 0.8--0.85 of Execute), limiting scaling as \code{np} increases.
+\begin{itemize}
+  \item \Evidence{artifact: \code{cylinder2d_timer_profile_p3p6_fin20_v2.csv}}
+  \item \Reproduce{summary regenerated by \codepath{myNektarpp/runs/cylinder2d/ae0075_build_docs.py}}
+\end{itemize}
+
+\subsection*{Measured: heterogeneity stress test (effective efficiency collapse)}
+\Claim{C3} Under injected heterogeneity, effective speedup/efficiency can collapse even when baseline imbalance metrics appear near 1.0.
+\begin{itemize}
+  \item \Evidence{artifact: \code{cylinder2d_mpi_hetero_amp_p6_fin20_r3_summary.csv}}
+  \item \Reproduce{summary regenerated by \codepath{myNektarpp/runs/cylinder2d/ae0075_build_docs.py}}
+\end{itemize}
+
+\subsection*{Grounded model: cost scaling with polynomial order}
+\Claim{C4} Per-step cost scales superlinearly with polynomial order (\( \mathrm{ms/step} \approx k\,P^{a} \)), enabling a calibrated load model for hp-adaptive imbalance.
+\begin{itemize}
+  \item \Evidence{artifact: \code{p_sweep_re100.csv} (primary) and \code{p_sweep.csv} (secondary)}
+  \item \Reproduce{generated by \codepath{myNektarpp/runs/cylinder2d/p_sweep.sh} and summarized by \codepath{myNektarpp/runs/cylinder2d/ae0075_build_docs.py}}
+\end{itemize}
+
+\subsection*{Grounded model: trigger vs periodic rebalancing (no-op elimination)}
+\Claim{C5} Periodic rebalancing can waste many events as no-ops (0 elements moved), while an event-driven trigger policy eliminates no-ops across robustness sweeps.
+\begin{itemize}
+  \item \Evidence{artifact: \code{trigger_grid_summary.md} and CSVs \code{rebalance_trade_trigger_grid_*.csv}}
+  \item \Evidence{static no-op example: \code{periodic_vs_trigger_static_rb85_mig90_re100.csv}}
+  \item \Reproduce{generated by \codepath{myNektarpp/runs/cylinder2d/ae0075_trigger_grid.py} and summarized by \codepath{myNektarpp/runs/cylinder2d/ae0075_trigger_grid_report.py}}
+\end{itemize}
+
+
+\section*{4. Research questions}
+
+% AE0075_RQS_V1_START
+\subsection*{Contributions (what this proposal will deliver)}
+\begin{itemize}
+  \item \textbf{Measured cost/overhead models:} a calibrated, solver-aware model that predicts per-rank time contribution from adaptive \(hp\) state (e.g., \(P\)-field and DOF distribution) and device/rank capacity.
+  \item \textbf{Heterogeneity-aware static mapping:} a weighting strategy that maps adaptive \(hp\) workloads onto heterogeneous resources (CPU/GPU or emulated heterogeneity) to reduce \(\max_r t_r\) and \(T_{\text{step}}\) relative to naive baselines.
+  \item \textbf{Triggered, budgeted rebalancing controller:} a decision rule that rebalances only when predicted savings exceed measured overhead, under a migration budget \(B\) to prevent churn.
+  \item \textbf{Evidence harness:} one-command regeneration of proposal tables/plots from tracked CSV artifacts (Claim \(\rightarrow\) Evidence \(\rightarrow\) Reproduce discipline).
+\end{itemize}
+
+\subsection*{Research questions (crisp, testable)}
+\begin{enumerate}
+  \item \textbf{RQ1 — Predictive load model:} \emph{What minimal model predicts per-step time well enough to drive correct rebalancing decisions?}\\
+  \textit{Method:} fit/validate \(hp\)-aware weights (and, where relevant, solve-aware terms) against measured timers; report prediction error and rank-order correctness.\\
+  \textit{Success criteria:} predicted vs measured \(T_{\text{step}}\) correlates strongly; “slowest rank” predicted correctly over stress tests.\\
+  \textit{Artifacts (tracked):} \code{p_sweep_re100.csv}, \code{cylinder2d_timer_profile_p3p6_fin20_v2.csv}.\\  \textit{Reproduce (UNVERIFIED until wired):} \texttt{runs/.../extract\_timers.py}, \texttt{runs/.../fit\_p\_cost.py}.
+
+  \item \textbf{RQ2 — Static heterogeneity-aware partitioning:} \emph{How much throughput is recovered by weighting for \(hp\) work + device capacity versus naive mappings?}\\
+  \textit{Method:} compare (B0) frozen mapping vs (B\(\star\)) weighted mapping under clustered \(P\)-hotspots and heterogeneity (real or emulated).\\
+  \textit{Metrics:} \(T_{\text{step}}\), imbalance ratio \(\rho=\max_r t_r/\mathrm{mean}(t_r)\), and total overhead (should be near zero for static).\\
+  \textit{Success criteria:} recover a large fraction of “lost” efficiency in hotspot cases without increasing solve-time pathologies.\\
+  \textit{Artifacts (tracked):} \code{cylinder2d_mpi_hetero_amp_p6_fin20_r3_summary.csv}.\\  \textit{Reproduce (UNVERIFIED until wired):} \texttt{runs/.../hotspot\_sweep.py}, \texttt{runs/.../hetero\_sweep.py}.
+
+  \item \textbf{RQ3 — When-to-rebalance with bounded migration:} \emph{Can a triggered controller match/beat periodic rebalancing while spending less overhead and avoiding churn?}\\
+  \textit{Method:} implement trigger \(\Delta T_{\text{benefit}} > \gamma T_{\text{overhead}}\) with budget \(B\); sweep \((\gamma,B)\) and compare against periodic \(k\).\\
+  \textit{Metrics:} time-to-solution, \# rebalance events, total overhead, and (guardrail) QoI drift.\\
+  \textit{Success criteria:} a stable Pareto region exists where runtime improves and overhead drops versus periodic baselines.\\
+  \textit{Artifacts (tracked):} \code{periodic_vs_trigger_static_rb85_mig90_re100.csv}.\\  \textit{Reproduce (UNVERIFIED until wired):} \texttt{runs/.../sweep\_trigger\_budget.py}.
+\end{enumerate}
+
+\noindent\textbf{Note on honesty:} When the environment cannot yet execute a measurement (e.g., full GPU path), it remains explicitly marked \textbf{ASSUMED}/\textbf{UNVERIFIED} until a tracked artifact exists.
+% AE0075_RQS_V1_END
+
+\begin{itemize}
+  \item \textbf{RQ1 (Cost modeling):} Can we model compute+comm+global-solve sensitivity for spectral/\textit{hp} workloads under heterogeneity?
+  \item \textbf{RQ2 (Partitioning):} Can heterogeneity-aware weights + policies recover throughput under mixed CPU/GPU performance?
+  \item \textbf{RQ3 (Adaptive rebalancing):} Can we rebalance during adaptation with bounded migration cost and net positive time-to-solution?
+\end{itemize}
+
+\section*{5. Technical approach (work packages)}
+\subsection*{WP0 — Repro harness + artifact schema}
+\begin{itemize}
+  \item Standardize CSV schema + metadata (binding, clocks, topology, compiler/flags).
+  \item Enforce Claim \(\rightarrow\) Evidence \(\rightarrow\) Reproduce mapping.
+\end{itemize}
+
+\subsection*{WP1 — Nektar++ hook points survey}
+\begin{itemize}
+  \item Identify insertion points: partitioning, weights, adaptive repartition triggers, migration pathways.
+  \item Deliverable: short “code map” (file+function pointers).
+  \item Status: \ASSUMED{} until completed.
+\end{itemize}
+
+\subsection*{WP2 — Static heterogeneity-aware weighting}
+\begin{itemize}
+  \item Build rank-speed model (CPU, SMT, GPU where available).
+  \item Evaluate on controlled perturbations; quantify gains + failure modes.
+  \item Status: \ASSUMED{} plan.
+\end{itemize}
+
+\subsection*{WP3 — Dynamic rebalancing (bounded migration)}
+\begin{itemize}
+  \item Trigger threshold + migration budget per adapt step.
+  \item Explicitly account for repartition+migration overhead.
+  \item Status: \ASSUMED{} plan.
+\end{itemize}
+
+\section*{6. Evaluation matrix (fill as evidence lands)}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.26\linewidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{0.12\linewidth}}
+\hline
+Question & Metric(s) & Baseline & Status \\
+\hline
+Collapse under heterogeneity? & wall time, efficiency & static partition & \UNVERIFIED \\
+Weighting recovers throughput? & net wall time, efficiency & static partition & \ASSUMED \\
+Overhead bounded? & repartition time, migrated elems & n/a & \ASSUMED \\
+QoI invariant? & QoI drift tolerance & baseline QoI & \ASSUMED \\
+\hline
+\end{tabularx}
+
+\section*{7. Risks / failure modes}
+\begin{itemize}
+  \item Global-solve dominance limits wins \(\rightarrow\) quantify, report honestly.
+  \item Migration overhead cancels gains \(\rightarrow\) budgets + trigger thresholds.
+  \item GPU availability uncertain \(\rightarrow\) treat as \UNKNOWN{} until measured/implemented.
+\end{itemize}
+
+\endgroup
+
+% === AE0075 WORLD-CLASS ADDENDUM START ===
+\clearpage
+\section{Execution credibility (measured evidence + reproducible artifacts)}
+
+\textbf{Evidence discipline.} Every non-trivial performance claim below corresponds to a tracked artifact under \texttt{docs/ae0075/} (or is explicitly marked \textbf{ASSUMED} / \textbf{UNVERIFIED} pending verification). This proposal is intentionally ``measurement-first'' and self-policing.
+
+\vspace{0.5em}
+\noindent\textbf{What is already measured (and re-runnable):}
+\begin{itemize}
+  \item \textbf{Measured p-scaling fit (real Nektar++ Cylinder2D):} ms/step $\approx k \cdot P^{a}$ with $(k,a,r^2)$ recorded for Re=100 primary. Reproduce: \texttt{bash runs/cylinder2d/p\_sweep.sh}. Output: \texttt{docs/ae0075/p\_sweep\_re100.csv}.
+  \item \textbf{Trigger vs periodic:} event-driven trigger removes wasted no-op rebalances and can match periodic performance with fewer events (e.g., 40 $\rightarrow$ 18 rebalances in a near-crossover regime). Backed by tracked comparison CSVs and summarized in \texttt{key\_results.md}.
+  \item \textbf{Timer composition:} global solves dominate Execute time, motivating solve-aware rebalancing rather than naive element-count balancing.
+  \item \textbf{Heterogeneity sensitivity:} effective efficiency can collapse sharply under controlled slowdowns, motivating heterogeneity-aware weighting and bounded migration.
+\end{itemize}
+
+% AE0075_EVAL_TABLE_V2_START
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.18}
+% AE0075_EVAL_MATRIX_V2_START
+\begin{tabular}{p{0.26\linewidth} p{0.26\linewidth} p{0.33\linewidth} p{0.10\linewidth}}
+\toprule
+\textbf{Question} & \textbf{Metric(s)} & \textbf{Evidence (tracked)} & \textbf{Status} \\
+\midrule
+P-cost superlinear in \(P\)? &
+fit params \(k,a,r^2\) &
+\codepath{docs/ae0075/p\_sweep\_re100.csv} (fit via \codepath{runs/cylinder2d/pack\_tables.py}) &
+\textbf{MEASURED} \\
+Clustered hp hotspots cause imbalance? &
+max/mean, mean/max &
+\codepath{docs/ae0075/imbalance\_demo\_clustered.csv} (grounded in measured fit) &
+\textbf{MODELED} \\
+Global solves dominate at scale? &
+(Pressure+Viscous)/Execute &
+\codepath{docs/ae0075/cylinder2d\_timer\_profile\_p3p6\_fin20\_v2.csv} &
+\textbf{MEASURED} \\
+Heterogeneity collapses effective efficiency? &
+effective efficiency vs baseline &
+\codepath{docs/ae0075/cylinder2d\_mpi\_hetero\_amp\_p6\_fin20\_r3\_summary.csv} &
+\textbf{MEASURED} \\
+Trigger reduces no-op rebalances? &
+events, moved\_elems\_total, avg\_ms &
+\codepath{docs/ae0075/rebalance\_trade\_regime\_*cmp\_trigger*\_re100.csv} &
+\textbf{MODELED} \\
+QoI invariant under rebalance? &
+QoI drift tolerance &
+\textit{Define QoI + measure on at least one adaptive case (next).} &
+\textbf{ASSUMED} \\
+\bottomrule
+\end{tabular}
+% AE0075_EVAL_MATRIX_V2_END
+
+\caption{Evaluation matrix (clean layout; targets are fixed once portal constraints and QoI are defined).}
+\end{table}
+% AE0075_EVAL_TABLE_V2_END
+
+\clearpage
+% AE0075_TECH_APPROACH_START
+\clearpage
+\section{Technical Approach: Triggered Rebalancing with Bounded Migration}
+
+\noindent\textbf{Objective.} Replace periodic ``rebalance every $k$'' with a \emph{cost--benefit trigger} and a \emph{migration budget} so rebalancing happens only when it is predicted to reduce time-to-solution more than it costs (coordination + data movement), and never induces unstable churn.
+
+\subsection*{A. Performance model (measured, then used for decisions)}
+We decompose per-step time as
+\[
+T_{\text{step}} \;\approx\; T_{\text{compute}}(P,\text{elem}) \;+\; T_{\text{comm}}(\partial\Omega,\text{messages}) \;+\; T_{\text{solve}}(\text{global}).
+\]
+\begin{itemize}
+  \item \textbf{Compute:} use a calibrated per-element cost model, with a strong prior that cost grows superlinearly with local polynomial order \(P\). (Calibration inputs: p-sweep CSVs.)
+  \item \textbf{Communication:} model as a function of cut edges / message counts / bytes; keep it simple initially (linear fit) and refine only if it materially changes decisions.
+  \item \textbf{Global solve sensitivity:} incorporate the measured dominance of global solves at scale as an explicit term so that rebalancing decisions are not blind to the true bottleneck.
+\end{itemize}
+
+\subsection*{B. Imbalance and predicted benefit}
+Let \(t_r\) be the modeled per-step time contribution for rank (or device) \(r\). Define an imbalance ratio
+\[
+\rho \;=\; \frac{\max_r t_r}{\mathrm{mean}_r\, t_r},
+\qquad \text{and an efficiency proxy}\qquad
+\eta \approx \frac{1}{\rho}.
+\]
+A candidate remap \(M\rightarrow M'\) yields a predicted improvement
+\[
+\Delta T_{\text{benefit}} \;\approx\; T_{\text{step}}(M)\;-\;T_{\text{step}}(M').
+\]
+\textbf{Key point:} \(\Delta T_{\text{benefit}}\) is computed from the calibrated model, so it can be evaluated cheaply and repeatedly across adaptation steps.
+
+\subsection*{C. Trigger rule (rebalance only when it is worth it)}
+We rebalance when predicted savings exceed predicted overhead:
+\[
+\textbf{Trigger if}\quad \Delta T_{\text{benefit}} \;>\; \gamma\, T_{\text{overhead}},
+\]
+where \(T_{\text{overhead}} = T_{\text{coord}} + T_{\text{migrate}} + T_{\text{rebuild}}\) and \(\gamma\ge 1\) is a safety margin (tuned by robustness sweeps).
+\begin{itemize}
+  \item \textbf{Coordination:} barrier + partition computation + metadata exchange.
+  \item \textbf{Migration:} element/DOF transfer + field remap cost (see bounded migration below).
+  \item \textbf{Rebuild:} communication pattern rebuild and any solver-side reinitialization.
+\end{itemize}
+
+\subsection*{D. Bounded migration (prevent churn; match heterogeneous constraints)}
+A pure trigger can still choose aggressive remaps. We enforce a budget:
+\[
+\textbf{moved\_cost}(M\rightarrow M') \;\le\; B,
+\]
+where \(\textbf{moved\_cost}\) is \emph{not} just ``moved elements''. A stronger proxy (target for implementation) is \textbf{P-weighted DOFs moved} (or an equivalent \(hp\)-aware measure). This aligns the migration penalty with what actually dominates runtime and bandwidth.
+
+\subsection*{E. Algorithm sketch (decision loop)}
+\begin{enumerate}
+  \item After each adapt step, compute per-rank modeled costs \(t_r\) and current imbalance \(\rho\).
+  \item Propose a candidate remap \(M'\) using heterogeneity-aware weights (WP2) under budget \(B\).
+  \item Compute \(\Delta T_{\text{benefit}}\) and \(T_{\text{overhead}}\).
+  \item If \(\Delta T_{\text{benefit}} > \gamma T_{\text{overhead}}\), apply remap; else skip.
+  \item Log: predicted vs realized \(T_{\text{step}}\), overhead, and any mismatch to refine the model.
+\end{enumerate}
+
+\subsection*{F. What this achieves (why it solves more than “it’s a problem”)}
+\begin{itemize}
+  \item \textbf{No-op elimination:} if the remap is predicted not to help, it is not executed.
+  \item \textbf{Overhead control:} the budget \(B\) bounds worst-case data movement and rebuild churn.
+  \item \textbf{Heterogeneity awareness:} weights encode device/rank speed so ``balanced'' means balanced in \emph{time}, not element count.
+  \item \textbf{Measurable progress:} each component (model fit, trigger threshold, migration budget) is validated via tracked CSV sweeps and regenerated tables/plots.
+\end{itemize}
+
+\noindent\textbf{Reproduce (UNVERIFIED path until wired):} add a single driver script that (i) runs a param sweep over \(\gamma\) and \(B\), (ii) emits tracked CSVs, and (iii) regenerates the proposal tables/figures from those CSVs.
+% AE0075_TECH_APPROACH_END
+
+
+\section{Research plan (work packages + crisp deliverables)}
+
+\subsection*{WP0 --- Evidence harness and reproducibility (continuous)}
+\begin{itemize}
+  \item Maintain one-command doc rebuild and keep all headline numbers generated from tracked CSVs.
+  \item Deliverable: \texttt{docs/ae0075/key\_results.md} remains numbers-first source of truth.
+\end{itemize}
+
+\subsection*{WP1 --- Nektar++ hook points (feasibility mapping; Gate-2)}
+\begin{itemize}
+  \item Identify where element work / polynomial order / timers expose imbalance signals.
+  \item Identify where repartition + migration can be inserted in an adaptive loop.
+  \item Deliverable: \texttt{docs/ae0075/NEKTARPP\_HOOKS.md} with file paths + entry points (\textbf{UNVERIFIED} until Nektar++ source is in-scope here).
+\end{itemize}
+
+\subsection*{WP2 --- Static heterogeneity-aware weighting}
+\begin{itemize}
+  \item Extend weights to account for rank-speed model + solver-phase dominance (solve-aware weighting).
+  \item Evaluate on controlled slowdown perturbations and report net wall-time and efficiency.
+\end{itemize}
+
+\subsection*{WP3 --- Dynamic rebalancing (trigger + bounded migration)}
+\begin{itemize}
+  \item Trigger policy: rebalance only when predicted loss exceeds threshold (no wasted events).
+  \item Bounded migration: cap moved units per adapt step; study crossover vs heterogeneity and hotspot severity.
+  \item Deliverable: stability of throughput under adaptation with explicitly bounded overhead.
+\end{itemize}
+
+\clearpage
+\section{Timeline (36 months, with gates and “done means”)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{p{0.18\linewidth} p{0.76\linewidth}}
+\toprule
+Window & Outcomes (each line ends in a concrete artifact) \\
+\midrule
+Months 1--3 &
+WP0 finalize + WP1 hook mapping; publish \texttt{NEKTARPP\_HOOKS.md} (\textbf{UNVERIFIED} until source access),
+lock portal constraints, lock QoI definition, freeze metrics. \\
+Months 4--9 &
+WP2 static heterogeneity-aware weighting; at least one controlled-perturbation win with tracked CSV + regenerated docs. \\
+Months 10--18 &
+WP3 trigger + bounded migration; regime maps across heterogeneity/hotspot/adapt cadence; “no-op eliminated” robustness tables. \\
+Months 19--30 &
+Generalize to additional adaptive cases; refine models; draft paper-quality evaluation. \\
+Months 31--36 &
+Thesis write-up + final validation + dissemination. \\
+\bottomrule
+\end{tabular}
+\caption{High-level timeline (kept honest by artifacts and gates).}
+\end{table}
+
+% === AE0075 WORLD-CLASS ADDENDUM END ===
