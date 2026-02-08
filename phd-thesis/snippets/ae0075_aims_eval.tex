@@ -1,0 +1,32 @@
+\section*{Research aims, hypotheses, and evaluation plan}
+
+This project is organized around a small number of falsifiable hypotheses, each paired with a concrete evaluation protocol.
+The goal is not “load balancing in general”, but a publishable, phase-aware decision policy for \emph{when} to rebalance and \emph{how much} to migrate in adaptive spectral/\(hp\) CFD on heterogeneous systems.
+
+\vspace{0.35em}
+\noindent\textbf{Aim A1 (model the benefit):} build a phase-aware performance model that predicts how wall time changes with \(P\)-distribution and rank/device assignment.
+\newline\textbf{Hypothesis H1:} cost-weighted balance based on calibrated \(P\)-sensitivity reduces slowest-part throttling compared to count-based baselines, especially under clustered refinement.
+
+\vspace{0.35em}
+\noindent\textbf{Aim A2 (model the cost):} quantify and predict rebalancing overhead (repartition + migration + coordination) as a function of migration volume and system regime.
+\newline\textbf{Hypothesis H2:} for realistic adaptive cadence, overhead is large enough that periodic policies waste time in regimes where mappings change weakly (including no-op or near-no-op events).
+
+\vspace{0.35em}
+\noindent\textbf{Aim A3 (make the decision):} design a triggered policy that rebalances only when predicted net gain is positive, with bounded migration to prevent churn.
+\newline\textbf{Hypothesis H3:} a trigger rule using \(\Delta T_{\text{benefit}} > \Delta T_{\text{cost}}\) plus a migration budget yields equal-or-better wall time than periodic policies while reducing event count and stabilizing behavior across regimes.
+
+\vspace{0.5em}
+\noindent\textbf{Evaluation matrix (what “success” means in practice).}
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.13\linewidth}X p{0.18\linewidth} p{0.20\linewidth}@{}}
+\hline
+\textbf{Item} & \textbf{Experiment / comparison} & \textbf{Metric(s)} & \textbf{Success criterion} \\
+\hline
+H1 & clustered refinement vs uniform; cost-weighted vs count-based mapping & \(t_{\text{step}}, \rho, \eta\) & statistically lower \(t_{\text{step}}\) and lower \(\rho\) \\
+H2 & periodic rebalance every \(k\) across cadences & \#events, \#no-ops, overhead time & nontrivial overhead and measurable no-op/near-no-op rate \\
+H3 & triggered + bounded migration vs periodic & \(t_{\text{step}}\), overhead, event count & \(\le\) wall time with fewer events; bounded overhead growth \\
+\hline
+\end{tabularx}
+
+\vspace{0.35em}
+\noindent\textbf{Deliverable standard.}
+Each row above must end in a reproducible figure/table that can be regenerated from raw logs, and each hypothesis must be stated as “supported / not supported” based on those results.
