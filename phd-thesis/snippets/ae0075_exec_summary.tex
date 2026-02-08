@@ -1,32 +1,33 @@
 \section*{Executive Summary}
 
-\noindent\textbf{Context.}
-Adaptive spectral/\(hp\) CFD delivers accuracy efficiently by concentrating resolution where physics demands it (e.g., near-wall layers, wakes, shear regions).
-But adaptivity changes the workload shape: localized high-\(P\) regions can dominate cost, and parallel throughput becomes sensitive to how those regions are distributed across ranks/devices.
+High-fidelity CFD is increasingly limited not by whether a method is accurate, but by whether it runs \emph{predictably} and \emph{efficiently} at scale.
+Adaptive high-order methods are attractive because they concentrate numerical effort where the physics demands it; however, that same adaptivity creates strongly uneven work distributions that can throttle parallel throughput.
 
-\vspace{0.35em}
-\noindent\textbf{Problem.}
-On heterogeneous CPU/GPU clusters, timestep time is throttled by the slowest partition during synchronized phases (especially global solves).
-Naive partitioning (e.g., equal element counts) can waste throughput when per-element cost varies strongly with \(P\), and periodic “rebalance every \(k\)” policies can incur overhead even when the mapping barely changes.
-
-\vspace{0.35em}
-\noindent\textbf{Preliminary measurements (what we already know).}
-\begin{itemize}
-  \item \emph{Superlinear cost with \(P\):} measured runtime scales approximately as \(P^{2.68}\) in a representative sweep (\(r^2 \approx 0.9985\)). \textbf{Implication:} balance must be cost-weighted, not count-based.
-  \item \emph{Hotspot-driven imbalance:} clustered refinement can yield max/mean load ratios \(\approx 2.7\text{--}4.0\). \textbf{Implication:} adaptive meshes create localized “time hotspots” that dominate wall time if co-located on the same rank/device.
-  \item \emph{Solve dominance:} pressure+viscous phases can consume \(\sim 0.8\text{--}0.85\) of the timestep at higher core counts. \textbf{Implication:} rebalancing benefit must be evaluated at the phase level; some time is intrinsically global-coupled.
-  \item \emph{Policy signal:} a triggered policy can match periodic performance while reducing rebalance events. \textbf{Implication:} the core lever is deciding \emph{when} to rebalance based on predicted net gain.
-\end{itemize}
+On modern clusters, two effects collide.
+First, the wall time of a timestep is often governed by the \emph{slowest} partition because synchronized phases and globally coupled solves force ranks/devices to wait for one another.
+Second, heterogeneous hardware means that “equal work” depends on device throughput and on which phases dominate the timestep.
+As a result, simple heuristics (e.g., equal element counts, or rebalancing periodically every \(k\) steps) can waste compute time: they can leave expensive regions co-located on the same partition, or trigger rebalances whose overhead exceeds their benefit.
 
 \vspace{0.35em}
 \noindent\textbf{Thesis.}
-Achieve predictable throughput for adaptive spectral/\(hp\) CFD on heterogeneous systems by making load (and rebalancing) measurable and controllable:
-(i) calibrate cost and overhead models, (ii) compute heterogeneity-aware weights/mappings, and (iii) rebalance only when predicted benefit exceeds repartition+migration+coordination cost under bounded movement.
+Achieve predictable throughput for adaptive high-order CFD on heterogeneous systems by making rebalancing a measurable decision:
+(i) calibrate models for \emph{benefit} (how much time is saved by improving the mapping) and \emph{cost} (repartition+migration+coordination overhead),
+(ii) compute heterogeneity-aware weights/mappings, and
+(iii) rebalance only when predicted net gain is positive, under bounded migration to prevent churn.
+
+\vspace{0.35em}
+\noindent\textbf{Preliminary signals (measured, motivating the approach).}
+\begin{itemize}
+  \item \emph{Per-element cost rises sharply with local approximation order} (polynomial order \(P\)): measured timestep cost scales approximately as \(P^{2.68}\) in a representative sweep (\(r^2 \approx 0.9985\)). \textbf{So:} balance must be cost-weighted, not count-based.
+  \item \emph{Localized refinement produces time hotspots:} clustered refinement yields max/mean load ratios \(\approx 2.7\text{--}4.0\). \textbf{So:} adaptive meshes can throttle wall time if hotspots co-locate on one rank/device.
+  \item \emph{Not all timestep time is “balance-sensitive”:} pressure+viscous phases can consume \(\sim 0.8\text{--}0.85\) of the timestep at higher core counts. \textbf{So:} gains must be evaluated phase-by-phase; some time is intrinsically global-coupled.
+  \item \emph{Decision policies matter:} triggered rebalancing can match periodic performance while reducing rebalance events. \textbf{So:} the primary lever is a reliable gate based on predicted net gain.
+\end{itemize}
 
 \vspace{0.35em}
 \noindent\textbf{Contributions.}
 \begin{itemize}
   \item A Nektar++-anchored hook-point map for the adapt \(\leftrightarrow\) partition lifecycle.
-  \item A calibrated cost model that supports heterogeneity-aware weighting/mapping.
-  \item A triggered, bounded-migration rebalancing policy evaluated against periodic baselines with phase-aware metrics.
+  \item A calibrated performance/overhead model supporting heterogeneity-aware weighting and phase-aware evaluation.
+  \item A triggered, bounded-migration rebalancing policy evaluated against periodic baselines with explicit overhead accounting.
 \end{itemize}
