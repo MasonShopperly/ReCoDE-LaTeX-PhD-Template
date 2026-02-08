@@ -1,0 +1,17 @@
+\section*{Problem definition (what we measure and what “success” means)}
+\noindent This proposal uses a measurement-first contract: every numeric claim is backed by a tracked artifact in \code{myNektarpp/docs/ae0075/}.
+
+\vspace{0.4em}
+\noindent\textbf{Core quantities (per adapt/run segment).}
+\begin{itemize}
+  \item \textbf{Modeled wall-time per step} \(\;\;\rightarrow\;\;\) \code{avg\_ms\_per\_step} (lower is better).
+  \item \textbf{Imbalance ratio} \(\;\;\rightarrow\;\;\) \code{avg\_imbalance\_ratio} \(=\) (slowest-part load / mean load). \(1.0\) is perfect balance; larger means worse.
+  \item \textbf{Effective efficiency} \(\;\;\rightarrow\;\;\) \code{avg\_efficiency} \(\approx\) (mean / max), near \(1.0\) is good.
+  \item \textbf{Migration intensity} \(\;\;\rightarrow\;\;\) \code{moved\_elems\_total} and \code{migration\_ms\_total}.
+  \item \textbf{Rebalance event quality} \(\;\;\rightarrow\;\;\) \code{n\_rebalances\_total} vs \code{n\_rebalance\_noop\_total} (events where 0 elements moved).
+\end{itemize}
+
+\vspace{0.4em}
+\noindent\textbf{Key distinction: “periodic” vs “triggered”.}
+A periodic policy schedules rebalancing at a fixed cadence and can execute wasted/no-op events.
+A triggered policy executes a rebalance only when predicted benefit exceeds predicted cost, and should drive \code{noop} toward zero.

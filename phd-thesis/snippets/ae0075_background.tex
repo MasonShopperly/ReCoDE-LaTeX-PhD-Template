@@ -1,0 +1,19 @@
+\section*{Background and motivation (why this is hard)}
+\noindent\textbf{Adaptive spectral/\(hp\) CFD changes the workload shape.}
+In spectral/\(hp\) element methods (e.g., Nektar++), each element carries a polynomial order \(P\).
+In adaptive workflows, \(P\) (and/or element size \(h\)) varies spatially: boundary layers, wakes, and shear layers concentrate high-\(P\) work into localized regions, while the far field remains cheap.
+
+\vspace{0.35em}
+\noindent\textbf{Parallel time is set by the slowest partition.}
+At each timestep, global synchronization and solver phases couple all ranks; as a result, wall time is throttled by the slowest rank/device.
+Balancing by element count is therefore not enough: equal counts do not imply equal time when \(P\) varies.
+
+\vspace{0.35em}
+\noindent\textbf{Heterogeneous hardware amplifies the problem.}
+On mixed CPU generations, SMT/hwthreads, and GPU-enabled nodes, “equal work” must be defined relative to device throughput and phase-specific bottlenecks (e.g., pressure/viscous solves vs element-local work).
+A practical rebalancing policy must therefore (i) model cost and overhead, (ii) account for heterogeneity, and (iii) avoid unnecessary repartition/migration when the mapping does not materially improve throughput.
+
+\vspace{0.35em}
+\noindent\textbf{Measurement-first contract.}
+This proposal is measurement-first: numerical claims are backed by tracked artifacts (CSV + script pointer) in the evidence pack.
+New claims will only be added once they appear in the evidence pack.
