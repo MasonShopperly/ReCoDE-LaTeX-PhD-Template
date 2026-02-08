@@ -1,9 +1,8 @@
 \section*{Executive Summary}
 
 High-fidelity CFD is increasingly limited not by whether a method is accurate, but by whether it runs \emph{predictably} and \emph{efficiently} at scale.
-This proposal directly targets the AE0075 studentship theme: novel algorithms for load rebalancing in adaptive simulations on heterogeneous CPU/GPU clusters, implemented and evaluated in Nektar++.
-
 Adaptive high-order methods are attractive because they concentrate numerical effort where the physics demands it; however, that same adaptivity creates strongly uneven work distributions that can throttle parallel throughput.
+This proposal directly addresses the AE0075 studentship topic on novel algorithms for load rebalancing of adaptive simulations on heterogeneous clusters \cite{ImperialAE0075Studentship}.
 
 On modern clusters, two effects collide.
 First, the wall time of a timestep is often governed by the \emph{slowest} partition because synchronized phases and globally coupled solves force ranks/devices to wait for one another.
@@ -20,13 +19,12 @@ Achieve predictable throughput for adaptive high-order CFD on heterogeneous syst
 \vspace{0.35em}
 \noindent\textbf{Preliminary signals (measured, motivating the approach).}
 \begin{itemize}
-  \item \emph{Per-element cost rises sharply with local approximation order} (polynomial order \(P\)): measured timestep cost scales approximately as \(P^{2.68}\) in a representative sweep (\(r^2 \approx 0.9985\)). \textbf{So:} balance must be cost-weighted, not count-based.
-  \item \emph{Localized refinement produces time hotspots:} clustered refinement yields max/mean load ratios \(\approx 2.7\text{--}4.0\). \textbf{So:} adaptive meshes can throttle wall time if hotspots co-locate on one rank/device.
-  \item \emph{Not all timestep time is “balance-sensitive”:} pressure+viscous phases can consume \(\sim 0.8\text{--}0.85\) of the timestep at higher core counts. \textbf{So:} gains must be evaluated phase-by-phase; some time is intrinsically global-coupled.
-  \item \emph{Decision policies matter:} triggered rebalancing can match periodic performance while reducing rebalance events. \textbf{So:} the primary lever is a reliable gate based on predicted net gain.
+  \item Per-element cost rises sharply with local approximation order (polynomial order \(P\), defined in Notation): measured timestep cost scales approximately as \(P^{2.68}\) in a representative sweep (\(r^2 \approx 0.9985\)). So: balance must be cost-weighted, not count-based.
+  \item Localized refinement produces time hotspots: clustered refinement yields max/mean load ratios \(\approx 2.7\text{--}4.0\). So: adaptive meshes can throttle wall time if hotspots co-locate on one rank/device.
+  \item Not all timestep time is “balance-sensitive”: pressure+viscous phases can consume \(\sim 0.8\text{--}0.85\) of the timestep at higher core counts. So: gains must be evaluated phase-by-phase; some time is intrinsically global-coupled.
+  \item Decision policies matter: triggered rebalancing can match periodic performance while reducing rebalance events. So: the primary lever is a reliable gate based on predicted net gain.
 \end{itemize}
 
-\vspace{0.35em}
 \noindent\textbf{Contributions.}
 \begin{itemize}
   \item A Nektar++-anchored hook-point map for the adapt \(\leftrightarrow\) partition lifecycle.
