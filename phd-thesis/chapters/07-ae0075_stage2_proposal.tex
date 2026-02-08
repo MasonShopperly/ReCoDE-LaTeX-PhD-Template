@@ -30,40 +30,15 @@
 
 \vspace{0.5em}
 
-\section*{Executive Summary}
-% \addcontentsline{toc}{section}{Executive Summary}
+\input{snippets/ae0075_exec_summary.tex}
 
-\noindent\textbf{Problem.} Adaptive spectral/\(hp\) CFD generates spatially varying polynomial order \(P\), so per-element work is highly nonuniform. On heterogeneous CPU/GPU clusters, the slowest partition throttles each timestep; naive mappings waste throughput, and periodic ``rebalance every \(k\)'' policies can pay coordination/migration overhead even when they do not change the mapping.
-
-\vspace{0.4em}
-\noindent\textbf{Evidence pack (tracked):} \code{myNektarpp/docs/ae0075/}.
-\begin{itemize}
-  \item \emph{Superlinear \(P\)-cost:} Re=100 fit gives \(\text{ms/step}\approx 0.223522\,P^{2.682}\) with \(r^2=0.9985\). \textbf{Evidence:} \code{p_sweep_re100.csv}.
-  \item \emph{Hotspot-induced imbalance:} clustered \(hp\) hotspots yield naive max/mean \(\approx 2.71\text{--}4.04\) (\code{imbalance_demo_clustered.csv}).
-  \item \emph{Solve dominance:} pressure+viscous consumes \(\sim 0.8\text{--}0.85\) of Execute at higher core counts (\code{cylinder2d_timer_profile_p3p6_fin20_v2.csv}).
-  \item \emph{Policy signal:} triggered rebalance matches periodic while cutting events (\code{periodic_vs_trigger_static_rb85_mig90_re100.csv}; \code{key_results.md}).
-\end{itemize}
-
-\noindent\textbf{Thesis (one sentence).} Achieve predictable throughput for adaptive spectral/\(hp\) CFD on heterogeneous systems by making load (and rebalancing) measurable and controllable: calibrate cost/overhead models, compute heterogeneity-aware weights, and rebalance only when predicted benefit exceeds migration+coordination cost under bounded movement.
-
-\noindent\textbf{Contributions.}
-\begin{itemize}
-  \item \textbf{WP1:} Nektar++ hook-point map for adapt \(\leftrightarrow\) partition lifecycle.
-  \item \textbf{WP2:} calibrated cost model \(\rightarrow\) heterogeneity-aware weighting/mapping.
-  \item \textbf{WP3:} triggered + bounded-migration rebalancing policy evaluated against periodic baselines.
-\end{itemize}
+\input{snippets/ae0075_background.tex}
 
 \input{snippets/ae0075_background.tex}
 \input{snippets/ae0075_definitions.tex}
 \input{snippets/ae0075_notation.tex}
 \input{snippets/ae0075_related_work.tex}
 \input{snippets/ae0075_feasibility.tex}
-
-\input{snippets/ae0075_references.tex}
-
-
-
-
 
 % ====================== SUBMISSION-POLISH PATCH END ======================
 
@@ -86,6 +61,8 @@
 % Keep ugly draft readable while we iterate
 \begingroup
 \sloppy
+
+\input{snippets/ae0075_references.tex}
 
 \endgroup
 
@@ -156,7 +133,6 @@ The technical work that remains is to make these policies \emph{mesh- and device
 migration and coordination costs (next section).
 
 % === AE0075_PRELIM_RESULTS_END ===
-
 
 \section{Execution credibility (measured evidence + reproducible artifacts)}
 
@@ -283,7 +259,6 @@ where \(\textbf{moved\_cost}\) is \emph{not} just ``moved elements''. A stronger
 
 \noindent\textbf{Reproduce (UNVERIFIED path until wired):} add a single driver script that (i) runs a param sweep over \(\gamma\) and \(B\), (ii) emits tracked CSVs, and (iii) regenerates the proposal tables/figures from those CSVs.
 % AE0075_TECH_APPROACH_END
-
 
 \section{Research plan (work packages + crisp deliverables)}
 

@@ -1,5 +1,5 @@
 \section*{Measured feasibility (what we already know, and what it implies)}
-\noindent This section summarizes the current evidence pack (\code{myNektarpp/docs/ae0075/}) and the \emph{actionable implications} for the research plan.
+\noindent This section summarizes the current evidence pack (scripts and raw logs are tracked for reproducibility (available on request)) and the \emph{actionable implications} for the research plan.
 
 \vspace{0.4em}
 \subsection*{1) Element cost growth with \(P\) is strongly superlinear}
@@ -20,7 +20,3 @@ Timer composition indicates pressure/viscous phases can dominate Execute (\code{
 \subsection*{4) Triggered policies can reduce wasted/no-op rebalances}
 Triggered vs periodic comparisons show the promise of cutting events while preserving outcomes (\code{periodic\_vs\_trigger\_static\_rb85\_mig90\_re100.csv}; \code{key\_results.md}).
 \textbf{Implication:} the core research lever is a model that predicts \(\Delta T_{\text{benefit}}\) and \(\Delta T_{\text{cost}}\) tightly enough to act as a gate.
-
-\vspace{0.4em}
-\noindent\textbf{What we can now justify.}
-These measurements justify a research plan centered on: (i) calibrated cost models, (ii) heterogeneity-aware weighting, and (iii) a trigger rule with bounded migration that explicitly trades benefit against overhead.

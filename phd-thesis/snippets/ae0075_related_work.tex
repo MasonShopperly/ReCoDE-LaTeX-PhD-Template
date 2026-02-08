@@ -9,7 +9,7 @@ Nektar++ is an open-source spectral/\(hp\) element framework with a mature opera
 \vspace{0.35em}
 \noindent\textbf{Where the gap is (what we contribute).}
 Classic repartitioning addresses imbalance, but adaptive spectral/\(hp\) adds two hard constraints that are often under-modeled in practice: (i) \emph{superlinear} per-element cost growth with \(P\), and (ii) rebalancing overhead (repartition + migration + coordination) that can dominate when triggered too often or when changes are no-ops.
-This proposal explicitly models both benefit and cost, then uses those models to decide \emph{when} to rebalance and \emph{how much} to migrate (bounded movement), with the entire story grounded by a tracked evidence pack (\code{myNektarpp/docs/ae0075/}).
+This proposal explicitly models both benefit and cost, then uses those models to decide \emph{when} to rebalance and \emph{how much} to migrate (bounded movement), with the entire story grounded by a tracked evidence pack (scripts and raw logs are tracked for reproducibility (available on request)).
 
 \vspace{0.35em}
 \noindent\textbf{Literature expansion plan (short-term).}
