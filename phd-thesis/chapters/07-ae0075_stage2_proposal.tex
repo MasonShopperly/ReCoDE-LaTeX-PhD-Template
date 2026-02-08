@@ -6,7 +6,7 @@
 
 % detokenize removed
 \providecommand{\AEQCoverMode}{0}
-% AE0075      Stage-2 Proposal (Draft v2)
+% AE0075 Stage-2 Proposal (Draft v2)
 % Contract: No invented achievements. No invented quotes. Use labels EXACTLY:
 % VERIFIED / UNKNOWN / UNVERIFIED / ASSUMED
 
@@ -67,12 +67,12 @@
 All quantitative claims below are backed by tracked artifacts under
 supplementary scripts and raw logs are available for reproducibility. The numbers-first source of truth is
 \code{key_results.md}; the narrative spine is \code{pack_summary.md}
-(both regenerated from tracked CSVs). :contentReference[oaicite:6]{index=6}
+(both regenerated from tracked CSVs).
 
 \vspace{0.5em}
 \noindent\textbf{Measured: superlinear hp cost scaling.}
 We fit $\text{ms/step} \approx k\,P^{a}$ from real Nektar++ Cylinder2D runs
-and obtain strong superlinear exponents (Re=100 primary). :contentReference[oaicite:7]{index=7}
+and obtain strong superlinear exponents (Re=100 primary).
 
 \begin{center}
 \begin{tabular}{lccc}
@@ -89,21 +89,21 @@ Re=40 (secondary) & 0.315049 & 2.467 & 0.9962 \\
 \noindent\textbf{Grounded model: clustered hp-hotspots create severe imbalance.}
 Using the measured $P$-cost fit to assign per-element weights, a clustered “wake-like”
 ordering with contiguous partitions yields naive max/mean imbalance ratios $\approx 2.71$–$4.04$
-(i.e., large throughput waste before any algorithmic effects). :contentReference[oaicite:8]{index=8}
+(i.e., large throughput waste before any algorithmic effects).
 
 \vspace{0.5em}
 \noindent\textbf{Key policy insight: periodic rebalancing wastes events; triggers remove no-ops.}
 Many periodic rebalances can be true no-ops (0 elements moved) and the wasted fraction is
 cadence-sensitive (“aliasing” with adapt cadence), while trigger policies remove no-ops across
-robustness sweeps. :contentReference[oaicite:9]{index=9} :contentReference[oaicite:10]{index=10}
+robustness sweeps.
 
 Near crossover (Re=100, hetero3x), we observe the same performance while cutting rebalance calls
-from 40 to 18 (extra periodic calls are frequently wasted). :contentReference[oaicite:11]{index=11}
+from 40 to 18 (extra periodic calls are frequently wasted).
 
 \vspace{0.5em}
 \noindent\textbf{Claim registry (keeps the proposal extensible).}
 Each claim has (1) a tracked artifact, and (2) a single regen command, so new results can be
-added without rewriting prose. This is the “never drift” contract. :contentReference[oaicite:12]{index=12}
+added without rewriting prose. This is the “never drift” contract.
 
 \begin{center}
 \begin{tabular}{p{0.18\linewidth}p{0.52\linewidth}p{0.24\linewidth}}
@@ -133,10 +133,10 @@ migration and coordination costs (next section).
 \vspace{0.5em}
 \noindent\textbf{What is already measured (and re-runnable):}
 \begin{itemize}
-  \item \textbf{Measured p-scaling fit (real Nektar++ Cylinder2D):} ms/step $\approx k \cdot P^{a}$ with $(k,a,r^2)$ recorded for Re=100 primary. Reproduce: \texttt{bash runs/cylinder2d/p\_sweep.sh}. Output: \texttt{docs/ae0075/p\_sweep\_re100.csv}.
-  \item \textbf{Trigger vs periodic:} event-driven trigger removes wasted no-op rebalances and can match periodic performance with fewer events (e.g., 40 $\rightarrow$ 18 rebalances in a near-crossover regime). Backed by tracked comparison CSVs and summarized in \texttt{key\_results.md}.
-  \item \textbf{Timer composition:} global solves dominate Execute time, motivating solve-aware rebalancing rather than naive element-count balancing.
-  \item \textbf{Heterogeneity sensitivity:} effective efficiency can collapse sharply under controlled slowdowns, motivating heterogeneity-aware weighting and bounded migration.
+ \item \textbf{Measured p-scaling fit (real Nektar++ Cylinder2D):} ms/step $\approx k \cdot P^{a}$ with $(k,a,r^2)$ recorded for Re=100 primary. Reproduce: \texttt{bash runs/cylinder2d/p\_sweep.sh}. Output: \texttt{docs/ae0075/p\_sweep\_re100.csv}.
+ \item \textbf{Trigger vs periodic:} event-driven trigger removes wasted no-op rebalances and can match periodic performance with fewer events (e.g., 40 $\rightarrow$ 18 rebalances in a near-crossover regime). Backed by tracked comparison CSVs and summarized in \texttt{key\_results.md}.
+ \item \textbf{Timer composition:} global solves dominate Execute time, motivating solve-aware rebalancing rather than naive element-count balancing.
+ \item \textbf{Heterogeneity sensitivity:} effective efficiency can collapse sharply under controlled slowdowns, motivating heterogeneity-aware weighting and bounded migration.
 \end{itemize}
 
 % AE0075_EVAL_TABLE_V2_START
@@ -195,9 +195,9 @@ We decompose per-step time as
 T_{\text{step}} \;\approx\; T_{\text{compute}}(P,\text{elem}) \;+\; T_{\text{comm}}(\partial\Omega,\text{messages}) \;+\; T_{\text{solve}}(\text{global}).
 \]
 \begin{itemize}
-  \item \textbf{Compute:} use a calibrated per-element cost model, with a strong prior that cost grows superlinearly with local polynomial order \(P\). (Calibration inputs: p-sweep CSVs.)
-  \item \textbf{Communication:} model as a function of cut edges / message counts / bytes; keep it simple initially (linear fit) and refine only if it materially changes decisions.
-  \item \textbf{Global solve sensitivity:} incorporate the measured dominance of global solves at scale as an explicit term so that rebalancing decisions are not blind to the true bottleneck.
+ \item \textbf{Compute:} use a calibrated per-element cost model, with a strong prior that cost grows superlinearly with local polynomial order \(P\). (Calibration inputs: p-sweep CSVs.)
+ \item \textbf{Communication:} model as a function of cut edges / message counts / bytes; keep it simple initially (linear fit) and refine only if it materially changes decisions.
+ \item \textbf{Global solve sensitivity:} incorporate the measured dominance of global solves at scale as an explicit term so that rebalancing decisions are not blind to the true bottleneck.
 \end{itemize}
 
 \subsection*{B. Imbalance and predicted benefit}
@@ -220,9 +220,9 @@ We rebalance when predicted savings exceed predicted overhead:
 \]
 where \(T_{\text{overhead}} = T_{\text{coord}} + T_{\text{migrate}} + T_{\text{rebuild}}\) and \(\gamma\ge 1\) is a safety margin (tuned by robustness sweeps).
 \begin{itemize}
-  \item \textbf{Coordination:} barrier + partition computation + metadata exchange.
-  \item \textbf{Migration:} element/DOF transfer + field remap cost (see bounded migration below).
-  \item \textbf{Rebuild:} communication pattern rebuild and any solver-side reinitialization.
+ \item \textbf{Coordination:} barrier + partition computation + metadata exchange.
+ \item \textbf{Migration:} element/DOF transfer + field remap cost (see bounded migration below).
+ \item \textbf{Rebuild:} communication pattern rebuild and any solver-side reinitialization.
 \end{itemize}
 
 \subsection*{D. Bounded migration (prevent churn; match heterogeneous constraints)}
@@ -234,19 +234,19 @@ where \(\textbf{moved\_cost}\) is \emph{not} just ``moved elements''. A stronger
 
 \subsection*{E. Algorithm sketch (decision loop)}
 \begin{enumerate}
-  \item After each adapt step, compute per-rank modeled costs \(t_r\) and current imbalance \(\rho\).
-  \item Propose a candidate remap \(M'\) using heterogeneity-aware weights (WP2) under budget \(B\).
-  \item Compute \(\Delta T_{\text{benefit}}\) and \(T_{\text{overhead}}\).
-  \item If \(\Delta T_{\text{benefit}} > \gamma T_{\text{overhead}}\), apply remap; else skip.
-  \item Log: predicted vs realized \(T_{\text{step}}\), overhead, and any mismatch to refine the model.
+ \item After each adapt step, compute per-rank modeled costs \(t_r\) and current imbalance \(\rho\).
+ \item Propose a candidate remap \(M'\) using heterogeneity-aware weights (WP2) under budget \(B\).
+ \item Compute \(\Delta T_{\text{benefit}}\) and \(T_{\text{overhead}}\).
+ \item If \(\Delta T_{\text{benefit}} > \gamma T_{\text{overhead}}\), apply remap; else skip.
+ \item Log: predicted vs realized \(T_{\text{step}}\), overhead, and any mismatch to refine the model.
 \end{enumerate}
 
 \subsection*{F. What this achieves (why it solves more than “it’s a problem”)}
 \begin{itemize}
-  \item \textbf{No-op elimination:} if the remap is predicted not to help, it is not executed.
-  \item \textbf{Overhead control:} the budget \(B\) bounds worst-case data movement and rebuild churn.
-  \item \textbf{Heterogeneity awareness:} weights encode device/rank speed so ``balanced'' means balanced in \emph{time}, not element count.
-  \item \textbf{Measurable progress:} each component (model fit, trigger threshold, migration budget) is validated via tracked CSV sweeps and regenerated tables/plots.
+ \item \textbf{No-op elimination:} if the remap is predicted not to help, it is not executed.
+ \item \textbf{Overhead control:} the budget \(B\) bounds worst-case data movement and rebuild churn.
+ \item \textbf{Heterogeneity awareness:} weights encode device/rank speed so ``balanced'' means balanced in \emph{time}, not element count.
+ \item \textbf{Measurable progress:} each component (model fit, trigger threshold, migration budget) is validated via tracked CSV sweeps and regenerated tables/plots.
 \end{itemize}
 
 \noindent\textbf{Reproduce (UNVERIFIED path until wired):} add a single driver script that (i) runs a param sweep over \(\gamma\) and \(B\), (ii) emits tracked CSVs, and (iii) regenerates the proposal tables/figures from those CSVs.
@@ -256,28 +256,28 @@ where \(\textbf{moved\_cost}\) is \emph{not} just ``moved elements''. A stronger
 
 \subsection*{WP0 --- Evidence harness and reproducibility (continuous)}
 \begin{itemize}
-  \item Maintain one-command doc rebuild and keep all headline numbers generated from tracked CSVs.
-  \item Deliverable: \texttt{docs/ae0075/key\_results.md} remains numbers-first source of truth.
+ \item Maintain one-command doc rebuild and keep all headline numbers generated from tracked CSVs.
+ \item Deliverable: \texttt{docs/ae0075/key\_results.md} remains numbers-first source of truth.
 \end{itemize}
 
 \subsection*{WP1 --- Nektar++ hook points (feasibility mapping; Gate-2)}
 \begin{itemize}
-  \item Identify where element work / polynomial order / timers expose imbalance signals.
-  \item Identify where repartition + migration can be inserted in an adaptive loop.
-  \item Deliverable: \texttt{docs/ae0075/NEKTARPP\_HOOKS.md} with file paths + entry points (\textbf{UNVERIFIED} until Nektar++ source is in-scope here).
+ \item Identify where element work / polynomial order / timers expose imbalance signals.
+ \item Identify where repartition + migration can be inserted in an adaptive loop.
+ \item Deliverable: \texttt{docs/ae0075/NEKTARPP\_HOOKS.md} with file paths + entry points (\textbf{UNVERIFIED} until Nektar++ source is in-scope here).
 \end{itemize}
 
 \subsection*{WP2 --- Static heterogeneity-aware weighting}
 \begin{itemize}
-  \item Extend weights to account for rank-speed model + solver-phase dominance (solve-aware weighting).
-  \item Evaluate on controlled slowdown perturbations and report net wall-time and efficiency.
+ \item Extend weights to account for rank-speed model + solver-phase dominance (solve-aware weighting).
+ \item Evaluate on controlled slowdown perturbations and report net wall-time and efficiency.
 \end{itemize}
 
 \subsection*{WP3 --- Dynamic rebalancing (trigger + bounded migration)}
 \begin{itemize}
-  \item Trigger policy: rebalance only when predicted loss exceeds threshold (no wasted events).
-  \item Bounded migration: cap moved units per adapt step; study crossover vs heterogeneity and hotspot severity.
-  \item Deliverable: stability of throughput under adaptation with explicitly bounded overhead.
+ \item Trigger policy: rebalance only when predicted loss exceeds threshold (no wasted events).
+ \item Bounded migration: cap moved units per adapt step; study crossover vs heterogeneity and hotspot severity.
+ \item Deliverable: stability of throughput under adaptation with explicitly bounded overhead.
 \end{itemize}
 
 \clearpage
