@@ -1,0 +1,29 @@
+\section*{Notation and acronyms}
+\vspace{-0.3em}
+
+\subsection*{Symbols}
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.16\linewidth}X@{}}
+\textbf{Symbol} & \textbf{Meaning} \\
+\hline
+\(P\) & Polynomial order per element (spectral/\(hp\) order). \\
+\(h\) & Element size (mesh resolution). \\
+\(hp\) & Adaptive strategy combining \(h\)-refinement and \(P\)-refinement. \\
+\(t_{\text{step}}\) & Wall-time per timestep (often reported as ms/step). \\
+\(\rho\) & Imbalance ratio \(=\frac{\max(\text{rank load})}{\text{mean}(\text{rank load})}\) (ideal \(\rho=1\)). \\
+\(\eta\) & Effective efficiency \(\approx \frac{\text{mean}}{\max}\) (ideal \(\eta \approx 1\)). \\
+\(k\) & Rebalance period/cadence in periodic policies (“rebalance every \(k\)”). \\
+\(\Delta T_{\text{benefit}}\) & Predicted wall-time reduction from rebalancing (model-based). \\
+\(\Delta T_{\text{cost}}\) & Predicted repartition+migration+coordination cost (model-based). \\
+\end{tabularx}
+
+\vspace{0.6em}
+\subsection*{Acronyms}
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.22\linewidth}X@{}}
+\textbf{Acronym} & \textbf{Meaning} \\
+\hline
+CFD & Computational Fluid Dynamics. \\
+MPI & Message Passing Interface. \\
+SMT & Simultaneous Multi-Threading (hardware threads). \\
+QoI & Quantity of Interest (solution metric constrained to remain acceptable). \\
+CPU/GPU & Central / Graphics Processing Unit. \\
+\end{tabularx}
