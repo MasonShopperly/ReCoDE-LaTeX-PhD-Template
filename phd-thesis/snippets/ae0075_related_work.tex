@@ -1,29 +1,28 @@
 \section*{Related work and positioning (what exists, and what is missing)}
 
-\noindent\textbf{High-order foundations (why \(P\) matters).}
-Spectral element and spectral/\(hp\) methods achieve high accuracy with strong element locality, but their runtime is sensitive to polynomial order and operator structure.
-This work builds on classical spectral element foundations and the spectral/\(hp\) CFD literature (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}).
-
-\vspace{0.35em}
-\noindent\textbf{Target platform: Nektar++.}
-Nektar++ provides a mature open-source spectral/\(hp\) framework with scalable operators and solvers, making it a credible vehicle for publishable algorithm work in “real code”
-(e.g., \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}; see also \cite{NektarWebsite}).
+\noindent\textbf{High-order CFD foundations and platform.}
+This work sits on the spectral element / spectral-\(hp\) CFD foundation (e.g., \cite{Patera1984SpectralElement,KarniadakisSherwin2005}) and uses Nektar++ as the target implementation platform, where algorithmic contributions are naturally testable in a mature solver stack (e.g., \cite{Cantwell2015NektarPP,Cantwell2020NektarPP}; see also \cite{NektarWebsite}).
 
 \vspace{0.35em}
 \noindent\textbf{Partitioning and dynamic load balancing.}
-Graph-based partitioning and dynamic load balancing are well-established in HPC practice, with widely used baselines such as METIS-style multilevel partitioning \cite{KarypisKumar1998METIS} and software frameworks targeting dynamic applications (e.g., Zoltan \cite{Devine2002Zoltan}).
-In the AMR ecosystem, scalable parallel adaptivity and repartitioning are also treated as first-class problems (e.g., p4est \cite{Burstedde2011p4est}).
+Graph partitioning is a standard baseline for distributing irregular workloads (e.g., multilevel partitioning in \cite{KarypisKumar1998METIS}).
+For problems whose cost distribution changes over time, dynamic load balancing frameworks explicitly support remapping and repartitioning decisions (e.g., \cite{Devine2002Zoltan}).
+For adaptive mesh refinement at scale, modern AMR infrastructures demonstrate that rebalancing must be treated as a first-class algorithmic component to remain scalable (e.g., \cite{Burstedde2011p4est}).
 
 \vspace{0.35em}
-\noindent\textbf{Where the gap is (what we contribute).}
-The gap is not “repartitioning exists,” but the combination of constraints that appear in adaptive high-order CFD on heterogeneous clusters:
-(i) per-element cost grows strongly with local approximation order (so count-based balance is unreliable),
-(ii) rebalancing has nontrivial overhead (repartition + migration + coordination) that can dominate when triggered too often or when mappings change weakly, and
-(iii) heterogeneity means “equal work” depends on device throughput and which timestep phases dominate.
-This proposal explicitly models both \emph{benefit} and \emph{cost}, then uses those models to decide \emph{when} to rebalance and \emph{how much} to migrate (bounded movement).
+\noindent\textbf{Heterogeneity-aware scheduling and overhead.}
+On heterogeneous clusters, “equal work” depends on device throughput and on which phases dominate time-to-solution.
+Heterogeneous scheduling models (e.g., \cite{Topcuoglu2002HEFT}) and heterogeneous runtime systems (e.g., \cite{Augonnet2011StarPU}) highlight a key point: performance depends not only on mapping, but also on \emph{decision overhead} and the stability of that decision over time.
+Classic dynamic load balancing work similarly emphasizes that policies must be judged by end-to-end wall time, not by structural balance alone (e.g., \cite{Cybenko1989DynamicLoadBalancing}).
 
 \vspace{0.35em}
-\noindent\textbf{Short-term literature expansion plan (next research-mode push).}
-We will next add citations specific to: (a) heterogeneous scheduling models (CPU/GPU), (b) repartition+migration overhead modeling, and (c) high-order adaptivity case studies.
-Each new citation will be accompanied by a single sentence stating \emph{what it contributes here} and mapped to a measurable quantity in the Definitions/Notation sections.
-We will also anchor the narrative directly to the studentship framing \cite{ImperialAE0075Studentship} and the supervisors’ group context (e.g., \cite{SherwinLabWebsite}).
+\noindent\textbf{Where the gap is (what this proposal contributes).}
+Load balancing exists, but adaptive spectral/\(hp\) introduces a particularly sharp combination that is often under-modeled in practice:
+(i) per-element cost grows strongly and nonlinearly with local approximation order \(P\),
+(ii) rebalancing overhead (repartition + migration + coordination) can dominate when triggered too often or when the mapping changes weakly,
+and (iii) heterogeneity means a good mapping is phase- and device-dependent.
+This proposal addresses that gap by explicitly modeling \(\Delta T_{\text{benefit}}\) and \(\Delta T_{\text{cost}}\), using them to gate \emph{when} rebalancing occurs, and bounding \emph{how much} migration occurs to prevent churn.
+
+\vspace{0.35em}
+\noindent\textbf{Short-term literature expansion (planned, mapped to aims).}
+Next additions will focus on: (a) hypergraph repartitioning and migration-minimizing variants (to support bounded movement), and (b) performance modeling papers that separate imbalance-sensitive phases from globally coupled phases. Each new citation will be paired with a one-sentence “why it matters here” and tied to a measurable quantity used in the evaluation plan.
