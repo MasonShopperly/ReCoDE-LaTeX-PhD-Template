@@ -66,16 +66,15 @@
 \section{Preliminary results and evidence base}
 \label{sec:ae0075-prelim}
 
-\noindent I am not claiming the load-balancing problem is already solved here. What I \emph{am} claiming is narrower: the evidence pack already contains the minimum signals needed to treat rebalancing as a decision made from time, not a schedule made from habit. In other words, we can already (i) connect local discretization state to measured wall time, (ii) see a concrete slowest-rank throttling failure mode under clustered adaptivity, and (iii) see that periodic rebalance calls can burn time even when nothing meaningful has changed.
+\noindent This section is grounded in the Nektar++ runs already executed (Cylinder2D) and is written to stay defensible under scrutiny: each statement is either \textbf{measured now} or a \textbf{measurement we commit to add next}. The purpose is to justify the decision framing used throughout the proposal: a rebalance should be executed only when predicted wall-time savings exceed the \emph{measured} overhead, under a QoI tolerance.
 
 \vspace{0.5em}
-\noindent\textbf{Order shows up in time (measured).}
-From Nektar++ Cylinder2D runs, timestep cost rises sharply with polynomial order.
-A simple fit captures this in the data:
+\noindent\textbf{Measured now: timestep cost grows superlinearly with polynomial order.}
+Across Cylinder2D runs, timestep wall time increases sharply with local polynomial degree. A compact fit captures the scaling observed in the current data:
 \[
 \text{ms/step} \approx k\,P^{a}.
 \]
-The table below records the calibrated parameters from the current runs; this is the starting point for any time-based load proxy when $P$ varies spatially.
+The calibrated parameters below are from the current runs and provide an empirical anchor for any time-based load proxy when $P$ varies spatially:
 
 \begin{center}
 \begin{tabular}{lccc}
@@ -88,24 +87,22 @@ Re=40 (secondary) & 0.315049 & 2.467 & 0.9962 \\
 \end{tabular}
 \end{center}
 
-\vspace{0.5em}
-\noindent\textbf{Clustered adaptivity creates a slowest-rank failure mode (grounded in the measured fit).}
-If expensive work is spatially clustered, a count-based partition can co-locate that cost and throttle end-to-end throughput.
-Using the measured $P$--cost fit as element weights, a clustered ``wake-like'' ordering with contiguous partitions yields max/mean imbalance ratios on the order of $\approx 2.7$--$4.0$ before any algorithmic effects.
-This is exactly the regime AE0075 cares about: the mapping is ``balanced'' in counts but not in time, and the slowest partition dominates synchronized phases.
+\noindent \textbf{Immediate implication.} Element counts alone are not a reliable proxy for time when $P$ varies; a wall-time proxy must be tied to discretization state (and later, to device capability and phase dominance).
 
 \vspace{0.5em}
-\noindent\textbf{Periodic schedules waste calls when the mapping barely changes (observed policy behavior).}
-In regime sweeps, many periodic ``rebalance every $k$'' calls become no-op or near-no-op events (often 0 elements moved), and the wasted fraction is cadence-sensitive.
-A simple trigger removes these wasted events across sweeps.
-In a near-crossover regime (Re=100, hetero3x), we match performance while reducing rebalance calls from 40 to 18.
+\noindent\textbf{Next measurement: does adaptivity concentrate time onto a small set of ranks?}
+Given the measured $P$--time scaling, the next question is whether spatially clustered refinement (or clustered high-$P$ regions) concentrates modeled work onto a few partitions and creates a slowest-rank bottleneck that dominates synchronized phases. We will report this directly from per-rank timing data using max/mean step-time ratios (and phase-wise max/mean where timers permit). In parallel, we will run a controlled ``packing'' study that isolates mapping effects from solver noise, so that any observed imbalance can be attributed to partition/mapping rather than transient numerical variation.
+
+\vspace{0.5em}
+\noindent\textbf{Next measurement: when is a rebalance worth calling (overhead vs realized benefit)?}
+Before proposing any trigger rule, we will measure two quantities directly: (i) the overhead of a rebalance event (coordination + migration + rebuild) and (ii) the realized change in timestep wall time after remapping. This allows us to quantify regimes where periodic schedules pay overhead for negligible benefit (including true no-op calls), and it gives an empirical basis for a benefit--cost trigger without relying on unverified assumptions. These measurements will be reported alongside migration intensity (moved elements/DOFs and migration time) and enforced under a QoI tolerance.
 
 \vspace{0.5em}
 \noindent\textbf{Why this matters for AE0075.}
-These signals justify the direction without over-claiming: we can already see the ingredients for a time-based decision rule, but we still need to measure the missing terms cleanly.
-The next step is to (i) make the time proxy mesh- and device-aware, (ii) measure the real overhead of repartition+migration+coordination (not just ``elements moved''), (iii) add an explicit movement cap to prevent churn, and (iv) validate under controlled sweeps (hotspot severity, adapt cadence, heterogeneity) while enforcing a QoI tolerance.
+What is already established is the key prerequisite for decision-based rebalancing: discretization state ($P$) has an empirically measurable wall-time signature. What remains is to (i) validate time concentration under realistic adaptive structure, and (ii) measure rebalance overhead and realized benefit cleanly so the trigger threshold can be grounded in wall time (not cadence). The rest of the proposal is organized around making these terms mesh- and device-aware while bounding movement to prevent churn.
 
 % === AE0075_PRELIM_RESULTS_END ===
+
 
 
 
