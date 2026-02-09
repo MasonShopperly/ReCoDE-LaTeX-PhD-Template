@@ -1,6 +1,6 @@
 \section*{Research program and fit to AE0075}
 
-This proposal is written for Imperial College London’s AE0075 studentship on novel algorithms for load rebalancing of adaptive simulations on heterogeneous clusters, with Nektar++ as the implementation and evaluation platform.
+This proposal is written for Imperial College London’s AE0075 studentship on Novel algorithms for load rebalancing of adaptive mesh simulations on heterogeneous clusters, with Nektar++ as the implementation and evaluation platform.
 The goal is simple and measurable: reduce timestep wall time while avoiding wasted rebalances and migration churn.
 
 Adaptive high-order simulation does not have a fixed “workload shape”. As the simulation adapts, the expensive work moves around the domain. On heterogeneous CPU/GPU clusters, “equal work” is not equal element counts, and synchronized phases can make end-to-end runtime depend on the slowest partition. That is the real problem AE0075 is pointing at.
