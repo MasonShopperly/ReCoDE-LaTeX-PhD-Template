@@ -1,29 +1,21 @@
 \section*{Research aims, hypotheses, and evaluation logic}
 
-The introduction frames a concrete decision problem: in an adaptive simulation whose cost distribution evolves over time, \emph{when} should repartitioning/migration occur, and \emph{how much} state should move, so that end-to-end wall time decreases without inducing churn?
-The research plan is therefore organized around three tightly coupled aims: predict the \emph{benefit} of changing the mapping, predict the \emph{cost} of doing so, and then make a phase-aware decision that is robust across heterogeneous regimes.
+This project treats load rebalancing as a measurable decision within adaptive high-order simulation on heterogeneous clusters: given that the cost distribution changes over time, decide \emph{when} to rebalance and \emph{how much} to migrate so that timestep wall time decreases without creating migration churn.
 
-\vspace{0.35em}
-\noindent\textbf{Benefit model (what is gained).}
-We will develop a phase-aware model that predicts how wall time changes when expensive regions (e.g., high-\(P\) clusters) are redistributed across ranks/devices.
-\emph{Hypothesis:} cost-weighted balance, informed by calibrated order sensitivity, reduces slowest-part throttling relative to count-based balance, especially under clustered refinement.
+Rather than a long list of features, the work is organized around three concrete questions:
+\begin{enumerate}
+  \item \textbf{Savings:} if we change the mapping, how much wall time is saved (phase-aware)?
+  \item \textbf{Cost:} what overhead do we pay to repartition, migrate, and coordinate?
+  \item \textbf{Decision:} under what conditions is a rebalance net-positive, and how do we bound movement?
+\end{enumerate}
 
-\vspace{0.35em}
-\noindent\textbf{Overhead model (what it costs).}
-We will measure and model the overhead of rebalancing—repartitioning, migration, and coordination—as a function of migration volume and system regime.
-\emph{Hypothesis:} for realistic adaptive cadence, periodic rebalancing wastes time in regimes where mappings change weakly (including no-op / near-no-op events).
+These questions become falsifiable hypotheses:
+\begin{itemize}
+  \item \textbf{H1 (savings is predictable):} a cost-weighted mapping calibrated to order sensitivity reduces slowest-part throttling compared to count-based baselines, especially under clustered refinement.
+  \item \textbf{H2 (cost matters):} in realistic adaptive cadence, periodic policies waste time in regimes where mappings change weakly (including no-op / near-no-op events) because overhead exceeds benefit.
+  \item \textbf{H3 (a gate beats a schedule):} a triggered rule that rebalances only when \(\Delta T_{\text{benefit}}>\Delta T_{\text{cost}}\), combined with a migration budget, matches or improves wall time versus periodic rebalancing while reducing event count and preventing churn.
+\end{itemize}
 
-\vspace{0.35em}
-\noindent\textbf{Decision policy (when and how much to move).}
-We will design a triggered policy that executes a rebalance only when the predicted net gain is positive, with bounded migration to prevent instability and churn.
-\emph{Hypothesis:} a trigger rule based on \(\Delta T_{\text{benefit}} > \Delta T_{\text{cost}}\), combined with a migration budget, matches or improves wall time compared to periodic policies while reducing event count and stabilizing behavior across regimes.
-
-\vspace{0.5em}
-\noindent\textbf{Evaluation logic (how hypotheses become publishable evidence).}
-Each hypothesis is tested under controlled perturbations that isolate the mechanism:
-(i) hold the physics case and solver configuration fixed,
-(ii) induce hotspot severity and adaptive cadence changes,
-(iii) impose heterogeneity regimes (CPU/GPU throughput differences),
-and (iv) compare against simple baselines (count-based static, periodic cadence, and triggered decision rules).
-A result counts as a win only if it reduces \(t_{\text{step}}\) while keeping overhead bounded, limiting migration churn, and preserving solution acceptability (QoI tolerance).
-
+\noindent\textbf{Evaluation logic.}
+We compare against simple baselines (static count-based, static cost-weighted, periodic cadence) across controlled regimes (hotspot severity, adaptive cadence, heterogeneity).
+A result counts only if it reduces \(t_{\text{step}}\) while keeping overhead bounded, limiting migration volume, and maintaining solution acceptability (QoI tolerance).
