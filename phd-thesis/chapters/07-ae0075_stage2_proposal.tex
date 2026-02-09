@@ -66,15 +66,16 @@
 \section{Preliminary results and evidence base}
 \label{sec:ae0075-prelim}
 
+\noindent This section provides the evidence needed to motivate the research direction while staying audit-friendly: each statement is either grounded in tracked measurements from the current Nektar++ harness runs, or is a concrete measurement we commit to add next. The evidence is intentionally presented as a ladder: \textbf{(i) measured anchors} $\rightarrow$ \textbf{(ii) grounded consequences} $\rightarrow$ \textbf{(iii) missing terms to measure} so the same cost--benefit decision can be executed online under MPI, heterogeneity, and a QoI tolerance.
 
-
-\noindent This section summarizes what is already quantified in the current Nektar++ Cylinder2D runs, and the specific measurements we add next to extend the same analysis to MPI, heterogeneity, and a QoI tolerance.
 \vspace{0.4em}
-\noindent\textit{Measured anchor (Cylinder2D).} Timestep cost grows strongly and superlinearly with order. A compact fit captures the observed scaling:
+\noindent\textbf{Measured anchor: polynomial order drives timestep cost.}
+Across Cylinder2D runs, timestep wall time rises sharply and superlinearly with polynomial order.
+A compact fit captures the observed scaling:
 \[
 \text{ms/step} \approx k\,P^{a}.
 \]
-The current calibrated parameters are:
+The calibrated parameters from the current runs are:
 
 \begin{center}
 \begin{tabular}{lccc}
@@ -87,16 +88,28 @@ Re=40 (secondary) & 0.315049 & 2.467 & 0.9962 \\
 \end{tabular}
 \end{center}
 
-\noindent This is the starting point for time-based weights when \(P\) varies in space: equal element counts do not imply equal time.
+\noindent This converts spatially varying \(P\) into a first-pass time proxy: equal element counts do not imply equal wall time.
 
 \vspace{0.4em}
-\noindent\textit{Grounded offline signal (hotspot imbalance).} Using the measured fit above as element weights, clustered high-\(P\) regions create concentrated cost that a count-based partition can co-locate. In a clustered ``wake-like'' ordering with contiguous partitions, the resulting naive max/mean imbalance ratios are on the order of $\approx 2.7$--$4.0$ (offline demo grounded by the measured fit).
+\noindent\textbf{Grounded consequence: clustered hp hotspots can create large time imbalance.}
+Using the measured \(P\)-cost fit as element weights, clustered high-\(P\) regions concentrate cost.
+In an offline clustered “wake-like” ordering with contiguous partitions (a proxy for spatial decomposition), the naive max/mean imbalance ratio spans approximately \(2.7\)–\(4.0\) in the current demo. This isolates a concrete failure mode AE0075 must address: a mapping can be “balanced” in counts yet badly imbalanced in time, so the slowest partition throttles synchronized phases.
 
 \vspace{0.4em}
-\noindent\textit{Grounded offline signal (policy behavior).} In regime sweeps with explicit migration penalty, fixed-cadence schedules can spend rebalance events on no-op or near-no-op remaps (0 elements moved), and that wasted fraction is cadence-sensitive. A triggered policy removes no-op events across sweeps and can match periodic performance with fewer rebalance calls in near-crossover regimes (e.g., \(40\rightarrow 18\) events).
+\noindent\textbf{Grounded policy behavior: periodic schedules waste events; triggers remove no-ops.}
+In the current near-crossover comparisons, periodic rebalancing can execute many no-op events (0 elements moved) whose only effect is coordination/decision overhead. A triggered policy eliminates these no-ops across robustness sweeps and can match periodic performance with fewer events (e.g., \(40 \rightarrow 18\) rebalances while preserving the same effective moves in the near-crossover band).
 
 \vspace{0.4em}
-\noindent\textit{What we measure next (commitments).} The next runs add the missing decision terms directly: (i) per-rank (and device) time distributions in MPI to confirm slowest-partition throttling, (ii) overhead decomposition for repartition+migration+rebuild, and (iii) a QoI definition with a tolerance so ``faster'' remains valid.
+\noindent\textbf{Why this is sufficient to proceed.}
+These results do not claim “the problem is solved”; they justify the direction. We can already quantify a dominant benefit driver (order-to-time scaling), exhibit a realistic imbalance mechanism under clustered adaptivity, and show a policy-level waste mode (no-op periodic events) that an online decision rule can eliminate. What remains is to measure the missing decision terms directly in the target setting and validate under a QoI tolerance.
+
+\vspace{0.4em}
+\noindent\textbf{Next measurements (artifact-shaped commitments).}
+\begin{itemize}
+  \item \textbf{Per-rank time distributions under MPI (+heterogeneity):} measure max/mean step time and phase timers to confirm slowest-partition throttling on real runs (not just offline weights).
+  \item \textbf{Overhead decomposition beyond proxies:} measure repartition + migration + rebuild + synchronization overhead explicitly, separating “elements moved” from the fixed coordination costs that make no-ops matter.
+  \item \textbf{QoI tolerance definition and enforcement:} define a QoI for Cylinder2D and at least one adaptive case, and show that decisions that reduce time-to-solution preserve QoI within tolerance.
+\end{itemize}
 
 % === AE0075_PRELIM_RESULTS_END ===
 
