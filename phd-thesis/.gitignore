@@ -75,3 +75,5 @@ watch_ae0075.sh
 proposal.tex
 ae0075_stage2.tex
 scripts/
+_build/
+*.nlo
