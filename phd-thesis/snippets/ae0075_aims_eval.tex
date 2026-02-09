@@ -1,42 +1,29 @@
 \section*{Research aims, hypotheses, and evaluation logic}
 
-The introduction frames a concrete decision problem: in an adaptive simulation whose cost distribution evolves over time, \emph{when} should repartitioning/migration occur and \emph{how much} state should move, so that wall time decreases without triggering churn?
-We make this decision measurable by pairing each research aim with a falsifiable hypothesis and a controlled evaluation protocol.
-
-\vspace{0.4em}
-\noindent\textbf{Aim A1 (model benefit):} predict how wall time changes when expensive regions are redistributed across ranks/devices, in a phase-aware way.
-\newline\textbf{Hypothesis H1:} cost-weighted balance (informed by calibrated order sensitivity) reduces slowest-part throttling relative to count-based balance, especially under clustered refinement.
+The introduction frames a concrete decision problem: in an adaptive simulation whose cost distribution evolves over time, \emph{when} should repartitioning/migration occur, and \emph{how much} state should move, so that end-to-end wall time decreases without inducing churn?
+The research plan is therefore organized around three tightly coupled aims: predict the \emph{benefit} of changing the mapping, predict the \emph{cost} of doing so, and then make a phase-aware decision that is robust across heterogeneous regimes.
 
 \vspace{0.35em}
-\noindent\textbf{Aim A2 (model cost):} quantify and predict rebalancing overhead (repartition + migration + coordination) as a function of migration volume and regime.
-\newline\textbf{Hypothesis H2:} for realistic adaptive cadence, periodic rebalancing wastes time in regimes where the mapping changes weakly, including no-op / near-no-op events.
+\noindent\textbf{Benefit model (what is gained).}
+We will develop a phase-aware model that predicts how wall time changes when expensive regions (e.g., high-\(P\) clusters) are redistributed across ranks/devices.
+\emph{Hypothesis:} cost-weighted balance, informed by calibrated order sensitivity, reduces slowest-part throttling relative to count-based balance, especially under clustered refinement.
 
 \vspace{0.35em}
-\noindent\textbf{Aim A3 (make the decision):} design a triggered policy that executes a rebalance only when predicted net gain is positive, with bounded migration to prevent churn.
-\newline\textbf{Hypothesis H3:} a trigger rule using \(\Delta T_{\text{benefit}} > \Delta T_{\text{cost}}\) plus a migration budget matches or improves wall time compared to periodic policies while reducing event count and stabilizing behavior across regimes.
-
-\vspace{0.55em}
-\noindent\textbf{Evaluation matrix (what “success” means).}
-\begin{tabularx}{\linewidth}{@{}p{0.18\linewidth}X p{0.18\linewidth} p{0.18\linewidth}@{}}
-\toprule
-\textbf{Question} & \textbf{Test / protocol} & \textbf{Baseline} & \textbf{Pass condition} \\
-\midrule
-Does imbalance throttle timestep time? &
-Hold physics case fixed; induce clustered refinement / synthetic hotspots; measure phase-aware wall time and slowest-part throttling. &
-Static / count-based partition. &
-Reduced \(t_{\text{step}}\) with lower \(\rho\) in imbalance-sensitive phases. \\
-\addlinespace
-Does periodic rebalancing waste time? &
-Run identical adaptive cadence under periodic schedule; track overhead and no-op (0-move) events. &
-Periodic every \(k\). &
-Non-trivial fraction of time spent in overhead and/or no-op events in weak-change regimes. \\
-\addlinespace
-Does triggered + bounded migration win robustly? &
-Sweep regimes (heterogeneity, hotspot severity, adapt cadence); compare wall time + overhead + event count. &
-Periodic every \(k\), static mapping. &
-Equal-or-better \(t_{\text{step}}\) with fewer events, bounded overhead, stable behavior. \\
-\bottomrule
-\end{tabularx}
+\noindent\textbf{Overhead model (what it costs).}
+We will measure and model the overhead of rebalancing—repartitioning, migration, and coordination—as a function of migration volume and system regime.
+\emph{Hypothesis:} for realistic adaptive cadence, periodic rebalancing wastes time in regimes where mappings change weakly (including no-op / near-no-op events).
 
 \vspace{0.35em}
-\noindent The next sections define the core quantities used throughout (\S\,Definitions/Notation), position the work in the literature, and then develop the technical approach and evaluation plan in full.
+\noindent\textbf{Decision policy (when and how much to move).}
+We will design a triggered policy that executes a rebalance only when the predicted net gain is positive, with bounded migration to prevent instability and churn.
+\emph{Hypothesis:} a trigger rule based on \(\Delta T_{\text{benefit}} > \Delta T_{\text{cost}}\), combined with a migration budget, matches or improves wall time compared to periodic policies while reducing event count and stabilizing behavior across regimes.
+
+\vspace{0.5em}
+\noindent\textbf{Evaluation logic (how hypotheses become publishable evidence).}
+Each hypothesis is tested under controlled perturbations that isolate the mechanism:
+(i) hold the physics case and solver configuration fixed,
+(ii) induce hotspot severity and adaptive cadence changes,
+(iii) impose heterogeneity regimes (CPU/GPU throughput differences),
+and (iv) compare against simple baselines (count-based static, periodic cadence, and triggered decision rules).
+A result counts as a win only if it reduces \(t_{\text{step}}\) while keeping overhead bounded, limiting migration churn, and preserving solution acceptability (QoI tolerance).
+

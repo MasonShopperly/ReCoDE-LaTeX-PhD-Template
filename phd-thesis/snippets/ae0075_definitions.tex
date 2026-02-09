@@ -1,31 +1,32 @@
 \section*{Operational definitions (metrics used throughout)}
 
-The proposal is measurement-driven: the claims we make are expressed in terms of a small set of operational metrics that appear repeatedly in the aims and evaluation matrix.
-The intent is to prevent “hand-wavy speedups”: every win must show up as reduced wall time with bounded overhead.
+To keep claims falsifiable, the proposal uses a small set of operational metrics that recur in the aims, baselines, and evaluation.
+A “win” is not a plot that looks nicer: it is reduced wall time with bounded overhead and stable behavior across regimes.
 
 \vspace{0.35em}
-\noindent\textbf{Core wall-time quantities.}
+\noindent\textbf{Primary performance metric.}
 \begin{itemize}
   \item \textbf{Timestep wall time} \(t_{\text{step}}\): average wall time per timestep (primary objective).
-  \item \textbf{Phase-aware time}: where possible, decompose \(t_{\text{step}}\) into dominant phases (e.g., globally coupled solve phases vs element-local work) to avoid misattributing wins.
 \end{itemize}
 
 \vspace{0.35em}
-\noindent\textbf{Imbalance and efficiency.}
+\noindent\textbf{Imbalance and effective utilization.}
 \begin{itemize}
-  \item \textbf{Imbalance ratio} \(\rho=\frac{\max(\text{rank time/load})}{\text{mean}(\text{rank time/load})}\). Ideal \(\rho=1\).
-  \item \textbf{Effective efficiency} \(\eta \approx \frac{\text{mean}}{\max}\). Ideal \(\eta \approx 1\).
+  \item \textbf{Imbalance ratio} \(\rho=\frac{\max(\text{rank time/load})}{\text{mean}(\text{rank time/load})}\), where \(\rho=1\) is perfectly balanced.
+  \item \textbf{Effective efficiency} \(\eta \approx \frac{\text{mean}}{\max}\), where \(\eta \approx 1\) is ideal.
 \end{itemize}
 
 \vspace{0.35em}
-\noindent\textbf{Overhead and churn (what must be bounded).}
+\noindent\textbf{Rebalancing overhead and churn.}
 \begin{itemize}
-  \item \textbf{Rebalance events}: number of rebalances executed.
-  \item \textbf{No-op events}: rebalances that move 0 elements / negligible state (a direct indicator of wasted periodic scheduling).
-  \item \textbf{Migration intensity}: elements moved and migration time; used to enforce “bounded movement”.
+  \item \textbf{Event count:} number of rebalances, including no-op events (0 moves).
+  \item \textbf{Migration intensity:} elements moved and migration time (as a direct proxy for churn and overhead).
+  \item \textbf{Overhead time:} repartition + migration + coordination time attributable to rebalancing.
 \end{itemize}
 
 \vspace{0.35em}
-\noindent\textbf{Periodic vs triggered.}
-A periodic policy rebalances on a fixed cadence \(k\) and can pay overhead even when the mapping changes weakly.
-A triggered policy executes a rebalance only when a model predicts positive net gain, typically framed as \(\Delta T_{\text{benefit}} > \Delta T_{\text{cost}}\), and should reduce unnecessary events while keeping overhead bounded.
+\noindent\textbf{Solution acceptability.}
+\begin{itemize}
+  \item \textbf{QoI tolerance:} a fixed criterion defining acceptable solution change under rebalancing; policies are only compared within this tolerance.
+\end{itemize}
+
