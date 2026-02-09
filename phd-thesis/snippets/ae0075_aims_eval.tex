@@ -1,34 +1,12 @@
 \section*{Research program and fit to AE0075}
 
-This proposal responds directly to Imperial College London’s AE0075 studentship on \emph{novel algorithms for load rebalancing of adaptive simulations on heterogeneous clusters}, using Nektar++ as the implementation and evaluation platform.
-The core objective is practical and measurable: reduce timestep wall time in adaptive high-order simulation without triggering unnecessary repartitioning, migration churn, or instability across heterogeneous regimes.
+This proposal is written for Imperial College London’s AE0075 studentship on novel algorithms for load rebalancing of adaptive simulations on heterogeneous clusters, with Nektar++ as the implementation and evaluation platform.
+The goal is simple and measurable: reduce timestep wall time while avoiding wasted rebalances and migration churn.
 
-\vspace{0.35em}
-\noindent\textbf{What AE0075 is asking for (distilled).}
-Adaptive simulations change where computational effort is concentrated; heterogeneity changes what “equal work” means; and synchronized phases can make end-to-end time hostage to the slowest partition.
-AE0075 therefore demands algorithms that decide \emph{when} to rebalance and \emph{how much} to move, under realistic overheads, not just a better static partition.
+Adaptive high-order simulation does not have a fixed “workload shape”. As the simulation adapts, the expensive work moves around the domain. On heterogeneous CPU/GPU clusters, “equal work” is not equal element counts, and synchronized phases can make end-to-end runtime depend on the slowest partition. That is the real problem AE0075 is pointing at.
 
-\vspace{0.35em}
-\noindent\textbf{What is already established (signals that motivate the approach).}
-Our preliminary measurements show that (i) local approximation order can drive strongly non-uniform cost, (ii) clustered refinement produces time hotspots that inflate max/mean imbalance, (iii) globally coupled phases can dominate at scale, and (iv) periodic schedules can waste rebalance events when mappings change weakly.
-These are exactly the failure modes AE0075 cares about: naive proxies and fixed schedules break down under adaptive, heterogeneous, synchronized workloads.
+We start from what we already know from measured signals: cost can rise sharply with local approximation order, clustered refinement can create time hotspots, solver-heavy phases can dominate at scale, and periodic schedules can waste rebalance calls when the mapping has not meaningfully changed. Taken together, this says the same thing: rebalancing should not be a fixed schedule. It should be a decision made from measurable quantities.
 
-\vspace{0.35em}
-\noindent\textbf{What we will build (the algorithmic objects).}
-\begin{itemize}
-  \item \textbf{A phase-aware load proxy:} a calibrated mapping from local discretization state (e.g., order distribution and measured phase timers) to predicted contribution to \(t_{\text{step}}\).
-  \item \textbf{An overhead proxy:} a measurable model for the cost of repartitioning, migration, and coordination as a function of movement volume and system regime.
-  \item \textbf{A decision policy:} a triggered rule that executes rebalancing only when predicted net gain is positive, coupled to a migration budget (bounded movement) to prevent churn.
-  \item \textbf{A Nektar++ integration story:} a concrete hook-point map that makes the adapt \(\leftrightarrow\) repartition \(\leftrightarrow\) migrate lifecycle implementable and testable.
-\end{itemize}
+What we do next is organized around that decision. We will (1) make the workload and imbalance visible in wall-time terms (not just counts), (2) measure the real overhead of repartition+migration+coordination, and (3) trigger rebalancing only when the predicted savings exceed the predicted cost, with an explicit cap on how much we move so the method stays stable and doesn’t thrash.
 
-\vspace{0.35em}
-\noindent\textbf{How we will validate (what counts as success).}
-\begin{itemize}
-  \item \textbf{Primary metric:} reduced timestep wall time \(t_{\text{step}}\) under matched physics/QoI tolerance.
-  \item \textbf{Required accounting:} explicit overhead (repartition+migration+coordination time), number of events (including no-ops), and migration intensity (moved volume/time).
-  \item \textbf{Baselines:} static count-based mapping, static cost-weighted mapping, and periodic “rebalance every \(k\)” schedules.
-  \item \textbf{Regime coverage:} controlled sweeps over hotspot severity, adaptive cadence, and heterogeneity factors to ensure robustness rather than one-off wins.
-\end{itemize}
-
-\noindent A result is only credited if it reduces \(t_{\text{step}}\) while keeping overhead bounded and preventing churn, across multiple regimes—not just one favorable case.
+Success is not a single good plot. A result counts only if it reduces \(t_{\text{step}}\) against clear baselines (static mappings and periodic “rebalance every \(k\)”), while keeping overhead bounded, reducing wasted/no-op events, and preserving solution acceptability (QoI tolerance), across a sweep of regimes (hotspot severity, adapt cadence, and heterogeneity).
