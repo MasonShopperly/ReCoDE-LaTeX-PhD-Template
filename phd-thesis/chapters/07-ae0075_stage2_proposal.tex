@@ -66,7 +66,7 @@
 
 All quantitative claims below are backed by tracked artifacts under
 supplementary scripts and raw logs are available for reproducibility. The numbers-first source of truth is
-\code{key_results.md}; the narrative spine is \code{pack_summary.md}
+supporting summary tables; the narrative spine is supporting summary tables
 (both regenerated from tracked CSVs).
 
 \vspace{0.5em}
@@ -110,7 +110,7 @@ added without rewriting prose. This is the “never drift” contract.
 \hline
 Claim & Artifact (tracked) & Regen path \\
 \hline
-C1 & \code{p_sweep_re100.csv}, \code{key_results.md} & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py} \\
+C1 & \code{p_sweep_re100.csv}, supporting summary tables & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py} \\
 C2 & \code{imbalance\_demo\_clustered.csv}, \code{pack\_summary.md} & \code{python3 runs/cylinder2d/pack\_tables.py} \\
 C3 & periodic vs trigger CSVs + \code{key\_results.md} & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py} \\
 C4 & regime maps (\code{regime\_maps.md}) & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py --curated-only} \\
@@ -128,12 +128,12 @@ migration and coordination costs (next section).
 
 \section{Execution credibility (measured evidence + reproducible artifacts)}
 
-\textbf{Evidence discipline.} Every non-trivial performance claim below corresponds to a tracked artifact under \texttt{docs/ae0075/} (or is explicitly marked \textbf{ASSUMED} / \textbf{UNVERIFIED} pending verification). This proposal is intentionally ``measurement-first'' and self-policing.
+\textbf{Evidence discipline.} Every non-trivial performance claim below corresponds to a tracked artifact under \texttt{supplementary material (available on request)} (or is explicitly marked \textbf{ASSUMED} / \textbf{UNVERIFIED} pending verification). This proposal is intentionally ``measurement-first'' and self-policing.
 
 \vspace{0.5em}
 \noindent\textbf{What is already measured (and re-runnable):}
 \begin{itemize}
- \item \textbf{Measured p-scaling fit (real Nektar++ Cylinder2D):} ms/step $\approx k \cdot P^{a}$ with $(k,a,r^2)$ recorded for Re=100 primary. Reproduce: \texttt{bash runs/cylinder2d/p\_sweep.sh}. Output: \texttt{docs/ae0075/p\_sweep\_re100.csv}.
+ \item \textbf{Measured p-scaling fit (real Nektar++ Cylinder2D):} ms/step $\approx k \cdot P^{a}$ with $(k,a,r^2)$ recorded for Re=100 primary. Reproduce: \texttt{bash runs/cylinder2d/p\_sweep.sh}. Output: \texttt{p\_sweep\_re100.csv}.
  \item \textbf{Trigger vs periodic:} event-driven trigger removes wasted no-op rebalances and can match periodic performance with fewer events (e.g., 40 $\rightarrow$ 18 rebalances in a near-crossover regime). Backed by tracked comparison CSVs and summarized in \texttt{key\_results.md}.
  \item \textbf{Timer composition:} global solves dominate Execute time, motivating solve-aware rebalancing rather than naive element-count balancing.
  \item \textbf{Heterogeneity sensitivity:} effective efficiency can collapse sharply under controlled slowdowns, motivating heterogeneity-aware weighting and bounded migration.
@@ -152,23 +152,23 @@ migration and coordination costs (next section).
 \midrule
 P-cost superlinear in \(P\)? &
 fit params \(k,a,r^2\) &
-\codepath{docs/ae0075/p\_sweep\_re100.csv} (fit via \codepath{runs/cylinder2d/pack\_tables.py}) &
+\codepath{p\_sweep\_re100.csv} (fit via \codepath{runs/cylinder2d/pack\_tables.py}) &
 \textbf{MEASURED} \\
 Clustered hp hotspots cause imbalance? &
 max/mean, mean/max &
-\codepath{docs/ae0075/imbalance\_demo\_clustered.csv} (grounded in measured fit) &
+\codepath{imbalance\_demo\_clustered.csv} (grounded in measured fit) &
 \textbf{MODELED} \\
 Global solves dominate at scale? &
 (Pressure+Viscous)/Execute &
-\codepath{docs/ae0075/cylinder2d\_timer\_profile\_p3p6\_fin20\_v2.csv} &
+\codepath{cylinder2d\_timer\_profile\_p3p6\_fin20\_v2.csv} &
 \textbf{MEASURED} \\
 Heterogeneity collapses effective efficiency? &
 effective efficiency vs baseline &
-\codepath{docs/ae0075/cylinder2d\_mpi\_hetero\_amp\_p6\_fin20\_r3\_summary.csv} &
+\codepath{cylinder2d\_mpi\_hetero\_amp\_p6\_fin20\_r3\_summary.csv} &
 \textbf{MEASURED} \\
 Trigger reduces no-op rebalances? &
 events, moved\_elems\_total, avg\_ms &
-\codepath{docs/ae0075/rebalance\_trade\_regime\_*cmp\_trigger*\_re100.csv} &
+\codepath{rebalance\_trade\_regime\_*cmp\_trigger*\_re100.csv} &
 \textbf{MODELED} \\
 QoI invariant under rebalance? &
 QoI drift tolerance &
@@ -257,14 +257,14 @@ where \(\textbf{moved\_cost}\) is \emph{not} just ``moved elements''. A stronger
 \subsection*{WP0 --- Evidence harness and reproducibility (continuous)}
 \begin{itemize}
  \item Maintain one-command doc rebuild and keep all headline numbers generated from tracked CSVs.
- \item Deliverable: \texttt{docs/ae0075/key\_results.md} remains numbers-first source of truth.
+ \item Deliverable: \texttt{key\_results.md} remains numbers-first source of truth.
 \end{itemize}
 
 \subsection*{WP1 --- Nektar++ hook points (feasibility mapping; Gate-2)}
 \begin{itemize}
  \item Identify where element work / polynomial order / timers expose imbalance signals.
  \item Identify where repartition + migration can be inserted in an adaptive loop.
- \item Deliverable: \texttt{docs/ae0075/NEKTARPP\_HOOKS.md} with file paths + entry points (\textbf{UNVERIFIED} until Nektar++ source is in-scope here).
+ \item Deliverable: \texttt{NEKTARPP\_HOOKS.md} with file paths + entry points (\textbf{UNVERIFIED} until Nektar++ source is in-scope here).
 \end{itemize}
 
 \subsection*{WP2 --- Static heterogeneity-aware weighting}
