@@ -60,17 +60,23 @@
 
 % === AE0075 WORLD-CLASS ADDENDUM START ===
 \clearpage
+
 % === AE0075_PRELIM_RESULTS_START ===
-\section{Preliminary results and evidence base (reproducible)}
+
+\section{Preliminary results and evidence base}
 \label{sec:ae0075-prelim}
 
-All quantitative claims below are backed by tracked artifacts under
-supplementary scripts and raw logs are available for reproducibility. All numbers below come from rerunnable scripts and archived logs (available on request).
 
 \vspace{0.5em}
-\noindent\textbf{Measured: superlinear hp cost scaling.}
-We fit $\text{ms/step} \approx k\,P^{a}$ from real Nektar++ Cylinder2D runs
-and obtain strong superlinear exponents (Re=100 primary).
+\noindent These preliminary results do one job: they pin down what must be measured for rebalancing to be a decision, not a schedule. We need (i) a time-based proxy for where work is, (ii) evidence that adaptive structure can create slowest-rank throttling, and (iii) evidence that periodic rebalance calls can be wasted when the mapping has not meaningfully changed.
+
+\vspace{0.5em}
+\noindent\textbf{1) Local order is a measurable driver of cost.}
+In Nektar++ Cylinder2D runs we observe strong superlinear growth of timestep cost with polynomial order. We fit
+\[
+\text{ms/step} \approx k\,P^{a},
+\]
+and obtain the following calibrated parameters:
 
 \begin{center}
 \begin{tabular}{lccc}
@@ -83,32 +89,22 @@ Re=40 (secondary) & 0.315049 & 2.467 & 0.9962 \\
 \end{tabular}
 \end{center}
 
-\vspace{0.5em}
-\noindent\textbf{Grounded model: clustered hp-hotspots create severe imbalance.}
-Using the measured $P$-cost fit to assign per-element weights, a clustered “wake-like”
-ordering with contiguous partitions yields naive max/mean imbalance ratios $\approx 2.71$–$4.04$
-(i.e., large throughput waste before any algorithmic effects).
+\noindent This gives a grounded starting point for a time-based load proxy: if $P$ varies spatially, equal element counts do not imply equal time.
 
 \vspace{0.5em}
-\noindent\textbf{Key policy insight: periodic rebalancing wastes events; triggers remove no-ops.}
-Many periodic rebalances can be true no-ops (0 elements moved) and the wasted fraction is
-cadence-sensitive (“aliasing” with adapt cadence), while trigger policies remove no-ops across
-robustness sweeps.
-
-Near crossover (Re=100, hetero3x), we observe the same performance while cutting rebalance calls
-from 40 to 18 (extra periodic calls are frequently wasted).
+\noindent\textbf{2) Clustered refinement creates time-hotspots and imbalance.}
+Using the measured $P$--cost fit as element weights, a clustered ``wake-like'' ordering with contiguous partitions produces naive max/mean imbalance ratios on the order of $\approx 2.7$--$4.0$ before any algorithmic effects. This is the concrete failure mode: localized expensive work can be co-located and throttle end-to-end throughput.
 
 \vspace{0.5em}
-\noindent\textbf{Evidence discipline (how to trust the numbers).} Each headline result in this section is backed by rerunnable scripts and archived logs (available on request). We focus on four checks: (i) measured superlinear cost growth with local order, (ii) hotspot-driven imbalance under clustered refinement, (iii) phase dominance at scale (which bounds what rebalancing can improve), and (iv) policy behavior (periodic schedules can waste events; triggers remove no-ops).
+\noindent\textbf{3) Periodic rebalancing can waste events; triggers remove no-ops.}
+In regime sweeps, many periodic ``rebalance every $k$'' calls become no-op or near-no-op events (0 elements moved), and the wasted fraction is cadence-sensitive. A simple triggered policy removes these wasted events across sweeps. In a near-crossover regime (Re=100, hetero3x), we match performance while reducing rebalance calls from 40 to 18.
 
-
+\vspace{0.5em}
 \noindent\textbf{Why this matters for AE0075.}
-This evidence pack establishes: (i) a measured hp-driven load model, (ii) realistic hotspot-induced imbalance,
-and (iii) a concrete policy failure mode (wasted periodic events) with a measurable fix (trigger).
-The technical work that remains is to make these policies \emph{mesh- and device-aware} while bounding
-migration and coordination costs (next section).
+Together, these signals justify the program direction: treat rebalancing as a decision with explicit benefit--cost accounting, and bound movement to prevent churn. The remaining work is to make the proxy and trigger mesh- and device-aware, to measure the true overhead of repartition+migration+coordination, and to validate across controlled regimes (hotspot severity, adapt cadence, heterogeneity).
 
 % === AE0075_PRELIM_RESULTS_END ===
+
 
 \section{Execution credibility (measured evidence + reproducible artifacts)}
 
