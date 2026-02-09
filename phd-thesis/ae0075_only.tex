@@ -39,6 +39,12 @@
 % -------------------------------
 \includeonly{chapters/07-ae0075_stage2_proposal}
 \InputIfFileExists{includeonly.tex}{}{}% ae0075-watch
+
+% STANDALONE_SECTION_NUMBERING_FIX
+% Standalone PDF: avoid 0.1/0.2-style section numbers (chapter counter is 0 here).
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
 \begin{document}
 \def\AEQCoverMode{1}
 \pagenumbering{arabic}
