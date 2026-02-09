@@ -66,15 +66,15 @@
 \section{Preliminary results and evidence base}
 \label{sec:ae0075-prelim}
 
-\noindent This section is grounded in the Nektar++ runs already executed (Cylinder2D) and is written to stay defensible under scrutiny: each statement is either \textbf{measured now} or a \textbf{measurement we commit to add next}. The purpose is to justify the decision framing used throughout the proposal: a rebalance should be executed only when predicted wall-time savings exceed the \emph{measured} overhead, under a QoI tolerance.
 
-\vspace{0.5em}
-\noindent\textbf{Measured now: timestep cost grows superlinearly with polynomial order.}
-Across Cylinder2D runs, timestep wall time increases sharply with local polynomial degree. A compact fit captures the scaling observed in the current data:
+
+\noindent This section summarizes what is already quantified in the current Nektar++ Cylinder2D runs, and the specific measurements we add next to extend the same analysis to MPI, heterogeneity, and a QoI tolerance.
+\vspace{0.4em}
+\noindent\textit{Measured anchor (Cylinder2D).} Timestep cost grows strongly and superlinearly with order. A compact fit captures the observed scaling:
 \[
 \text{ms/step} \approx k\,P^{a}.
 \]
-The calibrated parameters below are from the current runs and provide an empirical anchor for any time-based load proxy when $P$ varies spatially:
+The current calibrated parameters are:
 
 \begin{center}
 \begin{tabular}{lccc}
@@ -87,21 +87,19 @@ Re=40 (secondary) & 0.315049 & 2.467 & 0.9962 \\
 \end{tabular}
 \end{center}
 
-\noindent \textbf{Immediate implication.} Element counts alone are not a reliable proxy for time when $P$ varies; a wall-time proxy must be tied to discretization state (and later, to device capability and phase dominance).
+\noindent This is the starting point for time-based weights when \(P\) varies in space: equal element counts do not imply equal time.
 
-\vspace{0.5em}
-\noindent\textbf{Next measurement: does adaptivity concentrate time onto a small set of ranks?}
-Given the measured $P$--time scaling, the next question is whether spatially clustered refinement (or clustered high-$P$ regions) concentrates modeled work onto a few partitions and creates a slowest-rank bottleneck that dominates synchronized phases. We will report this directly from per-rank timing data using max/mean step-time ratios (and phase-wise max/mean where timers permit). In parallel, we will run a controlled ``packing'' study that isolates mapping effects from solver noise, so that any observed imbalance can be attributed to partition/mapping rather than transient numerical variation.
+\vspace{0.4em}
+\noindent\textit{Grounded offline signal (hotspot imbalance).} Using the measured fit above as element weights, clustered high-\(P\) regions create concentrated cost that a count-based partition can co-locate. In a clustered ``wake-like'' ordering with contiguous partitions, the resulting naive max/mean imbalance ratios are on the order of $\approx 2.7$--$4.0$ (offline demo grounded by the measured fit).
 
-\vspace{0.5em}
-\noindent\textbf{Next measurement: when is a rebalance worth calling (overhead vs realized benefit)?}
-Before proposing any trigger rule, we will measure two quantities directly: (i) the overhead of a rebalance event (coordination + migration + rebuild) and (ii) the realized change in timestep wall time after remapping. This allows us to quantify regimes where periodic schedules pay overhead for negligible benefit (including true no-op calls), and it gives an empirical basis for a benefit--cost trigger without relying on unverified assumptions. These measurements will be reported alongside migration intensity (moved elements/DOFs and migration time) and enforced under a QoI tolerance.
+\vspace{0.4em}
+\noindent\textit{Grounded offline signal (policy behavior).} In regime sweeps with explicit migration penalty, fixed-cadence schedules can spend rebalance events on no-op or near-no-op remaps (0 elements moved), and that wasted fraction is cadence-sensitive. A triggered policy removes no-op events across sweeps and can match periodic performance with fewer rebalance calls in near-crossover regimes (e.g., \(40\rightarrow 18\) events).
 
-\vspace{0.5em}
-\noindent\textbf{Why this matters for AE0075.}
-What is already established is the key prerequisite for decision-based rebalancing: discretization state ($P$) has an empirically measurable wall-time signature. What remains is to (i) validate time concentration under realistic adaptive structure, and (ii) measure rebalance overhead and realized benefit cleanly so the trigger threshold can be grounded in wall time (not cadence). The rest of the proposal is organized around making these terms mesh- and device-aware while bounding movement to prevent churn.
+\vspace{0.4em}
+\noindent\textit{What we measure next (commitments).} The next runs add the missing decision terms directly: (i) per-rank (and device) time distributions in MPI to confirm slowest-partition throttling, (ii) overhead decomposition for repartition+migration+rebuild, and (iii) a QoI definition with a tolerance so ``faster'' remains valid.
 
 % === AE0075_PRELIM_RESULTS_END ===
+
 
 
 
