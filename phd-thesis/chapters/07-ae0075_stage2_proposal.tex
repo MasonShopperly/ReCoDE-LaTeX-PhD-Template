@@ -99,22 +99,8 @@ Near crossover (Re=100, hetero3x), we observe the same performance while cutting
 from 40 to 18 (extra periodic calls are frequently wasted).
 
 \vspace{0.5em}
-\noindent\textbf{Claim registry (keeps the proposal extensible).}
-Each claim has (1) a tracked artifact, and (2) a single regen command, so new results can be
-added without rewriting prose. This is the “never drift” contract.
+\noindent\textbf{Evidence discipline (how to trust the numbers).} Each headline result in this section is backed by rerunnable scripts and archived logs (available on request). We focus on four checks: (i) measured superlinear cost growth with local order, (ii) hotspot-driven imbalance under clustered refinement, (iii) phase dominance at scale (which bounds what rebalancing can improve), and (iv) policy behavior (periodic schedules can waste events; triggers remove no-ops).
 
-\begin{center}
-\begin{tabular}{p{0.18\linewidth}p{0.52\linewidth}p{0.24\linewidth}}
-\hline
-Claim & Artifact (tracked) & Regen path \\
-\hline
-C1 & \code{p_sweep_re100.csv}, supporting summary tables & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py} \\
-C2 & \code{imbalance\_demo\_clustered.csv}, \code{pack\_summary.md} & \code{python3 runs/cylinder2d/pack\_tables.py} \\
-C3 & periodic vs trigger CSVs + \code{key\_results.md} & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py} \\
-C4 & regime maps (\code{regime\_maps.md}) & \code{python3 runs/cylinder2d/ae0075\_build\_docs.py --curated-only} \\
-\hline
-\end{tabular}
-\end{center}
 
 \noindent\textbf{Why this matters for AE0075.}
 This evidence pack establishes: (i) a measured hp-driven load model, (ii) realistic hotspot-induced imbalance,
