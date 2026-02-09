@@ -66,17 +66,16 @@
 \section{Preliminary results and evidence base}
 \label{sec:ae0075-prelim}
 
+\noindent I am not claiming the load-balancing problem is already solved here. What I \emph{am} claiming is narrower: the evidence pack already contains the minimum signals needed to treat rebalancing as a decision made from time, not a schedule made from habit. In other words, we can already (i) connect local discretization state to measured wall time, (ii) see a concrete slowest-rank throttling failure mode under clustered adaptivity, and (iii) see that periodic rebalance calls can burn time even when nothing meaningful has changed.
 
 \vspace{0.5em}
-\noindent These preliminary results do one job: they pin down what must be measured for rebalancing to be a decision, not a schedule. We need (i) a time-based proxy for where work is, (ii) evidence that adaptive structure can create slowest-rank throttling, and (iii) evidence that periodic rebalance calls can be wasted when the mapping has not meaningfully changed.
-
-\vspace{0.5em}
-\noindent\textbf{1) Local order is a measurable driver of cost.}
-In Nektar++ Cylinder2D runs we observe strong superlinear growth of timestep cost with polynomial order. We fit
+\noindent\textbf{Order shows up in time (measured).}
+From Nektar++ Cylinder2D runs, timestep cost rises sharply with polynomial order.
+A simple fit captures this in the data:
 \[
-\text{ms/step} \approx k\,P^{a},
+\text{ms/step} \approx k\,P^{a}.
 \]
-and obtain the following calibrated parameters:
+The table below records the calibrated parameters from the current runs; this is the starting point for any time-based load proxy when $P$ varies spatially.
 
 \begin{center}
 \begin{tabular}{lccc}
@@ -89,21 +88,25 @@ Re=40 (secondary) & 0.315049 & 2.467 & 0.9962 \\
 \end{tabular}
 \end{center}
 
-\noindent This gives a grounded starting point for a time-based load proxy: if $P$ varies spatially, equal element counts do not imply equal time.
+\vspace{0.5em}
+\noindent\textbf{Clustered adaptivity creates a slowest-rank failure mode (grounded in the measured fit).}
+If expensive work is spatially clustered, a count-based partition can co-locate that cost and throttle end-to-end throughput.
+Using the measured $P$--cost fit as element weights, a clustered ``wake-like'' ordering with contiguous partitions yields max/mean imbalance ratios on the order of $\approx 2.7$--$4.0$ before any algorithmic effects.
+This is exactly the regime AE0075 cares about: the mapping is ``balanced'' in counts but not in time, and the slowest partition dominates synchronized phases.
 
 \vspace{0.5em}
-\noindent\textbf{2) Clustered refinement creates time-hotspots and imbalance.}
-Using the measured $P$--cost fit as element weights, a clustered ``wake-like'' ordering with contiguous partitions produces naive max/mean imbalance ratios on the order of $\approx 2.7$--$4.0$ before any algorithmic effects. This is the concrete failure mode: localized expensive work can be co-located and throttle end-to-end throughput.
-
-\vspace{0.5em}
-\noindent\textbf{3) Periodic rebalancing can waste events; triggers remove no-ops.}
-In regime sweeps, many periodic ``rebalance every $k$'' calls become no-op or near-no-op events (0 elements moved), and the wasted fraction is cadence-sensitive. A simple triggered policy removes these wasted events across sweeps. In a near-crossover regime (Re=100, hetero3x), we match performance while reducing rebalance calls from 40 to 18.
+\noindent\textbf{Periodic schedules waste calls when the mapping barely changes (observed policy behavior).}
+In regime sweeps, many periodic ``rebalance every $k$'' calls become no-op or near-no-op events (often 0 elements moved), and the wasted fraction is cadence-sensitive.
+A simple trigger removes these wasted events across sweeps.
+In a near-crossover regime (Re=100, hetero3x), we match performance while reducing rebalance calls from 40 to 18.
 
 \vspace{0.5em}
 \noindent\textbf{Why this matters for AE0075.}
-Together, these signals justify the program direction: treat rebalancing as a decision with explicit benefit--cost accounting, and bound movement to prevent churn. The remaining work is to make the proxy and trigger mesh- and device-aware, to measure the true overhead of repartition+migration+coordination, and to validate across controlled regimes (hotspot severity, adapt cadence, heterogeneity).
+These signals justify the direction without over-claiming: we can already see the ingredients for a time-based decision rule, but we still need to measure the missing terms cleanly.
+The next step is to (i) make the time proxy mesh- and device-aware, (ii) measure the real overhead of repartition+migration+coordination (not just ``elements moved''), (iii) add an explicit movement cap to prevent churn, and (iv) validate under controlled sweeps (hotspot severity, adapt cadence, heterogeneity) while enforcing a QoI tolerance.
 
 % === AE0075_PRELIM_RESULTS_END ===
+
 
 
 \section{Execution credibility (measured evidence + reproducible artifacts)}
